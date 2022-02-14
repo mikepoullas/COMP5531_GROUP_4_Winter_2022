@@ -1,10 +1,12 @@
-# COMP5531_GROUP_4_Winter_2022
-## Assignments and Projects for COMP5531 Group 4 for Winter 2022
+# COMP 5531 - GROUP 4 (Winter 2022)
+## Assignments and Projects
 
 Contributors:
-* Mike Poullas
-* Adriana Danko
-* Christopher Savov
-* Shafiq Imtiaz
+- Mike Poullas (TL)
+- Adriana Danko
+- Christopher Savov
+- Shafiq Imtiaz
+
+Code base is PHP 7 and MySql 5.6
 ---
-Code base is PHP7 and MySql 5.6
+Concordia University, Winter 2022
