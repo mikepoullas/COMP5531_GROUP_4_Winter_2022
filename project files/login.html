@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Login</h1>
+    </div>
+
+    <div class="container form">
+        <form class="login form" action="action_page.php" method="post">
+            <div>
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required />
+            </div>
+            <div>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required />
+            </div>
+            <button type="submit">Login</button>
+            <button type="button" class="cancelbtn">Cancel</button>
+            <div>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember" /> Remember
+                    me
+                </label>
+            </div>
+            <a href="#">Forgot password?</a>
+        </form>
+    </div>
+</body>
+
+</html>
