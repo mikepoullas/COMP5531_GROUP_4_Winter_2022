@@ -1,0 +1,52 @@
+body {
+    margin: 0 auto;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: rgb(250, 240, 230);
+}
+
+.header {
+    background: rgb(51, 204, 204);
+    padding: 1em 1em;
+    text-align: center;
+}
+
+.container.main {
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+    height: 85vh;
+}
+
+.col-left {
+    background: rgba(51, 204, 204, 0.699);
+}
+
+.col-right {
+    background: rgb(250, 240, 230);
+    border: 2px solid black;
+}
+
+.content.main {
+    background: yellow;
+    margin: 1em;
+}
+
+form div {
+    padding: 0.5em;
+}
+
+.col-left>button {
+    margin: 1em;
+    padding: 1em 5em;
+}
+
+.container.form {
+    display: table;
+    height: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.login.form {
+    display: table-cell;
+    vertical-align: middle;
+}
