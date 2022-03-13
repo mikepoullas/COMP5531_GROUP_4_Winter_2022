@@ -1,3 +1,6 @@
+create database cga;
+use cga;
+
 /*
 
 10000 - user
@@ -28,7 +31,7 @@ CREATE TABLE Course
 (
   course_id INT NOT NULL AUTO_INCREMENT,
   course_name VARCHAR(30) NOT NULL,
-  course_number INT NOT NULL,
+  course_number INT NOT NULL UNIQUE,
   PRIMARY KEY (course_id),
   UNIQUE (course_name),
   UNIQUE (course_number)
@@ -165,7 +168,8 @@ CREATE TABLE member_of_group
   student_id INT NOT NULL,
   group_id INT NOT NULL,
   FOREIGN KEY (student_id) REFERENCES Student(student_id),
-  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id),
+  UNIQUE (student_id, group_id)
 );
 
 CREATE TABLE User_Course
