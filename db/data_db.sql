@@ -3,11 +3,11 @@ INSERT INTO roles (role_name, role_description) VALUES("Student", "Course Studen
 INSERT INTO roles (role_name, role_description) VALUES("TA", "Course Assistant");
 INSERT INTO roles (role_name, role_description) VALUES("Professor", "Course Instructor");
 
-INSERT INTO user VALUES(10000, "Admin", "CGA","1980-01-01", "admin", "admin","admin@cga.com",1, 1);
-INSERT INTO user (first_name, last_name, dob, username, password, email, is_first_login, role_id) VALUES("John", "Doe","1990-01-01", "john123", "password","john@doe.com",1, 2);
-INSERT INTO user (first_name, last_name, dob, username, password, email, is_first_login, role_id) VALUES("Yogesh", "Homeboi","1980-01-01", "yogesh123", "password","yogesh@homeboi.com",1, 3);
-INSERT INTO user (first_name, last_name, dob, username, password, email, is_first_login, role_id) VALUES("Lord", "Desai","1900-01-01", "desai123", "password","lord@desai.com",1, 4);
-INSERT INTO user (first_name, last_name, dob, username, password, email, is_first_login, role_id) VALUES("Mike", "Poullas","1966-03-04", "mikep", "password","mikepoullas@yahoo.com",1, 2);
+INSERT INTO user VALUES(10000, "Admin", "CGA","1980-01-01", "admin", "admin","admin@cga.com", CURRENT_TIMESTAMP, 1, 1);
+INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("John", "Doe","1990-01-01", "john123", "password","john@doe.com", CURRENT_TIMESTAMP,1, 2);
+INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("Yogesh", "Homeboi","1980-01-01", "yogesh123", "password","yogesh@homeboi.com", CURRENT_TIMESTAMP, 1, 3);
+INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("Lord", "Desai","1900-01-01", "desai123", "password","lord@desai.com", CURRENT_TIMESTAMP, 1, 4);
+INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("Mike", "Poullas","1966-03-04", "mikep", "password","mikepoullas@yahoo.com", CURRENT_TIMESTAMP, 1, 2);
 
 INSERT INTO course VALUES(50000, "Files and DB", 5531);
 INSERT INTO course (course_name, course_number) VALUES("Tools and Techniques", 5541);

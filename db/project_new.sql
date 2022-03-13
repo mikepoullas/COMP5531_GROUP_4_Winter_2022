@@ -52,7 +52,7 @@ CREATE TABLE Announcement
   announcement_id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   posted_by_uid INT NOT NULL,
-  posted_on DATE NOT NULL,
+  posted_on DATETIME NOT NULL,
   content VARCHAR(1024) NOT NULL,
   section_id INT NOT NULL,
   PRIMARY KEY (announcement_id),
@@ -73,7 +73,7 @@ CREATE TABLE Discussion
   discussion_id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) NOT NULL,
   content VARCHAR(1024) NOT NULL,
-  posted_on DATE NOT NULL,
+  posted_on DATETIME NOT NULL,
   posted_by_uid INT NOT NULL,
   group_id INT NOT NULL,
   PRIMARY KEY (discussion_id),
@@ -84,7 +84,7 @@ CREATE TABLE Files
 (
   file_id INT NOT NULL AUTO_INCREMENT,
   permission VARCHAR(30) NOT NULL,
-  uploaded_on DATE NOT NULL,
+  uploaded_on DATETIME NOT NULL,
   file_type VARCHAR(30) NOT NULL,
   uploaded_by_uid INT NOT NULL,
   file_location VARCHAR(255) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE Files
 CREATE TABLE Comment
 (
   comment_id INT NOT NULL AUTO_INCREMENT,
-  posted_on DATE NOT NULL,
+  posted_on DATETIME NOT NULL,
   posted_by_uid INT NOT NULL,
   content VARCHAR(1024) NOT NULL,
   discussion_id INT NOT NULL,
@@ -131,6 +131,7 @@ CREATE TABLE User
   username VARCHAR(30) NOT NULL,
   password VARCHAR(30) NOT NULL,
   email VARCHAR(30) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   is_first_login TINYINT NOT NULL,
   role_id INT NOT NULL,
   PRIMARY KEY (user_id),
