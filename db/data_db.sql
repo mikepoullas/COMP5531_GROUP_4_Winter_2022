@@ -69,11 +69,10 @@ SELECT * from announcement;
 SELECT * from user_course as uc
 JOIN course as c ON uc.course_id = c.course_id
 JOIN user as u ON uc.user_id = u.user_id
-JOIN student as s ON s.user_id = u.user_id
-WHERE u.role_id = 2;
+WHERE u.role_id = 4;
 
 SELECT * FROM user as u
-JOIN announcement as a ON u.user_id = a.posted_by_uid; 
+JOIN announcement as a ON u.user_id = a.posted_by_uid;
 
 DELETE from announcement
 WHERE announcement_id = 2200000;
