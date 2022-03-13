@@ -52,7 +52,7 @@ CREATE TABLE Announcement
   announcement_id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   posted_by_uid INT NOT NULL,
-  posted_on DATETIME NOT NULL,
+  posted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   content VARCHAR(1024) NOT NULL,
   section_id INT NOT NULL,
   PRIMARY KEY (announcement_id),
@@ -73,7 +73,7 @@ CREATE TABLE Discussion
   discussion_id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) NOT NULL,
   content VARCHAR(1024) NOT NULL,
-  posted_on DATETIME NOT NULL,
+  posted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   posted_by_uid INT NOT NULL,
   group_id INT NOT NULL,
   PRIMARY KEY (discussion_id),
@@ -84,7 +84,7 @@ CREATE TABLE Files
 (
   file_id INT NOT NULL AUTO_INCREMENT,
   permission VARCHAR(30) NOT NULL,
-  uploaded_on DATETIME NOT NULL,
+  uploaded_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   file_type VARCHAR(30) NOT NULL,
   uploaded_by_uid INT NOT NULL,
   file_location VARCHAR(255) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE Files
 CREATE TABLE Comment
 (
   comment_id INT NOT NULL AUTO_INCREMENT,
-  posted_on DATETIME NOT NULL,
+  posted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   posted_by_uid INT NOT NULL,
   content VARCHAR(1024) NOT NULL,
   discussion_id INT NOT NULL,
@@ -122,16 +122,16 @@ CREATE TABLE Group_project
   FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
 );
 
-CREATE TABLE User
+CREATE TABLE Users
 (
   user_id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   dob DATE NOT NULL,
+  email VARCHAR(30) NOT NULL,
   username VARCHAR(30) NOT NULL,
   password VARCHAR(30) NOT NULL,
-  email VARCHAR(30) NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   is_first_login TINYINT NOT NULL,
   role_id INT NOT NULL,
   PRIMARY KEY (user_id),
@@ -145,7 +145,7 @@ CREATE TABLE Student
   student_id INT NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
   PRIMARY KEY (student_id),
-  FOREIGN KEY (user_id) REFERENCES User(user_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE Professor
@@ -153,7 +153,7 @@ CREATE TABLE Professor
   professor_id INT NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
   PRIMARY KEY (professor_id),
-  FOREIGN KEY (user_id) REFERENCES User(user_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE TA
@@ -161,7 +161,7 @@ CREATE TABLE TA
   ta_id INT NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
   PRIMARY KEY (ta_id),
-  FOREIGN KEY (user_id) REFERENCES User(user_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE member_of_group
@@ -177,7 +177,7 @@ CREATE TABLE User_Course
 (
   user_id INT NOT NULL,
   course_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES User(user_id),
+  FOREIGN KEY (user_id) REFERENCES Users(user_id),
   FOREIGN KEY (course_id) REFERENCES Course(course_id),
   UNIQUE (user_id, course_id)
 );

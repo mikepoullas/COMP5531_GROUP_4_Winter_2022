@@ -3,11 +3,11 @@ INSERT INTO roles (role_name, role_description) VALUES("Student", "Course Studen
 INSERT INTO roles (role_name, role_description) VALUES("TA", "Course Assistant");
 INSERT INTO roles (role_name, role_description) VALUES("Professor", "Course Instructor");
 
-INSERT INTO user VALUES(10000, "Admin", "CGA","1980-01-01", "admin", "admin","admin@cga.com", CURRENT_TIMESTAMP, 1, 1);
-INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("John", "Doe","1990-01-01", "john123", "password","john@doe.com", CURRENT_TIMESTAMP,1, 2);
-INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("Yogesh", "Homeboi","1980-01-01", "yogesh123", "password","yogesh@homeboi.com", CURRENT_TIMESTAMP, 1, 3);
-INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("Lord", "Desai","1900-01-01", "desai123", "password","lord@desai.com", CURRENT_TIMESTAMP, 1, 4);
-INSERT INTO user (first_name, last_name, dob, username, password, email, created_at, is_first_login, role_id) VALUES("Mike", "Poullas","1966-03-04", "mikep", "password","mikepoullas@yahoo.com", CURRENT_TIMESTAMP, 1, 2);
+INSERT INTO users VALUES(10000, "Admin", "CGA","1980-01-01", "admin", "admin","admin@cga.com", CURRENT_TIMESTAMP, 1, 1);
+INSERT INTO users (first_name, last_name, dob, username, password, email, created_on, is_first_login, role_id) VALUES("John", "Doe","1990-01-01", "john123", "password","john@doe.com", CURRENT_TIMESTAMP,1, 2);
+INSERT INTO users (first_name, last_name, dob, username, password, email, created_on, is_first_login, role_id) VALUES("Yogesh", "Homeboi","1980-01-01", "yogesh123", "password","yogesh@homeboi.com", CURRENT_TIMESTAMP, 1, 3);
+INSERT INTO users (first_name, last_name, dob, username, password, email, created_on, is_first_login, role_id) VALUES("Lord", "Desai","1900-01-01", "desai123", "password","lord@desai.com", CURRENT_TIMESTAMP, 1, 4);
+INSERT INTO users (first_name, last_name, dob, username, password, email, created_on, is_first_login, role_id) VALUES("Mike", "Poullas","1966-03-04", "mikep", "password","mikepoullas@yahoo.com", CURRENT_TIMESTAMP, 1, 2);
 
 INSERT INTO course VALUES(50000, "Files and DB", 5531);
 INSERT INTO course (course_name, course_number) VALUES("Tools and Techniques", 5541);
@@ -55,7 +55,7 @@ INSERT INTO course_section (section_name, course_id) VALUES("BB", 50001);
 INSERT INTO announcement (announcement_id, title, posted_by_uid, posted_on, content, section_id) VALUES(2200000, "Project Due!!", 10003, "2022-03-11", "Must submit project on time!", 60000);
 
 SELECT * from roles;
-SELECT * from user;
+SELECT * from users;
 SELECT * from course;
 SELECT * from student;
 SELECT * from ta;
@@ -68,10 +68,10 @@ SELECT * from announcement;
 
 SELECT * from user_course as uc
 JOIN course as c ON uc.course_id = c.course_id
-JOIN user as u ON uc.user_id = u.user_id
+JOIN users as u ON uc.user_id = u.user_id
 WHERE u.role_id = 4;
 
-SELECT * FROM user as u
+SELECT * FROM users as u
 JOIN announcement as a ON u.user_id = a.posted_by_uid;
 
 DELETE from announcement
