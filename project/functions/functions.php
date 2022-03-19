@@ -48,10 +48,25 @@ function get_role_array()
 }
 
 // return record from table using key-value
-function get_record($table, $key, $value)
+function get_records($table, $key, $value)
 {
     global $conn;
     $query = "SELECT * FROM $table WHERE $key='$value'";
     $result = mysqli_query($conn, $query);
     return $result;
 }
+
+// return column names from table
+function get_column_names($table)
+{
+    global $conn;
+    $query = "SHOW COLUMNS FROM $table"; // WHERE Field = $var
+    $result = mysqli_query($conn, $query);
+    return $result;
+}
+
+// $results_head = get_column_names('users');
+// while ($column = mysqli_fetch_assoc($results_head)) {
+//     $col_name = $column['Field'];
+//     echo '<th>' . $col_name . '</th>';
+// }

@@ -84,13 +84,13 @@ if (isset($_POST['register_user'])) {
 
 <div class="form-container">
 
-
     <form class="form-body" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
         <?php echo display_success(); ?>
         <?php echo display_error(); ?>
 
         <div class="form-input">
+            <p><b>Registration</b></p>
             <label>First Name</label>
             <span><input type="text" name="firstname"></span>
         </div>

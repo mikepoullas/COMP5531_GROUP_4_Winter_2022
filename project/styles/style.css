@@ -1,6 +1,6 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -62,20 +62,19 @@ nav li a {
 
 /**********************************************/
 
-section {
-    text-align: center;
-}
-
 .main-body {
     display: grid;
+}
+
+section {
+    text-align: center;
 }
 
 /**********************************************/
 
 .col-left {
     background-color: #33cccc;
-    height: 100vh;
-    padding: 1em;
+    padding: 1em 0;
 }
 
 .user-info {
@@ -86,13 +85,9 @@ section {
     padding: 0.3em 0;
 }
 
-/**********************************************/
-
 hr {
     border: 1px solid black;
 }
-
-/**********************************************/
 
 .main-menu {
     padding-top: 1em;
@@ -122,14 +117,18 @@ hr {
 }
 
 /**********************************************/
+.col-right {
+    height: 83.5vh;
+    overflow-y: scroll;
+}
 
 .col-right p {
     padding: 1em 0;
-    text-align: left;
 }
 
 .content-body {
     padding: 0 1em;
+    text-align: left;
 }
 
 table,
@@ -139,6 +138,13 @@ td {
     border-collapse: collapse;
     text-align: left;
     padding: 0.5em;
+}
+
+
+button {
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    margin: 1em 0;
 }
 
 /**********************************************/
@@ -180,6 +186,17 @@ select {
 
 /**********************************************/
 
+section .form-container {
+    margin: 0 0;
+}
+
+section .form-body {
+    text-align: left;
+    padding: 0 1em;
+}
+
+/**********************************************/
+
 .role-body {
     padding: 2em;
 }
@@ -203,7 +220,7 @@ select {
     background: #f2dede;
     border: 1px solid #a94442;
     border-radius: 5px;
-    margin: 1em 0;
+    margin-top: 1em;
 }
 
 .success {
@@ -211,22 +228,14 @@ select {
     background: #dff0d8;
     border: 1px solid #3c763d;
     border-radius: 5px;
-    margin: 1em 0;
+    margin-top: 1em;
 }
 
+/**********************************************/
 
-
-
-
-
-
-
-
-
-
-
-
-
+footer p {
+    background-color: #ffc0cb;
+}
 
 /**********************************************/
 

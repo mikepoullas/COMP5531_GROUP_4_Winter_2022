@@ -74,3 +74,5 @@ INSERT INTO announcement (announcement_id, title, posted_by_uid, posted_on, cont
 
 -- DELETE from course_section
 -- WHERE section_id = 60000;
+
+-- SHOW COLUMNS FROM users WHERE field = 'user_id';

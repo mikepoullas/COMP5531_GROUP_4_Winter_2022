@@ -1,5 +1,5 @@
 <?php
-
+// Initialize the session
 session_start();
 
 require_once('../configs/db.php');
@@ -17,10 +17,10 @@ if (isset($_POST['recover_password'])) {
 
     if (count($errors) == 0) {
 
-        $username = mysqli_fetch_assoc(get_record('users', 'email', $email))['username'];
-        $password = mysqli_fetch_assoc(get_record('users', 'email', $email))['password'];
+        $username = mysqli_fetch_assoc(get_records('users', 'email', $email))['username'];
+        $password = mysqli_fetch_assoc(get_records('users', 'email', $email))['password'];
 
-        if (mysqli_num_rows(get_record('users', 'email', $email)) == 1) {
+        if (mysqli_num_rows(get_records('users', 'email', $email)) == 1) {
 
             $to = $email;
             $subject = "Your Recovered Password";
