@@ -42,8 +42,8 @@ $results_body = mysqli_query($conn, $query_body);
                     <td><?php echo $username ?></td>
                     <td><?php echo $created_on ?></td>
                     <td><?php echo $role_name ?></td>
-                    <td><a href="edit.php?GetId=<?php echo $id ?>">Edit</a></td>
-                    <td><a href="delete.php?del=<?php echo $id ?>">Delete</a></td>
+                    <td><a href="?page=update&update=<?= $user_id ?>">Update</a></td>
+                    <td><a href="?page=delete&delete=<?= $user_id ?>">Delete</a></td>
                 </tr>
             <?php
             }
@@ -51,6 +51,8 @@ $results_body = mysqli_query($conn, $query_body);
         </tbody>
     </table>
 
-    <button type="submit">Add User</button>
+    <a href="?page=register">
+        <button>Add User</button>
+    </a>
 
 </div>

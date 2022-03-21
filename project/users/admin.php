@@ -3,35 +3,53 @@
 <main>
 
     <div class="main-body">
-        <section class="col-left">
-            <div class="user-info">
-                <p>Role: <?= $_SESSION['role_name'] ?></p>
-            </div>
-            <hr>
-            <div class="main-menu">
-                <h3>Manage</h3>
-                <ul class="menu-list">
-                    <li><a href="#">Users</a></li>
-                    <li><a href="#">Professors</a></li>
-                    <li><a href="#">Teaching Assistants</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Courses</a></li>
-                    <li><a href="#">Sections</a></li>
-                    <li><a href="#">Groups</a></li>
-                    <li><a href="#">Announcements</a></li>
-                    <li><a href="#">Discussions</a></li>
-                    <li><a href="#">Comments</a></li>
-                    <li><a href="#">Files</a></li>
-                </ul>
+        <section>
+            <div class="col-left">
+                <div class="user-info">
+                    <p>Role: <?= $_SESSION['role_name'] ?></p>
+                </div>
+                <hr>
+                <div class="main-menu">
+                    <h3>Manage</h3>
+                    <ul class="menu-list">
+                        <li><a href="?page=users">Users</a></li>
+                        <li><a href="?page=roles">Roles</a></li>
+                        <li><a href="?page=professors">Professors</a></li>
+                        <li><a href="?page=tas">Teaching Assistants</a></li>
+                        <li><a href="?page=students">Students</a></li>
+                        <li><a href="?page=courses">Courses</a></li>
+                        <li><a href="?page=sections">Sections</a></li>
+                        <li><a href="?page=groups">Groups</a></li>
+                        <li><a href="?page=announcements">Announcements</a></li>
+                        <li><a href="?page=discussions">Discussions</a></li>
+                        <li><a href="?page=comments">Comments</a></li>
+                        <li><a href="?page=files">Files</a></li>
+                    </ul>
+                </div>
             </div>
         </section>
 
-        <section class="col-right">
+        <section>
+            <div class="col-right">
 
-            <?php include("../includes/register.php") ?>
-            <hr>
-            <?php include("../includes/users.php") ?>
+                <?php
 
+                if (isset($_GET['page'])) {
+
+                    $page = $_GET['page'];
+                    include("../includes/" . $page . ".php");
+                } else {
+                    include("../includes/home.php");
+                }
+
+                // echo "<pre>";
+                // print_r($_GET);
+                // print_r($_POST);
+                // echo "</pre>";
+
+                ?>
+
+            </div>
         </section>
     </div>
 

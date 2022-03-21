@@ -65,8 +65,35 @@ function get_column_names($table)
     return $result;
 }
 
-// $results_head = get_column_names('users');
-// while ($column = mysqli_fetch_assoc($results_head)) {
-//     $col_name = $column['Field'];
-//     echo '<th>' . $col_name . '</th>';
-// }
+/*
+$results_head = get_column_names('users');
+while ($column = mysqli_fetch_assoc($results_head)) {
+    $col_name = $column['Field'];
+    echo '<th>' . $col_name . '</th>';
+}
+*/
+
+
+//get page
+function get_page($dir, $filename, $default = false)
+{
+    $root = "../";
+    $path = $root . $dir;
+
+    if (is_dir($path)) {
+        if (file_exists($path . '/' . $filename . '.php')) {
+            include($path . '/' . $filename . '.php');
+            return true;
+        }
+        if (file_exists($path . '/' . $filename . '.html')) {
+            include($path . '/' . $filename . '.html');
+            return true;
+        }
+        if ($default) {
+            if (file_exists($path . '/' . $default . '.php')) {
+                include($path . '/' . $filename . '.php');
+                return true;
+            }
+        }
+    }
+}

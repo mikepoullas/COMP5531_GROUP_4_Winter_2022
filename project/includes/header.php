@@ -2,6 +2,9 @@
 // Initialize the session
 session_start();
 
+include('../configs/db.php');
+include('../functions/functions.php');
+
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../auth/login.php");
@@ -20,7 +23,7 @@ $role_name = $_SESSION['role_name'];
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/style.css">
-    <title>Admin</title>
+    <title><?= $role_name ?></title>
 </head>
 
 <body>
@@ -31,8 +34,9 @@ $role_name = $_SESSION['role_name'];
             <nav>
                 <p>Welcome <b><?= $username ?></b></p>
                 <ul>
+                    <li><a href="?page=home">Home</a></li>
                     <li><a href="#">Change Email</a></li>
-                    <li><a href="#">Change Password</a></li>
+                    <li><a href="../auth/reset-password.php">Change Password</a></li>
                     <li><a href="../auth/logout.php">Logout</a></li>
                 </ul>
             </nav>

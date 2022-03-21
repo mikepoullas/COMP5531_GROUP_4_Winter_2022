@@ -43,7 +43,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <div class="role-list">
                     <a href="./users/admin.php">Admin</a>
                     <a href="./users/Professor.php">Professor</a>
-                    <a href="./users/ts.php">Teaching Assistant</a>
+                    <a href="./users/ta.php">Teaching Assistant</a>
                     <a href="./users/student.php">Student</a>
                 </div>
 

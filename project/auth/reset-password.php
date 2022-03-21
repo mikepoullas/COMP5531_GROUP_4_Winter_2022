@@ -32,7 +32,7 @@ if (isset($_POST['reset_password'])) {
         $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
     }
 
-    $password_db = mysqli_fetch_assoc(get_records('users', 'email', $email))['password'];
+    $password_db = mysqli_fetch_assoc(get_records('users', 'user_id', $user_id))['password'];
 
     // Check if new and confirm password match
     if ($password_new !== $password_confirm) {
