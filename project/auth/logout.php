@@ -6,6 +6,7 @@ session_start();
 $_SESSION = array();
 $_REQUEST = array();
 
+
 // Destroy the session.
 session_destroy();
 

@@ -20,7 +20,6 @@
                     <li><a href="#">Assignments</a></li>
                     <li><a href="#">Projects</a></li>
                     <li><a href="#">Discussions</a></li>
-
                 </ul>
             </div>
         </section>
@@ -53,11 +52,9 @@
                     </tbody>
                 </table>
             </div>
-
         </section>
     </div>
-
-
+  
 </main>
 
 <?php include("../includes/footer.php"); ?>

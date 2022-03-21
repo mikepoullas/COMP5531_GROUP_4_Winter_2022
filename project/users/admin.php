@@ -41,12 +41,10 @@
                 } else {
                     include("../includes/home.php");
                 }
-
                 // echo "<pre>";
                 // print_r($_GET);
                 // print_r($_POST);
                 // echo "</pre>";
-
                 ?>
 
             </div>

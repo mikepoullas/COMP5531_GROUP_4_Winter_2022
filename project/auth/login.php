@@ -1,4 +1,5 @@
 <?php
+
 // Initialize the session
 session_start();
 
@@ -37,6 +38,7 @@ if (isset($_POST['login_user'])) {
             $row = mysqli_fetch_assoc($result);
 
             $first_login = $row['first_login'];
+
             $_SESSION['first_login'] = $first_login;
 
             $user_id = $row['user_id'];

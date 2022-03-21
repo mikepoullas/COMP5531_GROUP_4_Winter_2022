@@ -76,6 +76,7 @@ section {
     background-color: #33cccc;
     padding: 1em 0;
     height: 83.5vh;
+
 }
 
 .user-info {
@@ -141,7 +142,6 @@ td {
     text-align: left;
     padding: 0.5em;
 }
-
 
 button {
     padding: 0.5em 1em;
@@ -223,6 +223,7 @@ section .form-body {
     border: 1px solid #a94442;
     border-radius: 5px;
     margin-top: 1em;
+
 }
 
 .success {

@@ -7,6 +7,6 @@ Contributors:
 - Christopher Savov
 - Shafiq Imtiaz
 
-Code base is PHP 7 and MySql 5.6
+Code base is PHP 7.4 and MySql 8.0.22
 ---
 Concordia University, Winter 2022

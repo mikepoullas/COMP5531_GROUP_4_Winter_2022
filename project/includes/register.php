@@ -69,7 +69,6 @@ if (isset($_POST['register_user'])) {
         $query = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
                     VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', CURRENT_TIMESTAMP, 1, '$role');";
         mysqli_query($conn, $query);
-
         array_push($success, "Registration Suuccessful");
 
         // clear variables
@@ -83,7 +82,6 @@ if (isset($_POST['register_user'])) {
 
     <!-- <?php //echo htmlspecialchars($_SERVER["PHP_SELF"]); 
             ?> -->
-
     <form class="form-body" action="" method="post">
 
         <?php echo display_success(); ?>
