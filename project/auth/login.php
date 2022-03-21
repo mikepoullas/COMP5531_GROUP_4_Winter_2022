@@ -1,11 +1,12 @@
 <?php
 
+// Initialize the session
 session_start();
 
 require_once('../configs/db.php');
 include('../functions/functions.php');
 
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header("location: ../index.php");
     exit;
 }
@@ -31,19 +32,20 @@ if (isset($_POST['login_user'])) {
 
         if (mysqli_num_rows($result) == 1) {
 
-            $_SESSION["loggedin"] = true;
-            $_SESSION["username"] = $username;
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
 
             $row = mysqli_fetch_assoc($result);
 
             $first_login = $row['first_login'];
-            $_SESSION["first_login"] = $first_login;
+
+            $_SESSION['first_login'] = $first_login;
 
             $user_id = $row['user_id'];
-            $_SESSION["user_id"] = $user_id;
+            $_SESSION['user_id'] = $user_id;
 
             $role_id = $row['role_id'];
-            $_SESSION["role_id"] = $role_id;
+            $_SESSION['role_id'] = $role_id;
 
             $roles = mysqli_fetch_assoc(get_role_array());
             $role_name = $roles['role_name'];
@@ -86,7 +88,7 @@ if (isset($_POST['login_user'])) {
 
         <div class="form-container">
 
-            <form class="form-body" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <form class="form-body" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 
                 <?php echo display_error(); ?>
 

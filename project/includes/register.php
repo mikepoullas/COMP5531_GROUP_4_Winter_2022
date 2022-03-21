@@ -1,8 +1,5 @@
 <?php
 
-require_once('../configs/db.php');
-include('../functions/functions.php');
-
 // initializing variables
 $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
 
@@ -72,10 +69,9 @@ if (isset($_POST['register_user'])) {
         $query = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
                     VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', CURRENT_TIMESTAMP, 1, '$role');";
         mysqli_query($conn, $query);
-
         array_push($success, "Registration Suuccessful");
 
-        //clear variables
+        // clear variables
         $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
     }
 }
@@ -84,40 +80,42 @@ if (isset($_POST['register_user'])) {
 
 <div class="form-container">
 
-
-    <form class="form-body" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <!-- <?php //echo htmlspecialchars($_SERVER["PHP_SELF"]); 
+            ?> -->
+    <form class="form-body" action="" method="post">
 
         <?php echo display_success(); ?>
         <?php echo display_error(); ?>
 
         <div class="form-input">
+            <p><b>Registration</b></p>
             <label>First Name</label>
-            <span><input type="text" name="firstname"></span>
+            <span><input type="text" name="firstname" value=<?= $first_name ?>></span>
         </div>
 
         <div class="form-input">
             <label>Last Name</label>
-            <span> <input type="text" name="lastname"> </span>
+            <span> <input type="text" name="lastname" value=<?= $last_name ?>> </span>
         </div>
 
         <div class="form-input">
             <label>Date of Birth</label>
-            <span><input type="date" name="dob"></span>
+            <span><input type="date" name="dob" value=<?= $dob ?>> </span>
         </div>
 
         <div class="form-input">
             <label>Email</label>
-            <span><input type="email" name="email"></span>
+            <span><input type="email" name="email" value=<?= $email ?>> </span>
         </div>
 
         <div class="form-input">
             <label>Username</label>
-            <span><input type="text" name="username"></span>
+            <span><input type="text" name="username" value=<?= $username ?>></span>
         </div>
 
         <div class="form-input">
             <label>Password</label>
-            <span><input type="password" name="password_1"></span>
+            <span><input type="password" name="password_1"> </span>
         </div>
 
         <div class="form-input">
@@ -125,7 +123,6 @@ if (isset($_POST['register_user'])) {
             <span><input type="password" name="password_2"></span>
         </div>
 
-        <!-- TODO: fetch roles from roles tables -->
         <div class="form-input">
             <label for="roles">Choose a Role</label>
             <span>

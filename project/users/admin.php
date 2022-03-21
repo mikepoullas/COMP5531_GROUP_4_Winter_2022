@@ -1,81 +1,56 @@
-<?php
-// Initialize the session
-session_start();
+<?php include("../includes/header.php"); ?>
 
-// Check if the user is logged in, if not then redirect him to login page
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: ../auth/login.php");
-    exit;
-}
-?>
+<main>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/style.css">
-    <title>Admin</title>
-</head>
-
-<body>
-
-    <header>
-        <div class="title-bar">
-            <h1>Admin</h1>
-            <nav>
-                <p>Welcome <b><?= $_SESSION['username'] ?></b></p>
-                <ul>
-                    <li><a href="#">Change Email</a></li>
-                    <li><a href="#">Change Password</a></li>
-                    <li><a href="../auth/logout.php">Logout</a></li>
-                </ul>
-            </nav>
-        </div>
-
-    </header>
-
-    <main>
-
-        <div class="main-body">
-            <section class="col-left">
+    <div class="main-body">
+        <section>
+            <div class="col-left">
                 <div class="user-info">
                     <p>Role: <?= $_SESSION['role_name'] ?></p>
-                    <p>Course: N/A</p>
-                    <p>Section: N/A</p>
                 </div>
                 <hr>
                 <div class="main-menu">
                     <h3>Manage</h3>
                     <ul class="menu-list">
-                        <li><a href="#">Users</a></li>
-                        <li><a href="#">Professors</a></li>
-                        <li><a href="#">Teaching Assistants</a></li>
-                        <li><a href="#">Students</a></li>
-                        <li><a href="#">Courses</a></li>
-                        <li><a href="#">Sections</a></li>
-                        <li><a href="#">Groups</a></li>
-                        <li><a href="#">Announcements</a></li>
-                        <li><a href="#">Discussions</a></li>
-                        <li><a href="#">Comments</a></li>
-                        <li><a href="#">Files</a></li>
+                        <li><a href="?page=users">Users</a></li>
+                        <li><a href="?page=roles">Roles</a></li>
+                        <li><a href="?page=professors">Professors</a></li>
+                        <li><a href="?page=tas">Teaching Assistants</a></li>
+                        <li><a href="?page=students">Students</a></li>
+                        <li><a href="?page=courses">Courses</a></li>
+                        <li><a href="?page=sections">Sections</a></li>
+                        <li><a href="?page=groups">Groups</a></li>
+                        <li><a href="?page=announcements">Announcements</a></li>
+                        <li><a href="?page=discussions">Discussions</a></li>
+                        <li><a href="?page=comments">Comments</a></li>
+                        <li><a href="?page=files">Files</a></li>
                     </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="col-right">
+        <section>
+            <div class="col-right">
 
-                <?php include("../includes/register.php") ?>
-                <hr>
+                <?php
 
-            </section>
-        </div>
+                if (isset($_GET['page'])) {
 
+                    $page = $_GET['page'];
+                    include("../includes/" . $page . ".php");
+                } else {
+                    include("../includes/home.php");
+                }
+                // echo "<pre>";
+                // print_r($_GET);
+                // print_r($_POST);
+                // echo "</pre>";
+                ?>
 
-    </main>
+            </div>
+        </section>
+    </div>
 
-</body>
+</main>
 
-</html>
+<?php include("../includes/footer.php"); ?>
