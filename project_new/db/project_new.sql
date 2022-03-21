@@ -132,7 +132,7 @@ CREATE TABLE Users
   username VARCHAR(30) NOT NULL,
   password VARCHAR(30) NOT NULL,
   created_on DATETIME DEFAULT CURRENT_TIMESTAMP,
-  is_first_login TINYINT NOT NULL,
+  first_login TINYINT NOT NULL,
   role_id INT NOT NULL,
   PRIMARY KEY (user_id),
   FOREIGN KEY (role_id) REFERENCES Roles(role_id),
