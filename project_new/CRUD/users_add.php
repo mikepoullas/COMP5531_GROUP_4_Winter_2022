@@ -66,13 +66,19 @@ if (isset($_POST['register_user'])) {
         $password = $password_new;
         //$password = md5($password_1); //encrypt the password before saving in the database
 
-        $query = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
+        $user_add = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
                     VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', CURRENT_TIMESTAMP, 1, '$role');";
-        mysqli_query($conn, $query);
-        array_push($success, "Registration Suuccessful");
 
-        // clear variables
-        $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
+		if (mysqli_query($conn, $user_add)) {
+
+			array_push($success, "Registration Successful");
+
+			// clear variables
+			$first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
+			
+		} else {
+			array_push($errors, "Error registering user: ", mysqli_error($conn));
+		}		
     }
 }
 
