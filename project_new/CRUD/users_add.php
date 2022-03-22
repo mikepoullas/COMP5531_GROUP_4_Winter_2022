@@ -35,10 +35,10 @@ if (isset($_POST['register_user'])) {
     if (empty($username)) {
         array_push($errors, "Username is required");
     }
-    if (empty($password_1)) {
+    if (empty($password_new)) {
         array_push($errors, "Password is required");
     }
-    if ($password_1 !== $password_2) {
+    if ($password_new !== $password_confirm) {
         array_push($errors, "The two passwords do not match");
     }
     if (empty($role)) {
@@ -69,16 +69,15 @@ if (isset($_POST['register_user'])) {
         $user_add = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
                     VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', CURRENT_TIMESTAMP, 1, '$role');";
 
-		if (mysqli_query($conn, $user_add)) {
+        if (mysqli_query($conn, $user_add)) {
 
-			array_push($success, "Registration Successful");
+            array_push($success, "Registration Successful");
 
-			// clear variables
-			$first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
-			
-		} else {
-			array_push($errors, "Error registering user: ", mysqli_error($conn));
-		}		
+            // clear variables
+            $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
+        } else {
+            array_push($errors, "Error registering user: ", mysqli_error($conn));
+        }
     }
 }
 
