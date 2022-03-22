@@ -94,28 +94,33 @@ if (isset($_POST['update_user'])) {
 
         <div class="form-input">
             <p><b>Update</b></p>
+            <label>User ID</label>
+            <span><b><?= $id ?></b></span>
+        </div>
+
+       <div class="form-input">
             <label>First Name</label>
-            <span><input type="text" name="firstname" value=<?= $first_name ?>></span>
+            <span><input type="text" name="firstname" value='<?= $first_name ?>'></span>
         </div>
 
         <div class="form-input">
             <label>Last Name</label>
-            <span> <input type="text" name="lastname" value=<?= $last_name ?>> </span>
+            <span> <input type="text" name="lastname" value='<?= $last_name ?>'> </span>
         </div>
 
         <div class="form-input">
             <label>Date of Birth</label>
-            <span><input type="date" name="dob" value=<?= $dob ?>> </span>
+            <span><input type="date" name="dob" value='<?= $dob ?>'> </span>
         </div>
 
         <div class="form-input">
             <label>Email</label>
-            <span><input type="email" name="email" value=<?= $email ?>> </span>
+            <span><input type="email" name="email" value='<?= $email ?>'> </span>
         </div>
 
         <div class="form-input">
             <label>Username</label>
-            <span><input type="text" name="username" value=<?= $username ?>></span>
+            <span><input type="text" name="username" value='<?= $username ?>'></span>
         </div>
 
         <div class="form-input">
