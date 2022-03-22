@@ -10,7 +10,7 @@ while ($row = mysqli_fetch_assoc($results)) {
     $dob = $row['dob'];
     $email = $row['email'];
     $username = $row['username'];
-    $role_id = $row['role_id'];
+    $user_role_id = $row['role_id'];
 }
 
 if (isset($_POST['update_user'])) {
@@ -22,7 +22,7 @@ if (isset($_POST['update_user'])) {
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $role_name = mysqli_real_escape_string($conn, $_POST['role_name']);
+    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -48,34 +48,38 @@ if (isset($_POST['update_user'])) {
 
     // first check the database to make sure 
     // a user does not already exist with the same username and/or email
-    $query = "SELECT * FROM users WHERE username='$username' OR email='$email' LIMIT 1";
-    $results = mysqli_query($conn, $query);
-    $user = mysqli_fetch_assoc($results);
+    //$query = "SELECT * FROM users WHERE username='$username' OR email='$email' LIMIT 1";
+    //$results = mysqli_query($conn, $query);
+    //$user = mysqli_fetch_assoc($results);
 
-    if ($user) { // if user exists
-        if ($user['username'] === $username) {
-            array_push($errors, "Username already exists");
-        }
+    //if ($user) { // if user exists
+    //    if ($user['username'] === $username) {
+    //        array_push($errors, "Username already exists");
+    //    }
 
-        if ($user['email'] === $email) {
-            array_push($errors, "Email already exists");
-        }
-    }
+    //    if ($user['email'] === $email) {
+    //        array_push($errors, "Email already exists");
+    //    }
+    //}
 
-    $roles = get_role_array();
-    foreach ($roles as $role) {
-        if ($role['role_name'] == $role_name) {
-            $role_id = $role['role_id'];
-        }
-    }
+    //$roles = get_role_array();
+    //foreach ($roles as $role) {
+    //    if ($role['role_name'] == $role_name) {
+    //        $role_id = $role['role_id'];
+    //    }
+    //}
 
-
-    $query = "UPDATE users set first_name = '$first_name', last_name = '$last_name', dob = '$dob', email = '$email', username = '$username', role = '$role_id'
+    $user_update = "UPDATE users set first_name = '$first_name', last_name = '$last_name', dob = '$dob', email = '$email', username = '$username', role_id = '$role_id'
                 WHERE user_id ='$id'";
-    $result = mysqli_query($conn, $query);
-
-    array_push($success, "Update Suuccessful");
-}
+				
+    //$result = mysqli_query($conn, $query);
+	
+	if (mysqli_query($conn, $user_update)) {
+		array_push($success, "Update Successful");
+	} else {
+		array_push($errors, "Error updating record: ", mysqli_error($conn));
+	}
+ }
 
 ?>
 
@@ -117,13 +121,18 @@ if (isset($_POST['update_user'])) {
         <div class="form-input">
             <label for="roles">Choose a Role</label>
             <span>
-                <select id="roles" name="role">
+                <select id="roles" name="role_id">
                     <?php
                     $roles = get_role_array();
                     foreach ($roles as $role) {
                         $role_id = $role['role_id'];
                         $role_name = $role['role_name'];
-                        echo "<option name=role_name value='$role_id'>$role_name</option>";
+						if ($user_role_id == $role_id) {
+							echo "<option name=role_name value='$role_id' selected>$role_name</option>";
+						}
+						else {
+							echo "<option name=role_name value='$role_id'>$role_name</option>";
+						}
                     }
                     ?>
                 </select>
