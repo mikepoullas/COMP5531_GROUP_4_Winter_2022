@@ -75,7 +75,7 @@ section {
 .col-left {
     background-color: #33cccc;
     padding: 1em 0;
-    height: 83.5vh;
+    height: 100vh;
 
 }
 
@@ -179,6 +179,7 @@ select {
     display: block;
     overflow: hidden;
     padding: 0 1em;
+    text-align: left;
 }
 
 .form-submit input {
@@ -223,7 +224,7 @@ section .form-body {
     border: 1px solid #a94442;
     border-radius: 5px;
     margin-top: 1em;
-
+    padding: 0.5em;
 }
 
 .success {
@@ -232,12 +233,16 @@ section .form-body {
     border: 1px solid #3c763d;
     border-radius: 5px;
     margin-top: 1em;
+    padding: 0.5em;
 }
 
 /**********************************************/
 
 footer p {
     background-color: #ffc0cb;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
 }
 
 /**********************************************/

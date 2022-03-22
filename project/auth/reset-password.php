@@ -2,8 +2,8 @@
 
 session_start();
 
-require_once('../configs/db.php');
-include('../functions/functions.php');
+require_once('../configs/config.php');
+require_once('../helper/functions.php');
 
 $user_id = $_SESSION['user_id'];
 
@@ -18,21 +18,22 @@ if (isset($_POST['reset_password'])) {
         $password_old = mysqli_real_escape_string($conn, $_POST['password_old']);
     }
 
-    // Check if password_1 is empty
+    // Check if password_new is empty
     if (empty(trim($_POST["password_new"]))) {
         array_push($errors, "New Password is required!");
     } else {
         $password_new = mysqli_real_escape_string($conn, $_POST['password_new']);
     }
 
-    // Check if password_2 is empty
+    // Check if password_confirm is empty
     if (empty(trim($_POST["password_confirm"]))) {
         array_push($errors, "Confirmation Password is required!");
     } else {
         $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
     }
 
-    $password_db = mysqli_fetch_assoc(get_records('users', 'user_id', $user_id))['password'];
+    //using custom function :)
+    $password_db = mysqli_fetch_assoc(get_records_where('users', 'user_id', $user_id))['password'];
 
     // Check if new and confirm password match
     if ($password_new !== $password_confirm) {
@@ -48,10 +49,12 @@ if (isset($_POST['reset_password'])) {
         $query = "UPDATE users SET password='$password_new', first_login = 0 WHERE user_id='$user_id'";
         $results = mysqli_query($conn, $query);
 
-        header("location: ./index.php");
+        array_push($success, "Password reset successful");
+        header("../index.php");
         exit;
     } else {
-        array_push($errors, "Password reset failed");
+        array_push($errors, "Password reset failed: " . mysqli_error($conn));
+        exit;
     }
 
     mysqli_close($conn);
@@ -80,9 +83,10 @@ if (isset($_POST['reset_password'])) {
 
         <div class="form-container">
 
-            <form class="form-body" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <form class="form-body" action="" method="post">
 
                 <?php echo display_error(); ?>
+                <?php echo display_success(); ?>
 
                 <div class="form-input">
                     <label>Old Password</label>
@@ -110,11 +114,11 @@ if (isset($_POST['reset_password'])) {
                     <input type="submit" name="reset_password" value="Reset">
                 </div>
 
+                <a href="logout.php">Logout</a>
+
             </form>
         </div>
 
     </main>
 
-</body>
-
-</html>
+    <?php require("../includes/footer.php") ?>

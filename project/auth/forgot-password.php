@@ -2,8 +2,8 @@
 // Initialize the session
 session_start();
 
-require_once('../configs/db.php');
-include('../functions/functions.php');
+require_once('../configs/config.php');
+require_once('../helper/functions.php');
 
 $email = $password = "";
 
@@ -20,6 +20,7 @@ if (isset($_POST['recover_password'])) {
         $username = mysqli_fetch_assoc(get_records('users', 'email', $email))['username'];
         $password = mysqli_fetch_assoc(get_records('users', 'email', $email))['password'];
 
+        //DOESNOT WORK - need to setup local mail server
         if (mysqli_num_rows(get_records('users', 'email', $email)) == 1) {
 
             $to = $email;
@@ -36,7 +37,7 @@ if (isset($_POST['recover_password'])) {
             array_push($errors, "Email not in database");
         }
     } else {
-        array_push($errors, "Password recovery failed");
+        array_push($errors, "Password recovery failed " . mysqli_error($conn));
     }
 
     mysqli_close($conn);
@@ -88,6 +89,4 @@ if (isset($_POST['recover_password'])) {
 
     </main>
 
-</body>
-
-</html>
+    <?php require("../includes/footer.php") ?>

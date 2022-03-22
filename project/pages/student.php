@@ -1,4 +1,4 @@
-<?php include("../includes/header.php"); ?>
+<?php require("../includes/header.php"); ?>
 
 <main>
 
@@ -57,4 +57,4 @@
   
 </main>
 
-<?php include("../includes/footer.php"); ?>
+<?php require("../includes/footer.php"); ?>

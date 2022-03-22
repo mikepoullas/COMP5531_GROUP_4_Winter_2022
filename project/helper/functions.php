@@ -29,26 +29,17 @@ function display_success()
     }
 }
 
-// return user array from their username
-function get_user_array()
+// return table array
+function get_table_array($table)
 {
     global $conn;
-    $query = "SELECT * FROM users";
-    $result = mysqli_query($conn, $query);
-    return $result;
-}
-
-// return role array
-function get_role_array()
-{
-    global $conn;
-    $query = "SELECT * FROM roles";
+    $query = "SELECT * FROM $table";
     $result = mysqli_query($conn, $query);
     return $result;
 }
 
 // return record from table using key-value
-function get_records($table, $key, $value)
+function get_records_where($table, $key, $value)
 {
     global $conn;
     $query = "SELECT * FROM $table WHERE $key='$value'";

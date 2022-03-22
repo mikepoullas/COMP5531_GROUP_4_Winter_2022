@@ -1,10 +1,9 @@
 <?php
-
 // Initialize the session
 session_start();
 
-require_once('../configs/db.php');
-include('../functions/functions.php');
+require_once('../configs/config.php');
+require_once('../helper/functions.php');
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header("location: ../index.php");
@@ -47,7 +46,7 @@ if (isset($_POST['login_user'])) {
             $role_id = $row['role_id'];
             $_SESSION['role_id'] = $role_id;
 
-            $roles = mysqli_fetch_assoc(get_role_array());
+            $roles = mysqli_fetch_assoc(get_table_array('roles'));
             $role_name = $roles['role_name'];
             $_SESSION['role_name'] = $role_name;
 
@@ -81,7 +80,7 @@ if (isset($_POST['login_user'])) {
 <body>
 
     <header>
-        <h1>Login</h1>
+        <h1>Login to CGA</h1>
     </header>
 
     <main>
@@ -119,6 +118,4 @@ if (isset($_POST['login_user'])) {
 
     </main>
 
-</body>
-
-</html>
+    <?php require("../includes/footer.php") ?>

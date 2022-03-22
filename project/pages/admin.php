@@ -1,4 +1,4 @@
-<?php include("../includes/header.php"); ?>
+<?php require("../includes/header.php"); ?>
 
 <main>
 
@@ -14,9 +14,6 @@
                     <ul class="menu-list">
                         <li><a href="?page=users">Users</a></li>
                         <li><a href="?page=roles">Roles</a></li>
-                        <li><a href="?page=professors">Professors</a></li>
-                        <li><a href="?page=tas">Teaching Assistants</a></li>
-                        <li><a href="?page=students">Students</a></li>
                         <li><a href="?page=courses">Courses</a></li>
                         <li><a href="?page=sections">Sections</a></li>
                         <li><a href="?page=groups">Groups</a></li>
@@ -24,6 +21,13 @@
                         <li><a href="?page=discussions">Discussions</a></li>
                         <li><a href="?page=comments">Comments</a></li>
                         <li><a href="?page=files">Files</a></li>
+                    </ul>
+
+                    <h3>Assign</h3>
+                    <ul class="menu-list">
+                        <li><a href="?page=professors">Professors</a></li>
+                        <li><a href="?page=tas">Teaching Assistants</a></li>
+                        <li><a href="?page=students">Students</a></li>
                     </ul>
                 </div>
             </div>
@@ -37,14 +41,15 @@
                 if (isset($_GET['page'])) {
 
                     $page = $_GET['page'];
-                    include("../includes/" . $page . ".php");
+                    if (file_exists("../CRUD/" . $page . ".php")) {
+                        include("../CRUD/" . $page . ".php");
+                    }
+                    if (file_exists("../assigns/" . $page . ".php")) {
+                        include("../assigns/" . $page . ".php");
+                    }
                 } else {
                     include("../includes/home.php");
                 }
-                // echo "<pre>";
-                // print_r($_GET);
-                // print_r($_POST);
-                // echo "</pre>";
                 ?>
 
             </div>
@@ -53,4 +58,4 @@
 
 </main>
 
-<?php include("../includes/footer.php"); ?>
+<?php require("../includes/footer.php"); ?>

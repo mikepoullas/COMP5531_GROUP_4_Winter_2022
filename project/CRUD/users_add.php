@@ -6,15 +6,14 @@ $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2
 if (isset($_POST['register_user'])) {
 
     // REGISTER USER
-
     // receive all input values from the form
     $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
     $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password_1 = mysqli_real_escape_string($conn, $_POST['password_1']);
-    $password_2 = mysqli_real_escape_string($conn, $_POST['password_2']);
+    $password_new = mysqli_real_escape_string($conn, $_POST['password_new']);
+    $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
     $role = mysqli_real_escape_string($conn, $_POST['role']);
 
     // form validation: ensure that the form is correctly filled ...
@@ -35,10 +34,10 @@ if (isset($_POST['register_user'])) {
     if (empty($username)) {
         array_push($errors, "Username is required");
     }
-    if (empty($password_1)) {
+    if (empty($password_new)) {
         array_push($errors, "Password is required");
     }
-    if ($password_1 !== $password_2) {
+    if ($password_new !== $password_confirm) {
         array_push($errors, "The two passwords do not match");
     }
     if (empty($role)) {
@@ -47,8 +46,8 @@ if (isset($_POST['register_user'])) {
 
     // first check the database to make sure 
     // a user does not already exist with the same username and/or email
-    $user_check_query = "SELECT * FROM users WHERE username='$username' OR email='$email' LIMIT 1";
-    $results = mysqli_query($conn, $user_check_query);
+    $query = "SELECT * FROM users WHERE username='$username' OR email='$email' LIMIT 1";
+    $results = mysqli_query($conn, $query);
     $user = mysqli_fetch_assoc($results);
 
     if ($user) { // if user exists
@@ -63,16 +62,21 @@ if (isset($_POST['register_user'])) {
 
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
-        $password = $password_1;
+        $password = $password_new;
         //$password = md5($password_1); //encrypt the password before saving in the database
 
-        $query = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
+        $user_add = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
                     VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', CURRENT_TIMESTAMP, 1, '$role');";
-        mysqli_query($conn, $query);
-        array_push($success, "Registration Suuccessful");
 
-        // clear variables
-        $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
+        if (mysqli_query($conn, $user_add)) {
+
+            array_push($success, "Registration Successful");
+
+            // clear variables
+            $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
+        } else {
+            array_push($errors, "Error registering user: ", mysqli_error($conn));
+        }
     }
 }
 
@@ -115,12 +119,12 @@ if (isset($_POST['register_user'])) {
 
         <div class="form-input">
             <label>Password</label>
-            <span><input type="password" name="password_1"> </span>
+            <span><input type="password" name="password_new"> </span>
         </div>
 
         <div class="form-input">
             <label>Confirm password</label>
-            <span><input type="password" name="password_2"></span>
+            <span><input type="password" name="password_confirm"></span>
         </div>
 
         <div class="form-input">
@@ -128,7 +132,7 @@ if (isset($_POST['register_user'])) {
             <span>
                 <select id="roles" name="role">
                     <?php
-                    $roles = get_role_array();
+                    $roles = get_table_array('roles');
                     foreach ($roles as $role) {
                         $role_id = $role['role_id'];
                         $role_name = $role['role_name'];
@@ -141,7 +145,7 @@ if (isset($_POST['register_user'])) {
         </div>
 
         <div class="form-submit">
-            <input type="submit" name="register_user" value="Register">
+            <input type="submit" name="register_user" value="Add">
         </div>
     </form>
 </div>

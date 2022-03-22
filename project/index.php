@@ -7,6 +7,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ./auth/login.php");
     exit;
 }
+
+$role_name = $_SESSION['role_name'];
+$role_id = $_SESSION['role_id'];
+$username = $_SESSION['username'];
+
 ?>
 
 <!DOCTYPE html>
@@ -23,12 +28,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <body>
 
     <header>
-        <h1>Welcome</h1>
+        <h1>Welcome to CGA</h1>
         <nav>
-            <p>Logged in as <b>User</b></p>
+            <p>Logged in as <b></= $username ?></b></p>
             <ul>
-                <li><a href="#">Change Email</a></li>
-                <li><a href="#">Change Password</a></li>
+                <li><a href="./auth/reset-email.php">Reset Email</a></li>
+                <li><a href="./auth/reset-password.php">Reset Password</a></li>
                 <li><a href="./auth/logout.php">Logout</a></li>
             </ul>
         </nav>
@@ -41,10 +46,17 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <p>Select available role</p>
 
                 <div class="role-list">
-                    <a href="./users/admin.php">Admin</a>
-                    <a href="./users/Professor.php">Professor</a>
-                    <a href="./users/ta.php">Teaching Assistant</a>
-                    <a href="./users/student.php">Student</a>
+                    <?php
+                    if ($role_id == 1)
+                        echo '<a href="./pages/admin.php">Admin</a>';
+                    elseif ($role_id == 2) {
+                        echo '<a href="./pages/professor.php">Professor</a>';
+                    } elseif ($role_id == 3) {
+                        echo '<a href="./pages/ta.php">Teaching Assistant</a>';
+                    } elseif ($role_id == 4) {
+                        echo '<a href="./pages/student.php">Student</a>';
+                    }
+                    ?>
                 </div>
 
             </div>
@@ -52,6 +64,4 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     </main>
 
-</body>
-
-</html>
+    <?php require("./includes/footer.php") ?>

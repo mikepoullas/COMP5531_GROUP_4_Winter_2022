@@ -6,10 +6,10 @@ if (isset($_GET['delete'])) {
     $result = mysqli_query($conn, $query);
 
     if ($result) {
-        include("users.php");
+        include("CRUD/users.php");
     } else {
         echo 'Please check your Query';
     }
 } else {
-    include("users.php");
+    include("CRUD/users.php");
 }
