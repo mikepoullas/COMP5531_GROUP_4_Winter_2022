@@ -46,9 +46,12 @@ if (isset($_POST['login_user'])) {
             $role_id = $row['role_id'];
             $_SESSION['role_id'] = $role_id;
 
-            $roles = mysqli_fetch_assoc(get_table_array('roles'));
-            $role_name = $roles['role_name'];
-            $_SESSION['role_name'] = $role_name;
+            $roles = get_records_where('roles', 'role_id', $role_id);
+            foreach ($roles as $role) {
+                if ($role['role_id'] == $role_id) {
+                    $_SESSION['role_name'] = $role['role_name'];
+                }
+            }
 
             if ($first_login == 1) {
                 header("location: reset-password.php");

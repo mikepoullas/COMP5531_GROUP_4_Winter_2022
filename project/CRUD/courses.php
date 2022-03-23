@@ -87,7 +87,8 @@ $results = mysqli_query($conn, $query);
                 <th>Course ID</th>
                 <th>Course Name</th>
                 <th>Course Number</th>
-                <th colspan="2">Action</th>
+                <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
+
             </tr>
         </thead>
         <tbody>
@@ -101,8 +102,10 @@ $results = mysqli_query($conn, $query);
                     <td><?php echo $course_id ?></td>
                     <td><?php echo $course_name ?></td>
                     <td><?php echo $course_number ?></td>
-                    <td><a href="?page=courses&update_view=true&update_id=<?= $course_id ?>">Update</a></td>
-                    <td><a href="?page=courses&delete_view=true&delete_id=<?= $course_id ?>">Delete</a></td>
+                    <?php if (isAdmin()) {
+                        echo '<td><a href="?page=courses&update_view=true&update_id=' . $course_id . '">Update</a></td>';
+                        echo '<td><a href="?page=courses&delete_view=true&delete_id=' . $course_id . '">Delete</a></td>';
+                    } ?>
                 </tr>
             <?php
             }
