@@ -88,3 +88,18 @@ function get_page($dir, $filename, $default = false)
         }
     }
 }
+
+function isAdmin()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1) {
+        return true;
+    }
+    return false;
+}
+
+function pre_print($var)
+{
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+}

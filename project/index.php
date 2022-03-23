@@ -2,15 +2,20 @@
 // Initialize the session
 session_start();
 
+require_once('./configs/config.php');
+require_once('./helper/functions.php');
+
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ./auth/login.php");
     exit;
 }
 
-$role_name = $_SESSION['role_name'];
-$role_id = $_SESSION['role_id'];
 $username = $_SESSION['username'];
+$role_name = $_SESSION['role_name'];
+$user_id = $_SESSION['user_id'];
+$role_id = $_SESSION['role_id'];
+
 
 ?>
 
@@ -30,7 +35,7 @@ $username = $_SESSION['username'];
     <header>
         <h1>Welcome to CGA</h1>
         <nav>
-            <p>Logged in as <b></= $username ?></b></p>
+            <p>Logged in as <b><?= $username ?></b></p>
             <ul>
                 <li><a href="./auth/reset-email.php">Reset Email</a></li>
                 <li><a href="./auth/reset-password.php">Reset Password</a></li>
