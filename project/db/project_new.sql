@@ -27,6 +27,48 @@ CREATE TABLE Roles
   UNIQUE (role_name)
 );
 
+CREATE TABLE Users
+(
+  user_id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  dob DATE NOT NULL,
+  email VARCHAR(30) NOT NULL,
+  username VARCHAR(30) NOT NULL,
+  password VARCHAR(30) NOT NULL,
+  created_on DATETIME DEFAULT CURRENT_TIMESTAMP,
+  first_login TINYINT NOT NULL,
+  role_id INT NOT NULL,
+  PRIMARY KEY (user_id),
+  FOREIGN KEY (role_id) REFERENCES Roles(role_id),
+  UNIQUE (email),
+  UNIQUE (username)
+);
+
+CREATE TABLE Student
+(
+  student_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  PRIMARY KEY (student_id),
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Professor
+(
+  professor_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  PRIMARY KEY (professor_id),
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE TA
+(
+  ta_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  PRIMARY KEY (ta_id),
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
 CREATE TABLE Course
 (
   course_id INT NOT NULL AUTO_INCREMENT,
@@ -42,10 +84,8 @@ CREATE TABLE Course_Section
   section_id INT NOT NULL AUTO_INCREMENT,
   section_name VARCHAR(30) NOT NULL,
   course_id INT NOT NULL,
-  group_id INT NOT NULL,
   PRIMARY KEY (section_id),
   FOREIGN KEY (course_id) REFERENCES Course(course_id),
-  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id),
   UNIQUE (section_name)
 );
 
@@ -149,46 +189,4 @@ CREATE TABLE Comment
   discussion_id INT NOT NULL,
   PRIMARY KEY (comment_id),
   FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id)
-);
-
-CREATE TABLE Users
-(
-  user_id INT NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(30) NOT NULL,
-  last_name VARCHAR(30) NOT NULL,
-  dob DATE NOT NULL,
-  email VARCHAR(30) NOT NULL,
-  username VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL,
-  created_on DATETIME DEFAULT CURRENT_TIMESTAMP,
-  first_login TINYINT NOT NULL,
-  role_id INT NOT NULL,
-  PRIMARY KEY (user_id),
-  FOREIGN KEY (role_id) REFERENCES Roles(role_id),
-  UNIQUE (email),
-  UNIQUE (username)
-);
-
-CREATE TABLE Student
-(
-  student_id INT NOT NULL AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  PRIMARY KEY (student_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
-CREATE TABLE Professor
-(
-  professor_id INT NOT NULL AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  PRIMARY KEY (professor_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
-CREATE TABLE TA
-(
-  ta_id INT NOT NULL AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  PRIMARY KEY (ta_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
