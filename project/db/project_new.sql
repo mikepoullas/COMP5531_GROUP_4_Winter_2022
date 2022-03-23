@@ -42,8 +42,10 @@ CREATE TABLE Course_Section
   section_id INT NOT NULL AUTO_INCREMENT,
   section_name VARCHAR(30) NOT NULL,
   course_id INT NOT NULL,
+  group_id INT NOT NULL,
   PRIMARY KEY (section_id),
   FOREIGN KEY (course_id) REFERENCES Course(course_id),
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id),
   UNIQUE (section_name)
 );
 
@@ -66,6 +68,51 @@ CREATE TABLE Student_groups
   group_leader_sid INT,
   PRIMARY KEY (group_id),
   UNIQUE (group_name)
+);
+
+CREATE TABLE member_of_group
+(
+  student_id INT NOT NULL,
+  group_id INT NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES Student(student_id),
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id),
+  UNIQUE (group_id)
+);
+
+CREATE TABLE section_groups
+(
+  section_id INT NOT NULL,
+  group_id INT NOT NULL,
+  FOREIGN KEY (section_id) REFERENCES Course_Section(section_id),
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id),
+  UNIQUE (group_id)
+);
+
+CREATE TABLE User_Course
+(
+  user_id INT NOT NULL,
+  course_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES Users(user_id),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id),
+  UNIQUE (user_id, course_id)
+);
+
+CREATE TABLE Group_assignment
+(
+  group_asn_id INT NOT NULL AUTO_INCREMENT,
+  details VARCHAR(255) NOT NULL,
+  group_id INT NOT NULL,
+  PRIMARY KEY (group_asn_id),
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
+);
+
+CREATE TABLE Group_project
+(
+  group_proj_id INT NOT NULL AUTO_INCREMENT,
+  details VARCHAR(255) NOT NULL,
+  group_id INT NOT NULL,
+  PRIMARY KEY (group_proj_id),
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
 );
 
 CREATE TABLE Discussion
@@ -102,24 +149,6 @@ CREATE TABLE Comment
   discussion_id INT NOT NULL,
   PRIMARY KEY (comment_id),
   FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id)
-);
-
-CREATE TABLE Group_assignment
-(
-  group_asn_id INT NOT NULL AUTO_INCREMENT,
-  details VARCHAR(255) NOT NULL,
-  group_id INT NOT NULL,
-  PRIMARY KEY (group_asn_id),
-  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
-);
-
-CREATE TABLE Group_project
-(
-  group_proj_id INT NOT NULL AUTO_INCREMENT,
-  details VARCHAR(255) NOT NULL,
-  group_id INT NOT NULL,
-  PRIMARY KEY (group_proj_id),
-  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
 );
 
 CREATE TABLE Users
@@ -162,22 +191,4 @@ CREATE TABLE TA
   user_id INT NOT NULL,
   PRIMARY KEY (ta_id),
   FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
-CREATE TABLE member_of_group
-(
-  student_id INT NOT NULL,
-  group_id INT NOT NULL,
-  FOREIGN KEY (student_id) REFERENCES Student(student_id),
-  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id),
-  UNIQUE (student_id, group_id)
-);
-
-CREATE TABLE User_Course
-(
-  user_id INT NOT NULL,
-  course_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (course_id) REFERENCES Course(course_id),
-  UNIQUE (user_id, course_id)
 );

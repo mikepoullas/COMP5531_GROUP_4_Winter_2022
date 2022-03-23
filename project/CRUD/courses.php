@@ -1,9 +1,9 @@
 <?php
 
 // initializing variables
-$course_id = $course_name = $course_number = "";
+$id = $course_name = $course_number = "";
 
-// ADD COURSE
+// ADD
 if (isset($_POST['courses_add'])) {
 
     // receive all input values from the form
@@ -30,7 +30,7 @@ if (isset($_POST['courses_add'])) {
     }
 }
 
-// UPDATE COURSE
+// UPDATE
 if (isset($_POST['update_course'])) {
 
     $id = $_GET['update_id'];
@@ -48,7 +48,7 @@ if (isset($_POST['update_course'])) {
         array_push($errors, "Course Number is required");
     }
 
-    $update = "UPDATE course set course_name = '$course_name', course_number = '$course_number' WHERE course_id ='$id'";
+    $update = "UPDATE course set course_name = '$course_name', course_number = '$course_number' WHERE id$id ='$id'";
 
     if (mysqli_query($conn, $update)) {
         array_push($success, "Update Successful");
@@ -59,10 +59,10 @@ if (isset($_POST['update_course'])) {
     }
 }
 
-// Delete Course
+// DELETE
 if (isset($_GET['delete_id'])) {
     $id = $_GET['delete_id'];
-    $query = "DELETE FROM course WHERE course_id='$id'";
+    $query = "DELETE FROM course WHERE id$id='$id'";
     if (mysqli_query($conn, $query)) {
         array_push($success, "Delete successful");
     } else {
@@ -84,25 +84,31 @@ $results = mysqli_query($conn, $query);
     <table>
         <thead>
             <tr>
+                <?php isAdmin() ? print '<th>Course ID</th>' : ''; ?>
                 <th>Course ID</th>
                 <th>Course Name</th>
                 <th>Course Number</th>
-                <th colspan="2">Action</th>
+                <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
+
             </tr>
         </thead>
         <tbody>
             <?php
             while ($users = mysqli_fetch_assoc($results)) {
-                $course_id = $users['course_id'];
+                $id = $users['id$id'];
                 $course_name = $users['course_name'];
                 $course_number = $users['course_number'];
             ?>
                 <tr>
-                    <td><?php echo $course_id ?></td>
+                    <?php if (isAdmin()) {
+                        echo '<td>' . $id . '</td>';
+                    } ?>
                     <td><?php echo $course_name ?></td>
                     <td><?php echo $course_number ?></td>
-                    <td><a href="?page=courses&update_view=true&update_id=<?= $course_id ?>">Update</a></td>
-                    <td><a href="?page=courses&delete_view=true&delete_id=<?= $course_id ?>">Delete</a></td>
+                    <?php if (isAdmin()) {
+                        echo '<td><a href="?page=courses&update_view=true&update_id=' . $id . '">Update</a></td>';
+                        echo '<td><a href="?page=courses&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
+                    } ?>
                 </tr>
             <?php
             }
@@ -110,9 +116,11 @@ $results = mysqli_query($conn, $query);
         </tbody>
     </table>
 
-    <a href="?page=courses&add_view=true">
-        <button>Add Course</button>
-    </a>
+    <?php if (isAdmin()) { ?>
+        <a href="?page=courses&add_view=true">
+            <button>Add Course</button>
+        </a>
+    <?php } ?>
 
     <?php if (isset($_GET['add_view'])) { ?>
         <hr>
@@ -141,11 +149,11 @@ $results = mysqli_query($conn, $query);
 
         <?php
         $id = $_GET['update_id'];
-        $query = "SELECT * FROM course WHERE course_id='$id'";
+        $query = "SELECT * FROM course WHERE id$id='$id'";
         $results = mysqli_query($conn, $query);
 
         while ($row = mysqli_fetch_assoc($results)) {
-            $course_id = $row['course_id'];
+            $id = $row['id$id'];
             $course_name = $row['course_name'];
             $course_number = $row['course_number'];
         }
@@ -159,7 +167,7 @@ $results = mysqli_query($conn, $query);
                 <div class="form-input">
                     <p><b>Update Course</b></p>
                     <label>Course ID</label>
-                    <span><b><?= $course_id ?></b></span>
+                    <span><b><?= $id ?></b></span>
                 </div>
                 <div class="form-input">
                     <label>Course Name</label>

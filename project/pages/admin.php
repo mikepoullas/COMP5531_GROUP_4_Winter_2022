@@ -44,6 +44,9 @@
                     if (file_exists("../CRUD/" . $page . ".php")) {
                         include("../CRUD/" . $page . ".php");
                     }
+                    if (file_exists("../inlcudes/" . $page . ".php")) {
+                        include("../inlcudes/" . $page . ".php");
+                    }
                     if (file_exists("../assigns/" . $page . ".php")) {
                         include("../assigns/" . $page . ".php");
                     }

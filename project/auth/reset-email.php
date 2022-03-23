@@ -29,17 +29,14 @@ if (isset($_POST['reset_email'])) {
 
     if (count($errors) == 0) {
         $query = "UPDATE users SET email='$email_new' WHERE user_id='$user_id'";
-        $results = mysqli_query($conn, $query);
-
-        array_push($success, "Email reset successful");
-        header("../index.php");
-        exit;
+        if (mysqli_query($conn, $query)) {
+            array_push($success, "Email reset successful");
+        } else {
+            array_push($errors, "Email reset failed" . mysqli_error($conn));
+        }
     } else {
-        array_push($errors, "Email reset failed: " . mysqli_error($conn));
-        exit;
+        array_push($errors, "RESET ERROR" . mysqli_error($conn));
     }
-
-    mysqli_close($conn);
 }
 
 ?>
@@ -85,10 +82,15 @@ if (isset($_POST['reset_email'])) {
                 <div class="form-submit">
                     <input type="submit" name="reset_email" value="Reset">
                 </div>
-
-                <a href="./logout.php">Logout</a>
+                <br>
+                <span>
+                    <a href="../index.php">Welcome</a>
+                </span>
 
             </form>
+
+
+
         </div>
 
     </main>

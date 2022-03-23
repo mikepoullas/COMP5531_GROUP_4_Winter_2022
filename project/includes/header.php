@@ -13,6 +13,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 $username = $_SESSION['username'];
 $role_name = $_SESSION['role_name'];
+$user_id = $_SESSION['user_id'];
+$role_id = $_SESSION['role_id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@ $role_name = $_SESSION['role_name'];
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/style.css">
-    <title><?= $role_name ?></title>
+    <title>CGA</title>
 </head>
 
 <body>
@@ -34,7 +37,7 @@ $role_name = $_SESSION['role_name'];
             <nav>
                 <p>Welcome <b><?= $username ?></b></p>
                 <ul>
-                    <li><a href="../includes/home.php">Home</a></li>
+                    <li><a href="?page=home">Home</a></li>
                     <li><a href="../auth/reset-email.php">Reset Email</a></li>
                     <li><a href="../auth/reset-password.php">Reset Password</a></li>
                     <li><a href="../auth/logout.php">Logout</a></li>
