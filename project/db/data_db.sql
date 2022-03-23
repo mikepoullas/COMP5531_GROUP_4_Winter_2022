@@ -87,3 +87,47 @@ INSERT INTO announcement (announcement_id, title, posted_by_uid, posted_on, cont
 -- WHERE section_id = 60000;
 
 -- SHOW COLUMNS FROM users WHERE field = 'user_id';
+
+-- All USER
+-- SELECT * FROM users as u
+-- JOIN user_course as uc
+-- ON u.user_id = uc. user_id
+-- JOIN course as c
+-- ON uc.course_id = c.course_id
+-- JOIN course_section as cs
+-- ON c.course_id = cs.course_id;
+
+-- STUDENT
+-- SELECT * FROM users as u
+-- JOIN student as s
+-- ON s.user_id = u.user_id
+-- JOIN member_of_group as mg
+-- ON s.student_id = mg.student_id
+-- JOIN student_groups as g
+-- ON g.group_id = mg.group_id
+-- JOIN section_groups as sg
+-- ON sg.group_id = g.group_id
+-- JOIN course_section as cs
+-- ON cs.section_id = sg.section_id;
+
+-- PROFESSOR
+-- SELECT * FROM users as u
+-- JOIN professor as p
+-- ON p.user_id = u.user_id
+-- JOIN user_course as uc
+-- ON u.user_id = uc. user_id
+-- JOIN course as c
+-- ON uc.course_id = c.course_id
+-- JOIN course_section as cs
+-- ON c.course_id = cs.course_id;
+
+-- TA
+-- SELECT * FROM users as u
+-- JOIN ta as t
+-- ON t.user_id = u.user_id
+-- JOIN user_course as uc
+-- ON u.user_id = uc. user_id
+-- JOIN course as c
+-- ON uc.course_id = c.course_id
+-- JOIN course_section as cs
+-- ON c.course_id = cs.course_id;
