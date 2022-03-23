@@ -28,6 +28,14 @@ INSERT INTO professor (professor_id, user_id) VALUES(40000, 10001);
 INSERT INTO user_course (user_id, course_id) VALUES(10003, 50000);
 INSERT INTO user_course (user_id, course_id) VALUES(10003, 50001);
 INSERT INTO user_course (user_id, course_id) VALUES(10003, 50002);
+INSERT INTO user_course (user_id, course_id) VALUES(10004, 50002);
+INSERT INTO user_course (user_id, course_id) VALUES(10004, 50003);
+
+-- Course Section Table
+INSERT INTO course_section (section_id, section_name, course_id) VALUES(60000, "AA", 50000);
+INSERT INTO course_section (section_name, course_id) VALUES("BB", 50001);
+INSERT INTO course_section (section_name, course_id) VALUES("CC", 50002);
+INSERT INTO course_section (section_name, course_id) VALUES("DD", 50003);
 
 -- TA's assigned to courses
 INSERT INTO user_course (user_id, course_id) VALUES(10002, 50000);
@@ -43,14 +51,11 @@ INSERT INTO student_groups (group_name, group_leader_sid) VALUES("Group_2", 0);
 
 -- Assign Student to Group  
 INSERT INTO member_of_group (student_id, group_id) VALUES(20000, 70000);
-
--- Course Section Table
-INSERT INTO course_section (section_id, section_name, course_id) VALUES(60000, "AA", 50000);
-INSERT INTO course_section (section_name, course_id) VALUES("BB", 50001);
+INSERT INTO member_of_group (student_id, group_id) VALUES(20001, 70001);
 
 -- Assign Groups to Section
 INSERT INTO section_groups (section_id, group_id) VALUES(60000, 70000);
-INSERT INTO section_groups (section_id, group_id) VALUES(60000, 70002);
+INSERT INTO section_groups (section_id, group_id) VALUES(60000, 70001);
 
 -- Course Anncoucement Table
 INSERT INTO announcement (announcement_id, title, posted_by_uid, posted_on, content, section_id) VALUES(2200000, "Project Due!!", 10003, "2022-03-11", "Must submit project on time!", 60000);
