@@ -92,7 +92,7 @@ if (isset($_GET['delete_id'])) {
             <?php
             while ($row = mysqli_fetch_assoc($results)) {
                 $id = $row['role_id'];
-                $course_name = $row['role_name'];
+                $role_name = $row['role_name'];
             ?>
                 <tr>
                     <?php if (isAdmin()) {
