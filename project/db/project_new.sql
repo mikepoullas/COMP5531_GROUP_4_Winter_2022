@@ -98,7 +98,7 @@ CREATE TABLE Announcement
   content VARCHAR(1024) NOT NULL,
   section_id INT NOT NULL,
   PRIMARY KEY (announcement_id),
-  FOREIGN KEY (section_id) REFERENCES Course_Section(section_id)
+  FOREIGN KEY (section_id) REFERENCES Course_Section(section_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Student_groups
@@ -164,7 +164,7 @@ CREATE TABLE Discussion
   posted_by_uid INT NOT NULL,
   group_id INT NOT NULL,
   PRIMARY KEY (discussion_id),
-  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id)
+  FOREIGN KEY (group_id) REFERENCES Student_groups(group_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Files
@@ -177,7 +177,7 @@ CREATE TABLE Files
   file_location VARCHAR(255) NOT NULL,
   discussion_id INT NOT NULL,
   PRIMARY KEY (file_id),
-  FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id)
+  FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Comment
@@ -188,5 +188,5 @@ CREATE TABLE Comment
   content VARCHAR(1024) NOT NULL,
   discussion_id INT NOT NULL,
   PRIMARY KEY (comment_id),
-  FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id)
+  FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id) ON DELETE CASCADE
 );
