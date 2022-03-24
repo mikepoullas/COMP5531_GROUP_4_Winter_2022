@@ -58,32 +58,6 @@ INSERT INTO section_groups (section_id, group_id) VALUES(60000, 70000);
 INSERT INTO section_groups (section_id, group_id) VALUES(60000, 70001);
 
 -- Course Anncoucement Table
-INSERT INTO announcement (announcement_id, title, posted_by_uid, posted_on, content, section_id) VALUES(2200000, "Project Due!!", 10003, "2022-03-11", "Must submit project on time!", 60000);
-
--- SELECT * from roles;
--- SELECT * from users;
--- SELECT * from course;
--- SELECT * from student;
--- SELECT * from ta;
--- SELECT * from professor;
--- SELECT * from user_course;
--- SELECT * from student_groups;
--- SELECT * from member_of_group;
--- SELECT * from course_section;
--- SELECT * from announcement;
-
--- SELECT * from user_course as uc
--- JOIN course as c ON uc.course_id = c.course_id
--- JOIN users as u ON uc.user_id = u.user_id
--- WHERE u.role_id = 4;
-
--- SELECT * FROM users as u
--- JOIN announcement as a ON u.user_id = a.posted_by_uid;
-
--- DELETE from announcement
--- WHERE announcement_id = 2200000;
-
--- DELETE from course_section
--- WHERE section_id = 60000;
-
--- SHOW COLUMNS FROM users WHERE field = 'user_id';
+INSERT INTO announcement (announcement_id, title, posted_by_uid, posted_on, content, section_id) VALUES(2200000, "Project Due 1!!", 10001, "2022-03-11", "Must submit project on time!", 60000);
+INSERT INTO announcement (title, posted_by_uid, posted_on, content, section_id) VALUES("Project Due 2!!", 10001, "2022-03-11", "Must submit project on time!", 60001);
+INSERT INTO announcement (title, posted_by_uid, posted_on, content, section_id) VALUES("Project Due 3!!", 10001, "2022-03-11", "Must submit project on time!", 60003);
