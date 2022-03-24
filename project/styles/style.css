@@ -75,8 +75,7 @@ section {
 .col-left {
     background-color: #33cccc;
     padding: 1em 0;
-    height: 100vh;
-
+    height: 84vh;
 }
 
 .user-info {
@@ -123,6 +122,7 @@ hr {
     overflow-y: scroll;
     text-align: left;
     padding: 1em;
+    height: 84vh;
 }
 
 .col-right p {
