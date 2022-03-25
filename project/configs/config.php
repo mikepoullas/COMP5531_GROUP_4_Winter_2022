@@ -3,7 +3,7 @@
 //Database params
 define('DB_HOST', 'localhost:3306');  //Add your db host
 define('DB_USER', 'root'); // Add your DB root
-define('DB_PASS', ''); //Add your 
+define('DB_PASS', 'admin'); //Add your 
 define('DB_NAME', 'cga'); //Add your DB Name
 
 //APPROOT

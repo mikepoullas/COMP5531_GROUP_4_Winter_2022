@@ -1,27 +1,31 @@
 <?php
 
 // initializing variables
-$id = $role_name = "";
+$id = $role_name = $role_description = "";
 
 // ADD
 if (isset($_POST['add_role'])) {
 
     // receive all input values from the form
     $role_name = mysqli_real_escape_string($conn, $_POST['role_name']);
+    $role_description = mysqli_real_escape_string($conn, $_POST['role_description']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
     if (empty($role_name)) {
         array_push($errors, "Role Name is required");
     }
+    if (empty($role_description)) {
+        array_push($errors, "Role description is required");
+    }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO roles (role_name) VALUES('$role_name');";
+        $add = "INSERT INTO roles (role_name, role_description) VALUES('$role_name', '$role_description');";
 
         if (mysqli_query($conn, $add)) {
-            array_push($success, "role added Successful");
+            array_push($success, "Role added Successful");
             // clear variables
-            $role_name = "";
+            $role_name = $role_description = "";
         } else {
             array_push($errors, "Error adding role: ", mysqli_error($conn));
         }
@@ -35,15 +39,19 @@ if (isset($_POST['update_role'])) {
 
     // receive all input values from the form
     $role_name = mysqli_real_escape_string($conn, $_POST['role_name']);
+    $role_description = mysqli_real_escape_string($conn, $_POST['role_description']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
     if (empty($role_name)) {
         array_push($errors, "Role Name is required");
     }
+    if (empty($role_description)) {
+        array_push($errors, "Role description is required");
+    }
 
     if (count($errors) == 0) {
-        $update = "UPDATE roles set role_name = '$role_name' WHERE role_id ='$id'";
+        $update = "UPDATE roles set role_name = '$role_name', role_description = '$role_description' WHERE role_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
@@ -84,6 +92,7 @@ if (isset($_GET['delete_id'])) {
             <tr>
                 <?php isAdmin() ? print '<th>Role ID</th>' : ''; ?>
                 <th>Role Name</th>
+                <th>Role Description</th>
                 <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
 
             </tr>
@@ -93,12 +102,14 @@ if (isset($_GET['delete_id'])) {
             while ($row = mysqli_fetch_assoc($results)) {
                 $id = $row['role_id'];
                 $role_name = $row['role_name'];
+                $role_description = $row['role_description'];
             ?>
                 <tr>
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
                     <td><?php echo $role_name ?></td>
+                    <td><?php echo $role_description ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=roles&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo '<td><a href="?page=roles&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
@@ -127,6 +138,10 @@ if (isset($_GET['delete_id'])) {
                     <label>Role Name</label>
                     <span><input type="text" name="role_name"></span>
                 </div>
+                <div class="form-input">
+                    <label>Role Description</label>
+                    <span><input type="text" name="role_description"> </span>
+                </div>
                 <div class="form-submit">
                     <input type="submit" name="add_role" value="Add">
                 </div>
@@ -145,6 +160,7 @@ if (isset($_GET['delete_id'])) {
         while ($row = mysqli_fetch_assoc($results)) {
             $id = $row['role_id'];
             $role_name = $row['role_name'];
+            $role_description = $row['role description'];
         }
         ?>
 
@@ -161,6 +177,10 @@ if (isset($_GET['delete_id'])) {
                 <div class="form-input">
                     <label>Role Name</label>
                     <span><input type="text" name="role_name" value='<?= $role_name ?>'></span>
+                </div>
+                <div class="form-input">
+                    <label>Role description</label>
+                    <span><input type="text" name="role_description" value='<?= $role_description ?>'> </span>
                 </div>
                 <div class="form-submit">
                     <input type="submit" name="update_role" value="Update">
