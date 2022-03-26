@@ -160,7 +160,7 @@ if (isset($_GET['delete_id'])) {
         while ($row = mysqli_fetch_assoc($results)) {
             $id = $row['role_id'];
             $role_name = $row['role_name'];
-            $role_description = $row['role description'];
+            $role_description = $row['role_description'];
         }
         ?>
 
