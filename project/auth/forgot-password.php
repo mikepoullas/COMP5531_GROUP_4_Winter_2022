@@ -62,10 +62,12 @@ if (isset($_POST['recover_password'])) {
 
         <div class="form-container">
 
-            <form class="form-body" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <form class="form-body" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 
-                <?php echo display_error(); ?>
-                <?php echo display_success(); ?>
+                <?php
+                echo display_success();
+                echo display_error();
+                ?>
 
                 <div class="form-input">
                     <label>Email</label>

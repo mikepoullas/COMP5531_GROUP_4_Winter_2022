@@ -10,13 +10,11 @@
             </div>
             <hr>
             <div class="main-menu">
-                <h3>Manage</h3>
+                <h3>Course Groups</h3>
                 <ul class="menu-list">
-                    <li><a href="?page=group-home">Groups</a></li>
-                    <li><a href="?page=group-discussion">Discussions</a></li>
+                    <li><a href="?page=group-home">Group Home</a></li>
                     <li><a href="?page=group-assignment">Assignments</a></li>
                     <li><a href="?page=group-project">Projects</a></li>
-
                 </ul>
             </div>
         </section>
@@ -30,6 +28,9 @@
                     $page = $_GET['page'];
                     if (file_exists("../group/" . $page . ".php")) {
                         include("../group/" . $page . ".php");
+                    }
+                    if (file_exists("../CRUD/" . $page . ".php")) {
+                        include("../CRUD/" . $page . ".php");
                     }
                     if (file_exists("../includes/" . $page . ".php")) {
                         include("../includes/" . $page . ".php");

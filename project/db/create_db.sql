@@ -80,14 +80,12 @@ CREATE TABLE Section
 
 CREATE TABLE Student_Group
 (
-  group_id INT NOT NULL AUTO_INCREMENT,
+  group_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   group_name VARCHAR(30) NOT NULL,
-  group_leader_sid INT,
-  PRIMARY KEY (group_id),
-  UNIQUE (group_name)
+  group_leader_sid INT NOT NULL
 );
 
-CREATE TABLE Student_of_Group
+CREATE TABLE Member_of_Group
 (
   student_id INT NOT NULL,
   group_id INT NOT NULL,
@@ -103,20 +101,15 @@ CREATE TABLE Group_of_Course
   FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
 
-CREATE TABLE User_of_Course
+CREATE TABLE User_Course_Section
 (
   user_id INT NOT NULL,
   course_id INT NOT NULL,
+  section_id INT,
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (course_id) REFERENCES Course(course_id)
-);
-
-CREATE TABLE User_of_Section
-(
-  user_id INT NOT NULL,
-  section_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (section_id) REFERENCES Section(section_id)
+  FOREIGN KEY (course_id) REFERENCES Course(course_id),
+  FOREIGN KEY (section_id) REFERENCES Section(section_id),
+  UNIQUE (user_id, section_id)
 );
 
 CREATE TABLE Files

@@ -2,6 +2,7 @@
 
 // initializing variables
 $id = $title = $posted_by = $posted_on = $content = $course_id = $course_name = "";
+$user_id = $_SESSION['user_id'];
 
 // ADD
 if (isset($_POST['announcement_add'])) {
@@ -23,8 +24,6 @@ if (isset($_POST['announcement_add'])) {
         array_push($errors, "Course is required");
     }
 
-    $user_id = $_SESSION['user_id'];
-
     if (count($errors) == 0) {
         $add = "INSERT INTO announcement (title, content, posted_by_uid, posted_on, course_id)
             VALUES('$title', '$content', '$user_id', CURRENT_TIMESTAMP,'$course_id')";
@@ -32,7 +31,7 @@ if (isset($_POST['announcement_add'])) {
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
             // clear variables
-            $title = $content = "";
+            $title = $content = $course_id = "";
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -95,17 +94,15 @@ if (isset($_GET['delete_id'])) {
         display_error();
     }
 
-    $query = "SELECT a.*, u.username, c.course_name
-    FROM announcement as a
-    JOIN users as u
-    ON a.posted_by_uid = u.user_id
-    JOIN course as c
-    ON c.course_id = a.course_id
-    ORDER BY announcement_id DESC";
-    $results = mysqli_query($conn, $query);
+    $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
+    JOIN users as u ON a.posted_by_uid = u.user_id
+    JOIN course as c ON c.course_id = a.course_id
+    ORDER BY announcement_id ASC";
+    $announcements = mysqli_query($conn, $query);
 
     ?>
-    <p><b>Announcement</b></p>
+    <h3>Announcements</h3>
+    <hr>
     <table>
         <thead>
             <tr>
@@ -115,20 +112,20 @@ if (isset($_GET['delete_id'])) {
                 <th>Posted by</th>
                 <th>Posted on</th>
                 <th>Course Name</th>
-                <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
+                <?php !isStudent() ? print '<th colspan="2">Action</th>' : ''; ?>
 
             </tr>
         </thead>
         <tbody>
             <?php
-            while ($announcements = mysqli_fetch_assoc($results)) {
-                $id = $announcements['announcement_id'];
-                $title = $announcements['title'];
-                $content = $announcements['content'];
-                $posted_by = $announcements['username'];
-                $posted_on = $announcements['posted_on'];
-                $course_id = $announcements['course_id'];
-                $course_name = $announcements['course_name'];
+            foreach ($announcements as $row) {
+                $id = $row['announcement_id'];
+                $title = $row['title'];
+                $content = $row['content'];
+                $posted_by = $row['username'];
+                $posted_on = $row['posted_on'];
+                $course_id = $row['course_id'];
+                $course_name = $row['course_name'];
             ?>
                 <tr>
                     <?php if (isAdmin()) {
@@ -139,7 +136,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $posted_by ?></td>
                     <td><?php echo $posted_on ?></td>
                     <td><?php echo $course_name ?></td>
-                    <?php if (isAdmin()) {
+                    <?php if (!isStudent()) {
                         echo '<td><a href="?page=announcements&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo '<td><a href="?page=announcements&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
                     } ?>
@@ -150,7 +147,7 @@ if (isset($_GET['delete_id'])) {
         </tbody>
     </table>
 
-    <?php if (isAdmin()) { ?>
+    <?php if (!isStudent()) { ?>
         <a href="?page=announcements&add_view=true">
             <button>Add Announcement</button>
         </a>
@@ -158,23 +155,27 @@ if (isset($_GET['delete_id'])) {
         <?php if (isset($_GET['add_view'])) { ?>
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" method="post">
-                    <?php echo display_success(); ?>
-                    <?php echo display_error(); ?>
-                    <div class="form-input">
-                        <p><b>Add Announcement</b></p>
+                <form class="form-body" action="" method="POST">
 
+                    <?php
+                    echo display_success();
+                    echo display_error();
+                    ?>
+
+                    <h4><u>Add Announcement</u></h4>
+
+                    <div class="form-input">
                         <label>Title</label>
                         <span><input type="text" name="title"></span>
                     </div>
                     <div class="form-input">
-                        <label>Content </label>
+                        <label>Content</label>
                         <br>
                         <textarea name="content"></textarea>
                     </div>
 
                     <div class="form-input">
-                        <label for="course">Choose a Course</label>
+                        <label for="course_id">For Course</label>
                         <span>
                             <select name="course_id">
                                 <option value="" selected hidden>Choose a Course</option>
@@ -203,11 +204,9 @@ if (isset($_GET['delete_id'])) {
 
             <?php
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-            $query = "SELECT a.*, u.username, c.course_id FROM announcement as a
-            JOIN users as u
-            ON a.posted_by_uid = u.user_id
-            JOIN course as c
-            ON a.course_id = c.course_id
+            $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
+            JOIN users as u ON a.posted_by_uid = u.user_id
+            JOIN course as c ON a.course_id = c.course_id
             WHERE a.announcement_id='$id'";
             $results = mysqli_query($conn, $query);
 
@@ -215,50 +214,57 @@ if (isset($_GET['delete_id'])) {
                 $id = $row['announcement_id'];
                 $title = $row['title'];
                 $content = $row['content'];
-                $update_course_id = $row['course_id'];
+                $course_name = $row['course_name'];
+                // $update_course_id = $row['course_id'];
             }
             ?>
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" method="post">
-                    <?php echo display_success(); ?>
-                    <?php echo display_error(); ?>
+                <form class="form-body" action="" method="POST">
+
+                    <?php
+                    echo display_success();
+                    echo display_error();
+                    ?>
+
+                    <h4><u>Update Announcement</u></h4>
+
                     <div class="form-input">
-                        <p><b>Update Announcement</b></p>
-                        <label>Announcement ID</label>
-                        <span><b><?= $id ?></b></span>
+                        <label>Course Name</label>
+                        <span><?= $course_name ?></span>
                     </div>
+
                     <div class="form-input">
                         <label>Title</label>
                         <span><input type="text" name="title" value='<?= $title ?>'></span>
                     </div>
 
                     <div class="form-input">
-                        <label>Content </label>
+                        <label>Content</label>
                         <br>
                         <textarea name="content"><?= $content ?></textarea>
                     </div>
 
-                    <div class="form-input">
-                        <label for="course">Choose a Course</label>
+                    <!-- <div class="form-input">
+                        <label for="course_id">For Course</label>
                         <span>
                             <select name="course_id">
                                 <?php
-                                $courses = get_table_array('course');
-                                foreach ($courses as $row) {
-                                    $course_id = $row['course_id'];
-                                    $course_name = $row['course_name'];
-                                    if ($update_course_id == $course_id) {
-                                        echo "<option name=course_id value='$course_id' selected>$course_name</option>";
-                                    } else {
-                                        echo "<option name=course_id value='$course_id'>$course_name</option>";
-                                    }
-                                }
+                                // $courses = get_table_array('course');
+                                // foreach ($courses as $row) {
+                                //     $course_id = $row['course_id'];
+                                //     $course_name = $row['course_name'];
+                                //     if ($update_course_id == $course_id) {
+                                //         echo "<option name=course_id value='$course_id' selected>$course_name</option>";
+                                //     } else {
+                                //         echo "<option name=course_id value='$course_id'>$course_name</option>";
+                                //     }
+                                // }
                                 ?>
                             </select>
                         </span>
-                    </div>
+                    </div> -->
 
                     <div class="form-submit">
                         <input type="submit" name="update_announcement" value="Update">
