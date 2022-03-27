@@ -78,10 +78,12 @@ if (isset($_POST['reset_password'])) {
 
         <div class="form-container">
 
-            <form class="form-body" action="" method="post">
+            <form class="form-body" action="" method="POST">
 
-                <?php echo display_error(); ?>
-                <?php echo display_success(); ?>
+            <?php
+                echo display_success();
+                echo display_error();
+                ?>
 
                 <div class="form-input">
                     <label>Old Password</label>
@@ -108,7 +110,7 @@ if (isset($_POST['reset_password'])) {
                 <div class="form-submit">
                     <input type="submit" name="reset_password" value="Reset">
                 </div>
-                <br>
+
                 <span>
                     <a href="../index.php">Welcome</a>
                 </span>

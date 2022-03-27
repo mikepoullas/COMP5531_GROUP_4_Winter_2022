@@ -47,6 +47,57 @@ function get_records_where($table, $key, $value)
     return $result;
 }
 
+function isAdmin()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1) {
+        return true;
+    }
+    return false;
+}
+
+function isProfessor()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 2) {
+        return true;
+    }
+    return false;
+}
+
+function isTA()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 3) {
+        return true;
+    }
+    return false;
+}
+
+function isStudent()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 4) {
+        return true;
+    }
+    return false;
+}
+
+function isLoggedIn()
+{
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function pre_print($var)
+{
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+}
+
+/***************************************************************************/
+
+
 // return column names from table
 function get_column_names($table)
 {
@@ -87,27 +138,4 @@ function get_page($dir, $filename, $default = false)
             }
         }
     }
-}
-
-function isAdmin()
-{
-    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1) {
-        return true;
-    }
-    return false;
-}
-
-function isStudent()
-{
-    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 4) {
-        return true;
-    }
-    return false;
-}
-
-function pre_print($var)
-{
-    echo '<pre>';
-    print_r($var);
-    echo '</pre>';
 }

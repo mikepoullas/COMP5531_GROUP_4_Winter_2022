@@ -27,7 +27,7 @@ if (isset($_POST['add_course'])) {
             // clear variables
             $course_name = $course_number = "";
         } else {
-            array_push($errors, "Error adding course: ", mysqli_error($conn));
+            array_push($errors, "Error adding course: " . mysqli_error($conn));
         }
     }
 }
@@ -86,7 +86,8 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-    <p><b>Courses</b></p>
+    <h3>Courses</h3>
+    <hr>
     <table>
         <thead>
             <tr>
@@ -125,68 +126,74 @@ if (isset($_GET['delete_id'])) {
         <a href="?page=courses&add_view=true">
             <button>Add Course</button>
         </a>
-    <?php } ?>
 
-    <?php if (isset($_GET['add_view'])) { ?>
-        <hr>
-        <div class="form-container">
-            <form class="form-body" action="" method="post">
-                <?php echo display_success(); ?>
-                <?php echo display_error(); ?>
-                <div class="form-input">
-                    <p><b>Add a course</b></p>
-                    <label>Course Name</label>
-                    <span><input type="text" name="course_name"></span>
-                </div>
-                <div class="form-input">
-                    <label>Course Number</label>
-                    <span><input type="number" name="course_number"> </span>
-                </div>
-                <div class="form-submit">
-                    <input type="submit" name="add_course" value="Add">
-                </div>
-            </form>
-        </div>
+        <?php if (isset($_GET['add_view'])) { ?>
+            <hr>
+            <div class="form-container">
+                <form class="form-body" action="" method="POST">
 
-    <?php } ?>
+                    <?php
+                    echo display_success();
+                    echo display_error();
+                    ?>
 
-    <?php if (isset($_GET['update_view'])) { ?>
+                    <h4><u>Add Course</u></h4>
 
-        <?php
-        $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-        $query = "SELECT * FROM course WHERE course_id='$id'";
-        $results = mysqli_query($conn, $query);
+                    <div class="form-input">
+                        <label>Course Name</label>
+                        <span><input type="text" name="course_name"></span>
+                    </div>
+                    <div class="form-input">
+                        <label>Course Number</label>
+                        <span><input type="number" name="course_number"> </span>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="add_course" value="Add">
+                    </div>
+                </form>
+            </div>
 
-        while ($row = mysqli_fetch_assoc($results)) {
-            $id = $row['course_id'];
-            $course_name = $row['course_name'];
-            $course_number = $row['course_number'];
-        }
-        ?>
+        <?php } ?>
 
-        <hr>
-        <div class="form-container">
-            <form class="form-body" action="" method="post">
-                <?php echo display_success(); ?>
-                <?php echo display_error(); ?>
-                <div class="form-input">
-                    <p><b>Update Course</b></p>
-                    <label>Course ID</label>
-                    <span><b><?= $id ?></b></span>
-                </div>
-                <div class="form-input">
-                    <label>Course Name</label>
-                    <span><input type="text" name="course_name" value='<?= $course_name ?>'></span>
-                </div>
-                <div class="form-input">
-                    <label>Course Number</label>
-                    <span><input type="number" name="course_number" value='<?= $course_number ?>'> </span>
-                </div>
-                <div class="form-submit">
-                    <input type="submit" name="update_course" value="Update">
-                </div>
-            </form>
-        </div>
+        <?php if (isset($_GET['update_view'])) { ?>
+
+            <?php
+            $id = mysqli_real_escape_string($conn, $_GET['update_id']);
+            $query = "SELECT * FROM course WHERE course_id='$id'";
+            $results = mysqli_query($conn, $query);
+
+            while ($row = mysqli_fetch_assoc($results)) {
+                $id = $row['course_id'];
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+            }
+            ?>
+
+            <hr>
+            <div class="form-container">
+                <form class="form-body" action="" method="POST">
+                    <?php
+                    echo display_success();
+                    echo display_error();
+                    ?>
+
+                    <h4><u>Update Course</u></h4>
+
+                    <div class="form-input">
+                        <label>Course Name</label>
+                        <span><input type="text" name="course_name" value='<?= $course_name ?>'></span>
+                    </div>
+                    <div class="form-input">
+                        <label>Course Number</label>
+                        <span><input type="number" name="course_number" value='<?= $course_number ?>'> </span>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="update_course" value="Update">
+                    </div>
+                </form>
+            </div>
+
+        <?php } ?>
 
     <?php } ?>
 

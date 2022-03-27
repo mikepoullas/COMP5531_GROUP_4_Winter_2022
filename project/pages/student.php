@@ -13,10 +13,7 @@
                 <h3>Manage</h3>
                 <ul class="menu-list">
                     <li><a href="?page=group-home">Groups</a></li>
-                    <li><a href="?page=group-discussion">Discussions</a></li>
-                    <li><a href="?page=group-assignment">Assignments</a></li>
-                    <li><a href="?page=group-project">Projects</a></li>
-
+                    <li><a href="?page=group-submission">Submissions</a></li>
                 </ul>
             </div>
         </section>
