@@ -3,14 +3,14 @@ INSERT INTO roles (role_name, role_description) VALUES("Professor", "Course Inst
 INSERT INTO roles (role_name, role_description) VALUES("TA", "Course Assistant");
 INSERT INTO roles (role_name, role_description) VALUES("Student", "Course Student");
 
-INSERT INTO users VALUES(10000, "Admin", "CGA","1980-01-01", "admin@cga.com", "admin", "admin", CURRENT_TIMESTAMP, 1, 1);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Bipin", "Desai","1900-01-01", "bipin@desai.com", "desai123", "12345", CURRENT_TIMESTAMP, 1, 2);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("David", "Probst","1900-01-01", "david@probst.com", "probst123", "12345", CURRENT_TIMESTAMP, 1, 2);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Yogesh", "Yadav","1980-01-01", "yogesh@yadav.com", "yadav123", "12345", CURRENT_TIMESTAMP, 1, 3);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Fan", "Zou","1980-01-01", "fan@zou.com", "zou123", "12345", CURRENT_TIMESTAMP, 1, 3);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("John", "Doe","1990-01-01", "john@doe.com", "doe123", "12345", CURRENT_TIMESTAMP,1, 4);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Mary", "Jane","1990-04-12", "mary@jane.com", "jane123", "12345", CURRENT_TIMESTAMP,1, 4);
-INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Tony", "Stark","1980-04-12", "tony@stark.com", "stark123", "12345", CURRENT_TIMESTAMP,1, 4);
+INSERT INTO users VALUES(10000, "Admin", "CGA","1980-01-01", "admin@admin.com", "admin", "admin", CURRENT_TIMESTAMP, 1, 1);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Bipin", "Desai","1900-01-01", "bipin@desai.com", "b_desai_25", "12345", CURRENT_TIMESTAMP, 1, 2);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("David", "Probst","1900-01-01", "david@probst.com", "d_probst_69", "12345", CURRENT_TIMESTAMP, 1, 2);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Yogesh", "Yadav","1980-01-01", "yogesh@yadav.com", "y_yadav_71", "12345", CURRENT_TIMESTAMP, 1, 3);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Fan", "Zou","1980-01-01", "fan@zou.com", "f_zou_74", "12345", CURRENT_TIMESTAMP, 1, 3);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("John", "Doe","1990-01-01", "john@doe.com", "j_doe_22", "12345", CURRENT_TIMESTAMP,1, 4);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Mary", "Jane","1990-04-12", "mary@jane.com", "m_jane_81", "12345", CURRENT_TIMESTAMP,1, 4);
+INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) VALUES("Tony", "Stark","1980-04-12", "tony@stark.com", "t_stark_12", "12345", CURRENT_TIMESTAMP,1, 4);
 
 INSERT INTO course VALUES(50000, "Files and DB", 5531);
 INSERT INTO course (course_name, course_number) VALUES("Operating Systems", 5461);
@@ -36,51 +36,33 @@ INSERT INTO student (user_id) VALUES(10006);
 INSERT INTO student (user_id) VALUES(10007);
 
 -- TA Table
-INSERT INTO ta (ta_id, user_id) VALUES(30000, 10002);
+INSERT INTO ta (ta_id, user_id) VALUES(30000, 10003);
+INSERT INTO ta (user_id) VALUES(10004);
 
 -- Professor Table
 INSERT INTO professor (professor_id, user_id) VALUES(40000, 10001);
+INSERT INTO professor (user_id) VALUES(10002);
 
--- prof to course
-INSERT INTO user_of_course (user_id, course_id) VALUES(10001, 50000);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10002, 50001);
+-- prof to course section
+INSERT INTO User_Course_Section (user_id, course_id) VALUES(10001, 50000);
+INSERT INTO User_Course_Section (user_id, course_id) VALUES(10002, 50001);
 
--- TA to course
-INSERT INTO user_of_course (user_id, course_id) VALUES(10003, 50000);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10004, 50001);
+-- TA to course section
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10003, 50000, 60000);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10003, 50000, 60001);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10004, 50001, 60002);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10004, 50001, 60003);
 
--- student to course
-INSERT INTO user_of_course (user_id, course_id) VALUES(10005, 50000);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10005, 50001);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10005, 50002);
-
-INSERT INTO user_of_course (user_id, course_id) VALUES(10006, 50001);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10006, 50002);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10006, 50003);
-
-INSERT INTO user_of_course (user_id, course_id) VALUES(10007, 50000);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10007, 50001);
-INSERT INTO user_of_course (user_id, course_id) VALUES(10007, 50003);
-
--- TA to section
-INSERT INTO user_of_section (user_id, section_id) VALUES(10003, 60000);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10003, 60001);
-
-INSERT INTO user_of_section (user_id, section_id) VALUES(10004, 60002);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10004, 60003);
-
--- student to course
-INSERT INTO user_of_section (user_id, section_id) VALUES(10005, 60000);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10005, 60001);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10005, 60002);
-
-INSERT INTO user_of_section (user_id, section_id) VALUES(10006, 60001);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10006, 60002);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10006, 60003);
-
-INSERT INTO user_of_section (user_id, section_id) VALUES(10007, 60000);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10007, 60001);
-INSERT INTO user_of_section (user_id, section_id) VALUES(10007, 60003);
+-- student to course section
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10005, 50000, 60000);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10005, 50001, 60002);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10005, 50002, 60004);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10006, 50001, 60003);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10006, 50002, 60005);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10006, 50003, 60007);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10007, 50000, 60001);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10007, 50001, 60003);
+INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES(10007, 50003, 60007);
 
 -- Student Groups Table
 INSERT INTO student_group VALUES(70000, "Group_1", 20000);
@@ -88,9 +70,9 @@ INSERT INTO student_group (group_name, group_leader_sid) VALUES("Group_2", 20001
 INSERT INTO student_group (group_name, group_leader_sid) VALUES("Group_3", 20002);
 
 -- Assign Student to Group  
-INSERT INTO student_of_group (student_id, group_id) VALUES(20000, 70000);
-INSERT INTO student_of_group (student_id, group_id) VALUES(20001, 70001);
-INSERT INTO student_of_group (student_id, group_id) VALUES(20002, 70002);
+INSERT INTO member_of_group (student_id, group_id) VALUES(20000, 70000);
+INSERT INTO member_of_group (student_id, group_id) VALUES(20001, 70001);
+INSERT INTO member_of_group (student_id, group_id) VALUES(20002, 70002);
 
 -- Assign Groups to Course
 INSERT INTO group_of_course (group_id, course_id) VALUES(70000, 50000);

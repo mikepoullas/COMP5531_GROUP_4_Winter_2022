@@ -28,7 +28,6 @@
                         <li><a href="?page=assign-professors">Professors</a></li>
                         <li><a href="?page=assign-tas">Teaching Assistants</a></li>
                         <li><a href="?page=assign-students">Students</a></li>
-                        <li><a href="?page=assign-courses">Courses</a></li>
                     </ul>
                 </div>
             </div>

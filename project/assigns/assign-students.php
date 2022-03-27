@@ -1,248 +1,392 @@
-
-<script>
-function validateStudentToCourse(){
- 
-	var student_id, course_id, can_enroll;
- 
-	student_id  = document.getElementById("student").value;
-  	course_id  = document.getElementById("course").value;
-	
-	if (student_id == '') {
-		alert("Please select a Student from the list.");
-	} else if (course_id == '') {
-		alert("Please select a Course from the list.");
-	} else if (student_id == '' && course_id == '') {
-		alert("You must select a Student and a Course from the list.");
-	} 
-	
-}
-
-function getStudentDetails() {
-
-	var user_id;
-	user_id  = document.getElementById("student").value;
-	
-	//alert("User: " + user_id);
-	
-}
-</script>
-
-
 <?php
 
-// DELETE
-if (isset($_GET['remove_course'])) {
-	
-    $user_id = mysqli_real_escape_string($conn, $_GET['delete_id']);
-	$course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
-	$table_name = "";
+$user_id = $course_id = $section_id = "";
 
-	//Delete User from Student, TA or Professor table accordingly first to avoid constraint issue
-		
-	$delete = "DELETE FROM user_course WHERE user_id = '$user_id' and course_id = '$course_id'";
+/*******************************************************
+ * ADD SQL
+ ********************************************************/
 
-	if (!mysqli_query($conn, $delete)) {
-		array_push($errors, "Error deleting course " . $course_id . " for user " . $course_id . " from user_course table", mysqli_error($conn));
-	}
-	
-    if (mysqli_query($conn, $delete)) {
-		array_push($success, "Course successfully removed.");
-		// clear variables
-		$id = $role_id = $table_name = "";
-	} else {
-        array_push($errors, "Delete user error: " . mysqli_error($conn));
+if (isset($_POST['assign'])) {
+
+    if (empty($_POST['user_id'])) {
+        array_push($errors, "Please select a user");
+    } else {
+        $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     }
 
+    if (empty($_POST['course_id'])) {
+        array_push($errors, "Please select a course");
+    } else {
+        $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
+    }
+
+    if (empty($_POST['section_id'])) {
+        array_push($errors, "Please select a section");
+    } else {
+        $section_id = mysqli_real_escape_string($conn, $_POST['section_id']);
+    }
+
+    $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
+    $check = mysqli_query($conn, $query);
+
+    foreach ($check as $row) {
+        $check_course_id = $row['course_id'];
+        $check_section_id = $row['section_id'];
+
+        if ($check_course_id == $course_id) {
+            array_push($errors, "User already assigned to this course");
+            if ($check_section_id == $section_id) {
+                array_push($errors, "User already assigned to this section");
+            }
+        }
+    }
+
+    if (count($errors) == 0) {
+
+        $add = "INSERT INTO user_course_section (user_id, course_id, section_id) VALUES('$user_id', '$course_id', '$section_id')";
+
+        if (mysqli_query($conn, $add)) {
+            array_push($success, "Student Assigned Successfully");
+            // clear variables
+            $user_id = $course_id = $section_id = "";
+        } else {
+            array_push($errors, "Adding Error: " . mysqli_error($conn));
+        }
+    }
+}
+
+/*******************************************************
+ * UPDATE SQL
+ ********************************************************/
+
+if (isset($_POST['update'])) {
+
+    $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
+
+    if (empty($_POST['course_id'])) {
+        array_push($errors, "Please select a course");
+    } else {
+        $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
+    }
+
+    if (empty($_POST['section_id'])) {
+        array_push($errors, "Please select a section");
+    } else {
+        $section_id = mysqli_real_escape_string($conn, $_POST['section_id']);
+    }
+
+
+    $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
+    $check = mysqli_query($conn, $query);
+
+    // foreach ($check as $row) {
+    //     $check_course_id = $row['course_id'];
+    //     $check_section_id = $row['section_id'];
+
+    //     if ($check_course_id == $course_id) {
+    //         array_push($errors, "User already assigned to this course");
+    //         if ($check_section_id == $section_id) {
+    //             array_push($errors, "User already assigned to this section");
+    //         }
+    //     }
+    // }
+
+    if (count($errors) == 0) {
+
+        $update = "UPDATE user_course_section set user_id = '$user_id', course_id = '$course_id', section_id = '$section_id'
+            WHERE user_id ='$user_id' AND section_id = '$section_id'";
+
+        if (mysqli_query($conn, $update)) {
+            array_push($success, "Updated Successfully");
+            // clear variables
+            $user_id = $course_id = "";
+        } else {
+            array_push($errors, "Error: " . mysqli_error($conn));
+        }
+    }
+}
+
+/*******************************************************
+ * DELETE SQL
+ ********************************************************/
+
+if (isset($_GET['delete_view'])) {
+
+    $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
+    $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
+    $section_id = mysqli_real_escape_string($conn, $_GET['section_id']);
+
+    $delete = "DELETE FROM user_course_section
+                WHERE user_id='$user_id' AND course_id='$course_id' AND section_id='$section_id'";
+
+    if (mysqli_query($conn, $delete)) {
+        array_push($success, "Delete successful");
+    } else {
+        array_push($errors, "Delete error: " . mysqli_error($conn));
+    }
 }
 ?>
 
-<div>
+<!-- Table Section
+Always visible and shows delete error if delete_view is set true -->
 
-    <form class="form-body" action="" method="post">
-	
-        <h2>Assign Student to a Course</h2>
+<div class="content-body">
 
-        <div class="form-input">
-            <b>Select a student</b>
-            <div class="scroll-list">
-				<span>
-					<select size="5" onclick="getStudentDetails()" name="student" id="student">
-						<optgroup label = "Student ID | Lastname, Firstname">
-							<?php
+    <?php
+    if (isset($_GET['delete_view'])) {
+        display_success();
+        display_error();
+    }
 
-							$query = "SELECT s.user_id as uid, s.student_id as sid, u.first_name as fn, u.last_name as ln 
-										FROM student as s,users as u 
-										WHERE s.user_id = u.user_id and u.role_id = 4 
-										ORDER BY u.last_name ";
-							
-							$students = mysqli_query($conn, $query);
-							
-							if (!$students) {
-								array_push($errors, "Error with Student and User databases: ", mysqli_error($conn));
-							}
+    $query = "SELECT * FROM users as u
+                JOIN student as st ON st.user_id = u.user_id
+                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+                JOIN course as c ON c.course_id = ucs.course_id
+                JOIN section as s ON s.section_id = ucs.section_id
+                ORDER BY u.user_id ASC";
+    $results = mysqli_query($conn, $query);
 
-							foreach ($students as $student) {
-								$user_id = $student['uid'];
-								$student_id = $student['sid'];
-								$first_name = $student['fn'];
-								$last_name = $student['ln'];								
-								echo "<option value='" . $user_id . "'>" . $student_id . ' | ' . $last_name . ', ' . $first_name . "</option>";
-							}
-							?>
-					</select>
-				</span>
-            </div>
+    ?>
+
+    <h3>Students - Course - Sections</h3>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Course Name</th>
+                <th>Section Name</th>
+                <th colspan="2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($results as $row) {
+                $user_id = $row['user_id'];
+                $student_id = $row['student_id'];
+                $first_name = $row['first_name'];
+                $last_name = $row['last_name'];
+                $course_id = $row['course_id'];
+                $course_name = $row['course_name'];
+                $section_id = $row['section_id'];
+                $section_name = $row['section_name'];
+            ?>
+                <tr>
+                    <td><?php echo $student_id ?></td>
+                    <td><?php echo $first_name . " " . $last_name ?></td>
+                    <td><?php echo $course_name ?></td>
+                    <td><?php echo $section_name ?></td>
+                    <td><a href="?page=assign-students&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Update</a></td>
+                    <td><a href="?page=assign-students&delete_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Delete</a></td>
+                </tr>
+            <?php
+            }
+            ?>
+        </tbody>
+    </table>
+
+    <?php if (isAdmin()) { ?>
+        <a href="?page=assign-students&add_view=true">
+            <button>Add New</button>
+        </a>
+    <?php } ?>
+
+    <!-- Add Section
+    Visible if add_view is set to true -->
+
+    <?php if (isset($_GET['add_view'])) { ?>
+
+        <div class="form-container">
+            <form class="form-body" action="" method="POST">
+
+                <?php
+                echo display_success();
+                echo display_error();
+                ?>
+
+                <div class="form-input">
+                    <p>Student</p>
+                    <div class="scroll-list">
+                        <select name=user_id>
+                            <option value="" selected hidden>Choose a User</option>
+                            <?php
+                            $query = "SELECT * FROM users as u
+                                        JOIN student as st ON st.user_id = u.user_id
+                                        WHERE role_id != 1";
+                            $users = mysqli_query($conn, $query);
+                            foreach ($users as $user) {
+                                $user_id = $user['user_id'];
+                                $first_name = $user['first_name'];
+                                $last_name = $user['last_name'];
+                                echo "<option value='$user_id'>$first_name $last_name</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-input">
+                    <p>Courses</p>
+                    <div class="scroll-list">
+                        <select name=course_id>
+                            <option value="" selected hidden>Choose a Course</option>
+                            <?php
+                            $query = "SELECT * FROM course";
+                            $courses = mysqli_query($conn, $query);
+                            foreach ($courses as $row) {
+                                $course_id = $row['course_id'];
+                                $course_name = $row['course_name'];
+                                echo "<option value='$course_id'>$course_name</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-input">
+                    <p>Sections</p>
+                    <div class="scroll-list">
+                        <select name=section_id>
+                            <option value="" selected hidden>Choose a Section</option>
+                            <?php
+                            $query = "SELECT * FROM section as s
+                                        JOIN course as c ON c.course_id = s.course_id";
+                            $sections = mysqli_query($conn, $query);
+                            foreach ($sections as $row) {
+                                $section_id = $row['section_id'];
+                                $section_name = $row['section_name'];
+                                $course_name = $row['course_name'];
+                                echo "<option value='$section_id'>$section_name ($course_name)</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <input type="submit" name="assign" value="Assign">
+                </div>
+            </form>
         </div>
 
-        <div class="form-submit">
-            <input type="submit" name="enrollment" value="List Enrollment">
+    <?php } ?>
+
+    <!-- Update Section
+    Visible if update_view is set to true -->
+
+    <?php if (isset($_GET['update_view'])) { ?>
+
+        <?php
+        $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
+        $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
+        $section_id = mysqli_real_escape_string($conn, $_GET['section_id']);
+
+        $query = "SELECT * FROM users as u
+        JOIN student as st ON st.user_id = u.user_id
+        JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+        JOIN course as c ON c.course_id = ucs.course_id
+        JOIN section as s ON s.section_id = ucs.section_id
+        WHERE u.user_id='$user_id' AND c.course_id = '$course_id' AND s.section_id = '$section_id'";
+        $results = mysqli_query($conn, $query);
+
+        while ($row = mysqli_fetch_assoc($results)) {
+            $student_name = $row['first_name'] . " " . $row['last_name'];
+            $update_user_id = $row['user_id'];
+            $update_course_id = $row['course_id'];
+            $update_section_name = $row['section_name'];
+        }
+        ?>
+
+        <div class="form-container">
+            <form class="form-body" action="" method="POST">
+
+                <?php
+                echo display_success();
+                echo display_error();
+                ?>
+
+                <div class="form-input">
+                    <label>Student</label>
+                    <span><b><?= $student_name ?></b></span>
+
+                    <!-- <div class="scroll-list">
+                        <select name=user_id>
+                            <option value="" selected hidden>Choose a User</option>
+                            <?php
+                            // $query = "SELECT * FROM users as u
+                            //             JOIN student as st ON st.user_id = u.user_id
+                            //             WHERE role_id != 1";
+                            // $users = mysqli_query($conn, $query);
+                            // foreach ($users as $user) {
+                            //     $user_id = $user['user_id'];
+                            //     $first_name = $user['first_name'];
+                            //     $last_name = $user['last_name'];
+                            //     if ($update_user_id == $user_id) {
+                            //         echo "<option value='$user_id' selected>$first_name $last_name</option>";
+                            //     } else {
+                            //         echo "<option value='$user_id'>$first_name $last_name</option>";
+                            //     }
+                            // }
+                            ?>
+                        </select>
+                    </div> -->
+
+
+                </div>
+
+                <div class="form-input">
+                    <p>Courses</p>
+                    <div class="scroll-list">
+                        <select name=course_id>
+                            <option value="" selected hidden>Choose a Course</option>
+                            <?php
+                            $query = "SELECT * FROM course";
+                            $courses = mysqli_query($conn, $query);
+                            foreach ($courses as $row) {
+                                $course_id = $row['course_id'];
+                                $course_name = $row['course_name'];
+                                if ($update_course_id == $course_id) {
+                                    echo "<option value='$course_id' selected>$course_name</option>";
+                                } else {
+                                    echo "<option value='$course_id'>$course_name</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-input">
+                    <p>Sections</p>
+                    <div class="scroll-list">
+                        <select name=section_id>
+                            <option value="" selected hidden>Choose a Section</option>
+                            <?php
+                            $query = "SELECT * FROM section as s
+                                        JOIN course as c ON c.course_id = s.course_id";
+                            $sections = mysqli_query($conn, $query);
+                            foreach ($sections as $row) {
+                                $section_id = $row['section_id'];
+                                $section_name = $row['section_name'];
+                                $course_name = $row['course_name'];
+                                if ($update_section_name == $section_name) {
+                                    echo "<option value='$section_id' selected>$section_name ($course_name)</option>";
+                                } else {
+                                    echo "<option value='$section_id'>$section_name ($course_name)</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <input type="submit" name="update" value="Update">
+                </div>
+            </form>
         </div>
-		
-<?php
-// List Enrollment
-if (isset($_POST['enrollment'])) {
-	
-	$nothing_to_display = True;
 
-	if (!empty($_POST['student'])) {
-		$user_id = $_POST['student'];
-	} else {
-		array_push($errors, "You must select a student from the list.");
-	}
+    <?php } ?>
 
-	if (count($errors) == 0) {
-		$query = "SELECT * FROM users as u
-		JOIN user_course as uc
-		ON u.user_id = uc. user_id
-		JOIN course as c
-		ON uc.course_id = c.course_id
-		JOIN course_section as cs
-		ON c.course_id = cs.course_id
-		WHERE u.user_id = '$user_id'
-		ORDER BY u.user_id ASC";
-		
-		$user_info = mysqli_query($conn, $query);
-
-		if (!$user_info) {
-			array_push($errors, "Error with retrieving user info: ", mysqli_error($conn));
-			$nothing_to_display = True;
-		} else {
-			$nothing_to_display = False;
-		}
-
-		if (mysqli_num_rows($user_info) < 1) {
-			$nothing_to_display = True;
-		}
-
-		echo "<div class='user-info-content'>";
-			if ($nothing_to_display) {
-				echo "<h2>Not enrolled in any courses. A maximum of five allowed.<h2>";
-			} else {
-				echo "<h2>Currently enrolled in</h2><br>";
-
-				echo "<table>";
-					echo "<thead>";
-						echo "<tr>";
-							echo "<th>Course Number</th>";
-							echo "<th>Course Name</th>";
-							echo "<th>Section</th>";
-							echo "<th colspan='2'>Action</th>";
-						echo "</tr>";
-					echo "</thead>";
-					echo "<tbody>";
-						foreach ($user_info as $user) {
-							echo "<tr>";
-								echo "<td>" . $user['course_number'] . "</td>";
-								echo "<td>" . $user['course_name'] .  "</td>";
-								echo "<td>" . $user['section_name'] . "</td>";
-								echo '<td><a href="?page=assign-students&remove_course=true&delete_id=' . $user_id . '&course_id=' . $user['course_id'] . '">Remove</a></td>';
-							echo "</tr>";
-						}
-					echo "</tbody>";
-				echo "</table>";
-			}
-		echo "</div>";
-	}	
-		
-}
-?>
-    <div class="form-input">
-		
-	<?php echo display_success(); ?>
-	<?php echo display_error(); ?>
-
-            <b>Add a course</b>
-            <div class="scroll-list">
-				<span>
-					<select size="5" name="course" id="course">
-						<optgroup label = "Course Number | Course Name | Course Section">
-							<?php
-
-							$query = "SELECT c.course_id as id, c.course_number as cnum, c.course_name as cname, cs.section_name as csname FROM course as c, course_section as cs where c.course_id = cs.course_id order by cname, csname  ";
-							$courses = mysqli_query($conn, $query);
-							
-							if (!$courses) {
-								array_push($errors, "Error with Courses and Course Section databases: ", mysqli_error($conn));
-							}
-
-							 foreach ($courses as $course) {
-								$course_id = $course['id'];
-								$course_number = $course['cnum'];
-								$course_name = $course['cname'];
-								$cours_section_name = $course['csname'];						
-								echo "<option value='" . $course_id . "'>" . $course_number . ' | ' . $course_name . ' | ' . $cours_section_name . "</option>";
-							}
-							?>
-					</select>
-				</span>
-            </div>
-        </div>
-
-        <div class="form-submit">
-            <input type="submit" name="enroll" value="Enroll">
-        </div>
-		
-	<?php
-	// Enroll Student in a Course
-	if (isset($_POST['enroll'])) {
-		
-		if (!empty($_POST['student'])) {
-			$user_id = $_POST['student'];
-		} else {
-			array_push($errors, "You must select a student from the list.");
-		}
-
-		if (!empty($_POST['course'])) {
-			$course_id = $_POST['course'];
-		} else {
-			array_push($errors, "You must select a course from the list.");
-		}
-	
-		if (count($errors) == 0) {
-		
-			$query = "INSERT INTO user_course (user_id, course_id) VALUES ('$user_id', '$course_id');";
-		
-			$add = mysqli_query($conn, $query);
-
-			if(mysqli_errno($conn) == 1062) {
-				array_push($errors, "Student already enrolled in this course!");
-			} else {
-
-				if (mysqli_query($conn, $add)) {
-					array_push($success, "Student was added to course.");
-					// clear variables
-					$user_id = $course_id = "";
-				} else {
-					array_push($errors, "Error adding student to user_course table: ", mysqli_error($conn));
-				}
-			}
-		}
-	}
-	?>		
-
-	<?php echo display_success(); ?>
-	<?php echo display_error(); ?>
-
-    </form>
 </div>
-

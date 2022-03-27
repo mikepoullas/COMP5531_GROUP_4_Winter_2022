@@ -55,6 +55,22 @@ function isAdmin()
     return false;
 }
 
+function isProfessor()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 2) {
+        return true;
+    }
+    return false;
+}
+
+function isTA()
+{
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 3) {
+        return true;
+    }
+    return false;
+}
+
 function isStudent()
 {
     if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 4) {
