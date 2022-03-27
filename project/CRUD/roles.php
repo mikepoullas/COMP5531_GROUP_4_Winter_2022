@@ -86,6 +86,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
+  
     <h3>Roles</h3>
     <hr>
     <table>
