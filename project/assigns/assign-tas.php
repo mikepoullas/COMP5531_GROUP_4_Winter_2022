@@ -46,7 +46,7 @@ if (isset($_POST['assign'])) {
         $add = "INSERT INTO user_course_section (user_id, course_id, section_id) VALUES('$user_id', '$course_id', '$section_id')";
 
         if (mysqli_query($conn, $add)) {
-            array_push($success, "Student Assigned Successfully");
+            array_push($success, "TA Assigned Successfully");
             // clear variables
             $user_id = $course_id = $section_id = "";
         } else {
@@ -139,7 +139,7 @@ Always visible and shows delete error if delete_view is set true -->
     }
 
     $query = "SELECT * FROM users as u
-                JOIN student as st ON st.user_id = u.user_id
+                JOIN ta as t ON t.user_id = u.user_id
                 JOIN user_course_section as ucs ON ucs.user_id = u.user_id
                 JOIN course as c ON c.course_id = ucs.course_id
                 JOIN section as s ON s.section_id = ucs.section_id
@@ -148,13 +148,13 @@ Always visible and shows delete error if delete_view is set true -->
 
     ?>
 
-    <h3>Students - Course - Sections</h3>
+    <h3>TAs - Course - Sections</h3>
     <hr>
     <table>
         <thead>
             <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
+                <th>TA ID</th>
+                <th>TA Name</th>
                 <th>Course Name</th>
                 <th>Section Name</th>
                 <th colspan="2">Action</th>
@@ -164,7 +164,7 @@ Always visible and shows delete error if delete_view is set true -->
             <?php
             foreach ($results as $row) {
                 $user_id = $row['user_id'];
-                $student_id = $row['student_id'];
+                $ta_id = $row['ta_id'];
                 $first_name = $row['first_name'];
                 $last_name = $row['last_name'];
                 $course_id = $row['course_id'];
@@ -173,12 +173,12 @@ Always visible and shows delete error if delete_view is set true -->
                 $section_name = $row['section_name'];
             ?>
                 <tr>
-                    <td><?php echo $student_id ?></td>
+                    <td><?php echo $ta_id ?></td>
                     <td><?php echo $first_name . " " . $last_name ?></td>
                     <td><?php echo $course_name ?></td>
                     <td><?php echo $section_name ?></td>
-                    <td><a href="?page=assign-students&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Update</a></td>
-                    <td><a href="?page=assign-students&delete_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Delete</a></td>
+                    <td><a href="?page=assign-tas&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Update</a></td>
+                    <td><a href="?page=assign-tas&delete_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Delete</a></td>
                 </tr>
             <?php
             }
@@ -187,7 +187,7 @@ Always visible and shows delete error if delete_view is set true -->
     </table>
 
     <?php if (isAdmin()) { ?>
-        <a href="?page=assign-students&add_view=true">
+        <a href="?page=assign-tas&add_view=true">
             <button>Add New</button>
         </a>
     <?php } ?>
@@ -206,13 +206,13 @@ Always visible and shows delete error if delete_view is set true -->
                 ?>
 
                 <div class="form-input">
-                    <p>Student</p>
+                    <p>TA</p>
                     <div class="scroll-list">
                         <select name=user_id>
                             <option value="" selected hidden>Choose a User</option>
                             <?php
                             $query = "SELECT * FROM users as u
-                                        JOIN student as st ON st.user_id = u.user_id
+                                        JOIN ta as t ON t.user_id = u.user_id
                                         WHERE role_id != 1";
                             $users = mysqli_query($conn, $query);
                             foreach ($users as $user) {
@@ -283,7 +283,7 @@ Always visible and shows delete error if delete_view is set true -->
         $section_id = mysqli_real_escape_string($conn, $_GET['section_id']);
 
         $query = "SELECT * FROM users as u
-        JOIN student as st ON st.user_id = u.user_id
+        JOIN ta as t ON t.user_id = u.user_id
         JOIN user_course_section as ucs ON ucs.user_id = u.user_id
         JOIN course as c ON c.course_id = ucs.course_id
         JOIN section as s ON s.section_id = ucs.section_id
@@ -291,7 +291,7 @@ Always visible and shows delete error if delete_view is set true -->
         $results = mysqli_query($conn, $query);
 
         while ($row = mysqli_fetch_assoc($results)) {
-            $student_name = $row['first_name'] . " " . $row['last_name'];
+            $ta_name = $row['first_name'] . " " . $row['last_name'];
             $update_user_id = $row['user_id'];
             $update_course_id = $row['course_id'];
             $update_section_name = $row['section_name'];
@@ -307,15 +307,15 @@ Always visible and shows delete error if delete_view is set true -->
                 ?>
 
                 <div class="form-input">
-                    <label>Student</label>
-                    <span><b><?= $student_name ?></b></span>
+                    <label>TA</label>
+                    <span><b><?= $ta_name ?></b></span>
 
                     <!-- <div class="scroll-list">
                         <select name=user_id>
                             <option value="" selected hidden>Choose a User</option>
                             <?php
                             // $query = "SELECT * FROM users as u
-                            //             JOIN student as st ON st.user_id = u.user_id
+                            //             JOIN ta as st ON st.user_id = u.user_id
                             //             WHERE role_id != 1";
                             // $users = mysqli_query($conn, $query);
                             // foreach ($users as $user) {
