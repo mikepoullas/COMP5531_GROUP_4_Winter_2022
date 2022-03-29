@@ -1,7 +1,86 @@
+<script>
+	function validateUserInput() {
+
+		var first_name, last_name, dob, email, password_new, password_confirm, role;
+
+		first_name = document.getElementById("first_name").value;
+		last_name = document.getElementById("last_name").value;
+		dob = document.getElementById("dob").value;
+		email = document.getElementById("email").value;
+		password_new = document.getElementById("password_new").value;
+		password_confirm = document.getElementById("password_confirm").value;
+		role = document.getElementById("roles").value;
+		
+		if (first_name == '') {
+			alert("Please enter users first name.");
+			document.getElementById("first_name").focus();
+			return false;
+		} else if (last_name == '') {
+			alert("Please enter users last name.");
+			document.getElementById("last_name").focus();
+			return false;
+		} else if (dob == '') {
+			alert("Please enter users date of birth.");
+			document.getElementById("dob").focus();
+			return false;
+		} else if (email == '') {
+			alert("Please enter users email address.");
+			document.getElementById("email").focus();
+			return false;
+		} else if (password_new == '') {
+			alert("Please enter users new password.");
+			document.getElementById("password_new").focus();
+			return false;
+		} else if (password_confirm == '') {
+			alert("Please enter users confirmed password.");
+			document.getElementById("password_confirm").focus();
+			return false;
+		} else if (password_new != password_confirm) {
+			alert("Passwords entered do not match.");
+			document.getElementById("password_new").focus();
+			return false;		
+		} else if (role == '') {
+			alert("Please enter users role type.");
+			document.getElementById("role").focus();
+			return false;				
+		} else 
+			return true;
+	}
+	
+	function validateUpdateUserInput() {
+
+		var first_name, last_name, dob, email;
+
+		first_name = document.getElementById("first_name").value;
+		last_name = document.getElementById("last_name").value;
+		dob = document.getElementById("dob").value;
+		email = document.getElementById("email").value;
+	
+		if (first_name == '') {
+			alert("Please users first name.");
+			document.getElementById("first_name").focus();
+			return false;
+		} else if (last_name == '') {
+			alert("Please enter users last name.");
+			document.getElementById("last_name").focus();
+			return false;
+		} else if (dob == '') {
+			alert("Please enter users date of birth.");
+			document.getElementById("dob").focus();
+			return false;
+		} else if (email == '') {
+			alert("Please enter users email address.");
+			document.getElementById("email").focus();
+			return false;
+		} else 
+			return true;
+	}	
+</script>
+
 <?php
 
 // initializing variables
-$id = $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role = "";
+$user_id = $first_name = $last_name = $dob = $email = $username = $password_new = $password_confirm = $role = "";
 
 // ADD
 if (isset($_POST['add_user'])) {
@@ -18,7 +97,7 @@ if (isset($_POST['add_user'])) {
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
-
+/*
     if (empty($first_name)) {
         array_push($errors, "First Name is required");
     }
@@ -43,7 +122,7 @@ if (isset($_POST['add_user'])) {
     if (empty($role_name)) {
         array_push($errors, "Role is required");
     }
-
+*/
     //make a unique username
     $username = strtolower($first_name[0] . "_" . $last_name . "_" . rand(1, 99));
 
@@ -97,7 +176,7 @@ if (isset($_POST['add_user'])) {
         if (mysqli_query($conn, $add)) {
             array_push($success, "Registration Successful");
             // clear variables
-            $id = $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role_id = "";
+            $user_id = $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role_id = "";
         } else {
             array_push($errors, "Error registering user: ", mysqli_error($conn));
         }
@@ -107,16 +186,18 @@ if (isset($_POST['add_user'])) {
 // UPDATE
 if (isset($_POST['update_user'])) {
     // receive all input values from the form
+	$user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
     $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
+	
+//    $username = mysqli_real_escape_string($conn, $_POST['username']);
+//    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
-    if (empty($first_name)) {
+/*    if (empty($first_name)) {
         array_push($errors, "First Name is required");
     }
     if (empty($last_name)) {
@@ -134,14 +215,13 @@ if (isset($_POST['update_user'])) {
     if (empty($role_name)) {
         array_push($errors, "Role is required");
     }
-
+*/
     if (count($errors) == 0) {
         $update = "UPDATE users set first_name = '$first_name', last_name = '$last_name', 
-                    dob = '$dob', email = '$email', username = '$username', role_id = '$role_id'
-                    WHERE user_id ='$id'";
+                    dob = '$dob', email = '$email' WHERE user_id ='$user_id'";
 
         if (mysqli_query($conn, $update)) {
-            array_push($success, "User Updated Successfully");
+            array_push($success, "User profile updated successfully");
             // clear variables
             $first_name = $last_name = $dob = $email = $username = $role_id = "";
         } else {
@@ -152,7 +232,7 @@ if (isset($_POST['update_user'])) {
 
 // DELETE
 if (isset($_GET['delete_id'])) {
-    $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
+    $user_id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $role_id = mysqli_real_escape_string($conn, $_GET['role_id']);
     $table_name = "";
 
@@ -182,7 +262,7 @@ if (isset($_GET['delete_id'])) {
     if (mysqli_query($conn, $delete)) {
         array_push($success, "Delete successful");
         // clear variables
-        $id = $role_id = $table_name = "";
+        $user_id = $role_id = $table_name = "";
     } else {
         array_push($errors, "Delete user error: " . mysqli_error($conn));
     }
@@ -259,32 +339,33 @@ if (isset($_GET['delete_id'])) {
         </a>
 
         <?php if (isset($_GET['add_view'])) { ?>
+		
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onSubmit="return validateUserInput()">
 
                     <?php
                     echo display_success();
                     echo display_error();
                     ?>
 
-                    <h4><u>Add User</u></h4>
+                    <h4><u>Add a new user</u></h4>
 
                     <div class="form-input">
                         <label>First Name</label>
-                        <span><input type="text" name="firstname"></span>
+                        <span><input type="text" name="firstname" id="first_name"></span>
                     </div>
                     <div class="form-input">
                         <label>Last Name</label>
-                        <span> <input type="text" name="lastname"> </span>
+                        <span> <input type="text" name="lastname" id="last_name"> </span>
                     </div>
                     <div class="form-input">
                         <label>Date of Birth</label>
-                        <span><input type="date" name="dob"> </span>
+                        <span><input type="date" name="dob" id="dob"> </span>
                     </div>
                     <div class="form-input">
                         <label>Email</label>
-                        <span><input type="email" name="email"> </span>
+                        <span><input type="email" name="email" id="email"> </span>
                     </div>
                     <!-- <div class="form-input">
                         <label>Username</label>
@@ -292,11 +373,11 @@ if (isset($_GET['delete_id'])) {
                     </div> -->
                     <div class="form-input">
                         <label>Password</label>
-                        <span><input type="password" name="password_new"> </span>
+                        <span><input type="password" name="password_new" id="password_new"> </span>
                     </div>
                     <div class="form-input">
                         <label>Confirm password</label>
-                        <span><input type="password" name="password_confirm"></span>
+                        <span><input type="password" name="password_confirm" id="password_confirm"></span>
                     </div>
                     <div class="form-input">
                         <label for="roles">Choose a Role</label>
@@ -324,47 +405,51 @@ if (isset($_GET['delete_id'])) {
         <?php if (isset($_GET['update_view'])) { ?>
 
             <?php
-            $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-            $query = "SELECT * FROM users WHERE user_id='$id'";
+            $user_id = mysqli_real_escape_string($conn, $_GET['update_id']);
+			
+            $query = "SELECT * FROM users WHERE user_id='$user_id'";
             $results = mysqli_query($conn, $query);
 
             while ($row = mysqli_fetch_assoc($results)) {
+				//$user_id = $row['user_id'];
                 $first_name = $row['first_name'];
                 $last_name = $row['last_name'];
                 $dob = $row['dob'];
                 $email = $row['email'];
                 $username = $row['username'];
-                // $update_role_id = $row['role_id'];
+                $update_role_id = $row['role_id'];
             }
             ?>
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onSubmit="return validateUpdateUserInput()">
 
                     <?php
                     echo display_success();
                     echo display_error();
                     ?>
 
-                    <h4><u>Update User</u></h4>
+                    <h4><u>Update a user profile</u></h4>
+					
+					<input type="text" name="user_id" id="user_id" value='<?= $user_id ?>' hidden>
 
                     <div class="form-input">
                         <label>First Name</label>
-                        <span><input type="text" name="firstname" value='<?= $first_name ?>'></span>
+                        <span><input type="text" name="firstname" id="first_name" value='<?= $first_name ?>'></span>
                     </div>
                     <div class="form-input">
                         <label>Last Name</label>
-                        <span> <input type="text" name="lastname" value='<?= $last_name ?>'> </span>
+                        <span> <input type="text" name="lastname" id="last_name" value='<?= $last_name ?>'> </span>
                     </div>
                     <div class="form-input">
                         <label>Date of Birth</label>
-                        <span><input type="date" name="dob" value='<?= $dob ?>'> </span>
+                        <span><input type="date" name="dob" id="dob" value='<?= $dob ?>'> </span>
                     </div>
                     <div class="form-input">
                         <label>Email</label>
-                        <span><input type="email" name="email" value='<?= $email ?>'> </span>
+                        <span><input type="email" name="email" id="email" value='<?= $email ?>'> </span>
                     </div>
-
+                   
                     <!-- <div class="form-input">
                         <label>Username</label>
                         <span><input type="text" name="username" value='<?= $username ?>'></span>

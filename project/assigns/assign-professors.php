@@ -1,6 +1,27 @@
+<script>
+	function validateProfessorCourse() {
+
+		var student_id, course_id, can_enroll;
+
+		professor_id = document.getElementById("user_id").value;
+		course_id = document.getElementById("course_id").value;
+		
+		if (professor_id == '') {
+			alert("Please select a professor from the list.");
+			document.getElementById("user_id").focus();
+			return false;
+		} else if (course_id == '') {
+			alert("Please select a course from the list.");
+			document.getElementById("course_id").focus();
+			return false;
+		} else
+			return true;
+	}
+</script>
+
 <?php
 
-$user_id = $course_id = "";
+$user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
 
 /*******************************************************
  * ADD SQL
@@ -8,17 +29,17 @@ $user_id = $course_id = "";
 
 if (isset($_POST['assign'])) {
 
-    if (empty($_POST['user_id'])) {
-        array_push($errors, "Please select a user");
-    } else {
+//    if (empty($_POST['user_id'])) {
+//        array_push($errors, "Please select a user");
+//    } else {
         $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
-    }
+//    }
 
-    if (empty($_POST['course_id'])) {
-        array_push($errors, "Please select a course");
-    } else {
+//    if (empty($_POST['course_id'])) {
+//        array_push($errors, "Please select a course");
+//    } else {
         $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-    }
+//    }
 
     $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
     $check = mysqli_query($conn, $query);
@@ -27,7 +48,7 @@ if (isset($_POST['assign'])) {
         $check_course_id = $row['course_id'];
 
         if ($check_course_id == $course_id) {
-            array_push($errors, "User already assigned to this course");
+            array_push($errors, "Professor is already assigned to this course.");
         }
     }
 
@@ -38,7 +59,7 @@ if (isset($_POST['assign'])) {
         if (mysqli_query($conn, $add)) {
             array_push($success, "Professor Assigned Successfully");
             // clear variables
-            $user_id = $course_id = "";
+            $user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
         } else {
             array_push($errors, "Adding Error: " . mysqli_error($conn));
         }
@@ -53,11 +74,11 @@ if (isset($_POST['update'])) {
 
     $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
 
-    if (empty($_POST['course_id'])) {
-        array_push($errors, "Please select a course");
-    } else {
+//    if (empty($_POST['course_id'])) {
+//        array_push($errors, "Please select a course");
+//    } else {
         $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-    }
+//    }
 
     $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
     $check = mysqli_query($conn, $query);
@@ -82,7 +103,7 @@ if (isset($_POST['update'])) {
         if (mysqli_query($conn, $update)) {
             array_push($success, "Updated Successfully");
             // clear variables
-            $user_id = $course_id = "";
+            $user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
         } else {
             array_push($errors, "Error: " . mysqli_error($conn));
         }
@@ -107,6 +128,13 @@ if (isset($_GET['delete_view'])) {
         array_push($errors, "Delete error: " . mysqli_error($conn));
     }
 }
+
+if(isset($_POST["course_id"])){
+
+	$user_id_selected = $_POST["user_id"];
+	$course_id_selected = $_POST["course_id"];
+}
+
 ?>
 
 <!-- Table Section
@@ -175,7 +203,7 @@ Always visible and shows delete error if delete_view is set true -->
     <?php if (isset($_GET['add_view'])) { ?>
 
         <div class="form-container">
-            <form class="form-body" action="" method="POST">
+            <form class="form-body" action="" method="POST" onSubmit="return validateProfessorCourse()">
 
                 <?php
                 echo display_success();
@@ -185,8 +213,8 @@ Always visible and shows delete error if delete_view is set true -->
                 <div class="form-input">
                     <p>Professor</p>
                     <div class="scroll-list">
-                        <select name=user_id>
-                            <option value="" selected hidden>Choose a User</option>
+                        <select name="user_id" id="user_id">
+                            <option value="" selected hidden>Choose a Professor</option>
                             <?php
                             $query = "SELECT * FROM users as u
                                         JOIN professor as p ON p.user_id = u.user_id
@@ -196,7 +224,12 @@ Always visible and shows delete error if delete_view is set true -->
                                 $user_id = $user['user_id'];
                                 $first_name = $user['first_name'];
                                 $last_name = $user['last_name'];
-                                echo "<option value='$user_id'>$first_name $last_name</option>";
+								if ($user_id_selected == $user_id) {
+									echo "<option value='$user_id' selected>$first_name $last_name</option>";
+								} else {
+									echo "<option value='$user_id'>$first_name $last_name</option>";
+								}
+								
                             }
                             ?>
                         </select>
@@ -206,7 +239,7 @@ Always visible and shows delete error if delete_view is set true -->
                 <div class="form-input">
                     <p>Courses</p>
                     <div class="scroll-list">
-                        <select name=course_id>
+                        <select name="course_id" id="course_id">
                             <option value="" selected hidden>Choose a Course</option>
                             <?php
                             $query = "SELECT * FROM course";
@@ -222,7 +255,7 @@ Always visible and shows delete error if delete_view is set true -->
                 </div>
 
                 <div class="form-submit">
-                    <input type="submit" name="assign" value="Assign">
+                    <input type="submit" name="assign" id="Submit" value="Assign">
                 </div>
             </form>
         </div>
@@ -312,7 +345,7 @@ Always visible and shows delete error if delete_view is set true -->
                 </div>
 
                 <div class="form-submit">
-                    <input type="submit" name="update" value="Update">
+                    <input type="submit" name="Submit" value="Update">
                 </div>
             </form>
         </div>
