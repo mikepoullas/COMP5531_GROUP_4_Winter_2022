@@ -8,8 +8,6 @@ $user_id = $_SESSION['user_id'];
 // UPLOAD
 if (isset($_POST['upload_file'])) {
 
-    pre_print($_FILES);
-
     // receive all input values from the form
     $content = mysqli_real_escape_string($conn, $_POST['content']);
 
