@@ -64,7 +64,6 @@ SELECT * FROM discussion as d
 JOIN student_group as g ON g.group_id = d.group_id
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN users as u ON u.user_id = d.posted_by_uid
-WHERE g.group_id = 70000
 ORDER BY d.discussion_id DESC;
 
 SELECT * FROM comment as c

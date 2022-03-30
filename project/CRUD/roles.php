@@ -109,8 +109,8 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $role_name ?></td>
-                    <td><?php echo $role_description ?></td>
+                    <td><?= $role_name ?></td>
+                    <td><?= $role_description ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=roles&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo '<td><a href="?page=roles&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
@@ -173,8 +173,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    display_success();
+                    display_error();
                     ?>
 
                     <h3>Update Role</h3>

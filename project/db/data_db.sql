@@ -98,8 +98,8 @@ INSERT INTO comment (content, posted_by_uid, posted_on, discussion_id) VALUES("N
 INSERT INTO comment (content, posted_by_uid, posted_on, discussion_id) VALUES("No Comment 4", 10002, CURRENT_TIMESTAMP, 2200003);
 
 -- Files Table
-INSERT INTO files (file_id, file_name, file_type, file_location, uploaded_by_uid, uploaded_on) VALUES(4400000, "random list","txt", "./CGA/files", 10002, CURRENT_TIMESTAMP);
-INSERT INTO files (file_name, file_type, file_location, uploaded_by_uid, uploaded_on) VALUES("another list","txt", "./CGA/files", 10004, CURRENT_TIMESTAMP);
+INSERT INTO files (file_id, file_name, content, type, size, uploaded_by_uid, uploaded_on, downloads) VALUES(4400000, "file_name_1.txt", "random list", "txt", 100, 10002, CURRENT_TIMESTAMP, 0);
+INSERT INTO files (file_name, content, type, size, uploaded_by_uid, uploaded_on, downloads) VALUES("file_name_2.txt", "another list", "txt", 100, 10004, CURRENT_TIMESTAMP, 0);
 
 -- Course Assignment Table
 INSERT INTO course_assignment (assignment_id, content, course_id, file_id) VALUES(80000, "assignment 1", 50000, 4400000);

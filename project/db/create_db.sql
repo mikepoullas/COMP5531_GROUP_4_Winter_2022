@@ -116,10 +116,12 @@ CREATE TABLE Files
 (
   file_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   file_name VARCHAR(30) NOT NULL,
-  file_type VARCHAR(30) NOT NULL,
-  file_location VARCHAR(255) NOT NULL,
+  content VARCHAR(255) NOT NULL,
+  type VARCHAR(30) NOT NULL,
+  size INT NOT NULL,
   uploaded_by_uid INT NOT NULL,
-  uploaded_on DATETIME DEFAULT CURRENT_TIMESTAMP
+  uploaded_on DATETIME DEFAULT CURRENT_TIMESTAMP,
+  downloads INT NOT NULL
 );
 
 CREATE TABLE Course_Assignment
