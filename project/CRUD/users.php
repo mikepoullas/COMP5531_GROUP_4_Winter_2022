@@ -1,80 +1,80 @@
 <script>
-	function validateUserInput() {
+    function validateUserInput() {
 
-		var first_name, last_name, dob, email, password_new, password_confirm, role;
+        var first_name, last_name, dob, email, password_new, password_confirm, role;
 
-		first_name = document.getElementById("first_name").value;
-		last_name = document.getElementById("last_name").value;
-		dob = document.getElementById("dob").value;
-		email = document.getElementById("email").value;
-		password_new = document.getElementById("password_new").value;
-		password_confirm = document.getElementById("password_confirm").value;
-		role = document.getElementById("roles").value;
-		
-		if (first_name == '') {
-			alert("Please enter users first name.");
-			document.getElementById("first_name").focus();
-			return false;
-		} else if (last_name == '') {
-			alert("Please enter users last name.");
-			document.getElementById("last_name").focus();
-			return false;
-		} else if (dob == '') {
-			alert("Please enter users date of birth.");
-			document.getElementById("dob").focus();
-			return false;
-		} else if (email == '') {
-			alert("Please enter users email address.");
-			document.getElementById("email").focus();
-			return false;
-		} else if (password_new == '') {
-			alert("Please enter users new password.");
-			document.getElementById("password_new").focus();
-			return false;
-		} else if (password_confirm == '') {
-			alert("Please enter users confirmed password.");
-			document.getElementById("password_confirm").focus();
-			return false;
-		} else if (password_new != password_confirm) {
-			alert("Passwords entered do not match.");
-			document.getElementById("password_new").focus();
-			return false;		
-		} else if (role == '') {
-			alert("Please enter users role type.");
-			document.getElementById("role").focus();
-			return false;				
-		} else 
-			return true;
-	}
-	
-	function validateUpdateUserInput() {
+        first_name = document.getElementById("first_name").value;
+        last_name = document.getElementById("last_name").value;
+        dob = document.getElementById("dob").value;
+        email = document.getElementById("email").value;
+        password_new = document.getElementById("password_new").value;
+        password_confirm = document.getElementById("password_confirm").value;
+        role = document.getElementById("roles").value;
 
-		var first_name, last_name, dob, email;
+        if (first_name == '') {
+            alert("Please enter users first name.");
+            document.getElementById("first_name").focus();
+            return false;
+        } else if (last_name == '') {
+            alert("Please enter users last name.");
+            document.getElementById("last_name").focus();
+            return false;
+        } else if (dob == '') {
+            alert("Please enter users date of birth.");
+            document.getElementById("dob").focus();
+            return false;
+        } else if (email == '') {
+            alert("Please enter users email address.");
+            document.getElementById("email").focus();
+            return false;
+        } else if (password_new == '') {
+            alert("Please enter users new password.");
+            document.getElementById("password_new").focus();
+            return false;
+        } else if (password_confirm == '') {
+            alert("Please enter users confirmed password.");
+            document.getElementById("password_confirm").focus();
+            return false;
+        } else if (password_new != password_confirm) {
+            alert("Passwords entered do not match.");
+            document.getElementById("password_new").focus();
+            return false;
+        } else if (role == '') {
+            alert("Please enter users role type.");
+            document.getElementById("role").focus();
+            return false;
+        } else
+            return true;
+    }
 
-		first_name = document.getElementById("first_name").value;
-		last_name = document.getElementById("last_name").value;
-		dob = document.getElementById("dob").value;
-		email = document.getElementById("email").value;
-	
-		if (first_name == '') {
-			alert("Please users first name.");
-			document.getElementById("first_name").focus();
-			return false;
-		} else if (last_name == '') {
-			alert("Please enter users last name.");
-			document.getElementById("last_name").focus();
-			return false;
-		} else if (dob == '') {
-			alert("Please enter users date of birth.");
-			document.getElementById("dob").focus();
-			return false;
-		} else if (email == '') {
-			alert("Please enter users email address.");
-			document.getElementById("email").focus();
-			return false;
-		} else 
-			return true;
-	}	
+    function validateUpdateUserInput() {
+
+        var first_name, last_name, dob, email;
+
+        first_name = document.getElementById("first_name").value;
+        last_name = document.getElementById("last_name").value;
+        dob = document.getElementById("dob").value;
+        email = document.getElementById("email").value;
+
+        if (first_name == '') {
+            alert("Please users first name.");
+            document.getElementById("first_name").focus();
+            return false;
+        } else if (last_name == '') {
+            alert("Please enter users last name.");
+            document.getElementById("last_name").focus();
+            return false;
+        } else if (dob == '') {
+            alert("Please enter users date of birth.");
+            document.getElementById("dob").focus();
+            return false;
+        } else if (email == '') {
+            alert("Please enter users email address.");
+            document.getElementById("email").focus();
+            return false;
+        } else
+            return true;
+    }
 </script>
 
 <?php
@@ -97,7 +97,7 @@ if (isset($_POST['add_user'])) {
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
-/*
+    /*
     if (empty($first_name)) {
         array_push($errors, "First Name is required");
     }
@@ -148,7 +148,7 @@ if (isset($_POST['add_user'])) {
         //$password = md5($password_1); //encrypt the password before saving in the database
 
         $add = "INSERT INTO users (first_name, last_name, dob, email, username, password, created_on, first_login, role_id) 
-                    VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', CURRENT_TIMESTAMP, 1, '$role_id');";
+                    VALUES('$first_name', '$last_name', '$dob', '$email', '$username', '$password', NOW(), 1, '$role_id');";
 
         if (!mysqli_query($conn, $add)) {
             array_push($errors, "Error registering user: ", mysqli_error($conn));
@@ -186,18 +186,18 @@ if (isset($_POST['add_user'])) {
 // UPDATE
 if (isset($_POST['update_user'])) {
     // receive all input values from the form
-	$user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+    $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
     $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-	
-//    $username = mysqli_real_escape_string($conn, $_POST['username']);
-//    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
+
+    //    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    //    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
-/*    if (empty($first_name)) {
+    /*    if (empty($first_name)) {
         array_push($errors, "First Name is required");
     }
     if (empty($last_name)) {
@@ -250,14 +250,14 @@ if (isset($_GET['delete_id'])) {
             break;
     }
 
-    $delete = "DELETE FROM $table_name WHERE user_id = '$id'";
+    $delete = "DELETE FROM $table_name WHERE user_id = '$user_id'";
 
     if (!mysqli_query($conn, $delete)) {
         array_push($errors, "Error deleting user from " . $table_name . " table: " . mysqli_error($conn));
     }
 
     // Now delete user from User table
-    $delete = "DELETE FROM users WHERE user_id='$id'";
+    $delete = "DELETE FROM users WHERE user_id='$user_id'";
 
     if (mysqli_query($conn, $delete)) {
         array_push($success, "Delete successful");
@@ -281,7 +281,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-    <h3>Users</h3>
+    <h2>Users</h2>
     <hr>
     <table>
         <thead>
@@ -299,14 +299,14 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-            while ($users = mysqli_fetch_assoc($results)) {
+            foreach ($results as $users) {
                 $user_id = $users['user_id'];
                 $first_name = $users['first_name'];
                 $last_name = $users['last_name'];
                 $dob = $users['dob'];
                 $email = $users['email'];
                 $username = $users['username'];
-                $created_on = $users['created_on'];
+                $created_on = date_convert($users['created_on']);
                 $role_name = $users['role_name'];
                 $role_id = $users['role_id'];
             ?>
@@ -314,13 +314,13 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $user_id . '</td>';
                     } ?>
-                    <td><?php echo $first_name ?></td>
-                    <td><?php echo $last_name ?></td>
-                    <td><?php echo $dob ?></td>
-                    <td><?php echo $email ?></td>
-                    <td><?php echo $username ?></td>
-                    <td><?php echo $created_on ?></td>
-                    <td><?php echo $role_name ?></td>
+                    <td><?= $first_name ?></td>
+                    <td><?= $last_name ?></td>
+                    <td><?= $dob ?></td>
+                    <td><?= $email ?></td>
+                    <td><?= $username ?></td>
+                    <td><?= $created_on ?></td>
+                    <td><?= $role_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=users&update_view=true&update_id=' . $user_id . '">Update</a></td>';
                         echo '<td><a href="?page=users&delete_view=true&delete_id=' . $user_id . '&role_id=' . $role_id . '">Delete</a></td>';
@@ -339,7 +339,7 @@ if (isset($_GET['delete_id'])) {
         </a>
 
         <?php if (isset($_GET['add_view'])) { ?>
-		
+
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST" onSubmit="return validateUserInput()">
@@ -349,7 +349,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add a new user</u></h4>
+                    <h3>Add a new user</h3>
 
                     <div class="form-input">
                         <label>First Name</label>
@@ -406,12 +406,12 @@ if (isset($_GET['delete_id'])) {
 
             <?php
             $user_id = mysqli_real_escape_string($conn, $_GET['update_id']);
-			
+
             $query = "SELECT * FROM users WHERE user_id='$user_id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
-				//$user_id = $row['user_id'];
+            foreach ($results as $row) {
+                //$user_id = $row['user_id'];
                 $first_name = $row['first_name'];
                 $last_name = $row['last_name'];
                 $dob = $row['dob'];
@@ -429,9 +429,9 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Update a user profile</u></h4>
-					
-					<input type="text" name="user_id" id="user_id" value='<?= $user_id ?>' hidden>
+                    <h3>Update a user profile</h3>
+
+                    <input type="text" name="user_id" id="user_id" value='<?= $user_id ?>' hidden>
 
                     <div class="form-input">
                         <label>First Name</label>
@@ -449,7 +449,7 @@ if (isset($_GET['delete_id'])) {
                         <label>Email</label>
                         <span><input type="email" name="email" id="email" value='<?= $email ?>'> </span>
                     </div>
-                   
+
                     <!-- <div class="form-input">
                         <label>Username</label>
                         <span><input type="text" name="username" value='<?= $username ?>'></span>

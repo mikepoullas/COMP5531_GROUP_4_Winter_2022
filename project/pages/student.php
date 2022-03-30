@@ -10,7 +10,7 @@
             </div>
             <hr>
             <div class="main-menu">
-                <h3>Manage</h3>
+                <h2>Manage</h2>
                 <ul class="menu-list">
                     <li><a href="?page=group-home">Groups</a></li>
                     <li><a href="?page=group-submission">Submissions</a></li>

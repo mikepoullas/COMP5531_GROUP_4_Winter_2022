@@ -10,11 +10,10 @@
             </div>
             <hr>
             <div class="main-menu">
-                <h3>Course Groups</h3>
+                <h2>Groups</h2>
                 <ul class="menu-list">
                     <li><a href="?page=group-home">Group Home</a></li>
-                    <li><a href="?page=group-assignment">Assignments</a></li>
-                    <li><a href="?page=group-project">Projects</a></li>
+                    <li><a href="?page=group-submission">Submissions</a></li>
                 </ul>
             </div>
         </section>

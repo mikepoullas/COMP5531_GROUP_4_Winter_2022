@@ -5,7 +5,7 @@ $id = $title = $posted_by = $posted_on = $content = $course_id = $course_name = 
 $user_id = $_SESSION['user_id'];
 
 // ADD
-if (isset($_POST['announcement_add'])) {
+if (isset($_POST['add_announcement'])) {
 
     // receive all input values from the form
     $title = mysqli_real_escape_string($conn, $_POST['title']);
@@ -26,7 +26,7 @@ if (isset($_POST['announcement_add'])) {
 
     if (count($errors) == 0) {
         $add = "INSERT INTO announcement (title, content, posted_by_uid, posted_on, course_id)
-            VALUES('$title', '$content', '$user_id', CURRENT_TIMESTAMP,'$course_id')";
+            VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
@@ -101,7 +101,7 @@ if (isset($_GET['delete_id'])) {
     $announcements = mysqli_query($conn, $query);
 
     ?>
-    <h3>Announcements</h3>
+    <h2>Announcements</h2>
     <hr>
     <table>
         <thead>
@@ -123,7 +123,7 @@ if (isset($_GET['delete_id'])) {
                 $title = $row['title'];
                 $content = $row['content'];
                 $posted_by = $row['username'];
-                $posted_on = $row['posted_on'];
+                $posted_on = date_convert($row['posted_on']);
                 $course_id = $row['course_id'];
                 $course_name = $row['course_name'];
             ?>
@@ -131,11 +131,11 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $title ?></td>
-                    <td><?php echo $content ?></td>
-                    <td><?php echo $posted_by ?></td>
-                    <td><?php echo $posted_on ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $title ?></td>
+                    <td><?= $content ?></td>
+                    <td><?= $posted_by ?></td>
+                    <td><?= $posted_on ?></td>
+                    <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=announcements&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo '<td><a href="?page=announcements&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
@@ -162,7 +162,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add Announcement</u></h4>
+                    <h3>Add Announcement</h3>
 
                     <div class="form-input">
                         <label>Title</label>
@@ -192,7 +192,7 @@ if (isset($_GET['delete_id'])) {
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="announcement_add" value="Add">
+                        <input type="submit" name="add_announcement" value="Add">
                     </div>
 
                 </form>
@@ -210,7 +210,7 @@ if (isset($_GET['delete_id'])) {
             WHERE a.announcement_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['announcement_id'];
                 $title = $row['title'];
                 $content = $row['content'];
@@ -228,7 +228,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Update Announcement</u></h4>
+                    <h3>Update Announcement</h3>
 
                     <div class="form-input">
                         <label>Course Name</label>

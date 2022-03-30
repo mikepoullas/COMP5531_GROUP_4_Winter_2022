@@ -86,7 +86,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-    <h3>Courses</h3>
+    <h2>Courses</h2>
     <hr>
     <table>
         <thead>
@@ -100,7 +100,7 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['course_id'];
                 $course_name = $row['course_name'];
                 $course_number = $row['course_number'];
@@ -137,7 +137,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add Course</u></h4>
+                    <h3>Add Course</h3>
 
                     <div class="form-input">
                         <label>Course Name</label>
@@ -162,7 +162,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM course WHERE course_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row){
                 $id = $row['course_id'];
                 $course_name = $row['course_name'];
                 $course_number = $row['course_number'];
@@ -177,7 +177,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Update Course</u></h4>
+                    <h3>Update Course</h3>
 
                     <div class="form-input">
                         <label>Course Name</label>

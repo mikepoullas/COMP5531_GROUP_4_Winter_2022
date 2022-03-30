@@ -95,6 +95,12 @@ function pre_print($var)
     echo '</pre>';
 }
 
+function date_convert($date)
+{
+    $date = strtotime($date);
+    return date('d-M-y g:i A', $date);
+}
+
 /***************************************************************************/
 
 
