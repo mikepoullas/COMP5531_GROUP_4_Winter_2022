@@ -86,10 +86,10 @@ INSERT INTO announcement (title, content, posted_by_uid, posted_on, course_id) V
 INSERT INTO announcement (title, content, posted_by_uid, posted_on, course_id) VALUES("Project Due 4 !!", "Must submit project on time!", 10002, CURRENT_TIMESTAMP, 50003);
 
 -- Group  Discussion Table
-INSERT INTO discussion (discussion_id, title, content, posted_by_uid, posted_on, group_id) VALUES(2200000, "Discussion 1", "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit", 10005, CURRENT_TIMESTAMP, 70000);
-INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id) VALUES("Discussion 2", "2. Lorem ipsum dolor sit amet, consectetur adipiscing elit", 10006, CURRENT_TIMESTAMP, 70001);
-INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id) VALUES("Discussion 3", "3. Lorem ipsum dolor sit amet, consectetur adipiscing elit", 10006, CURRENT_TIMESTAMP, 70000);
-INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id) VALUES("Discussion 4", "4. Lorem ipsum dolor sit amet, consectetur adipiscing elit", 10007, CURRENT_TIMESTAMP, 70001);
+INSERT INTO discussion (discussion_id, title, content, posted_by_uid, posted_on, group_id) VALUES(2200000, "Discussion 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 1", 10005, CURRENT_TIMESTAMP, 70000);
+INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id) VALUES("Discussion 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 2", 10006, CURRENT_TIMESTAMP, 70001);
+INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id) VALUES("Discussion 3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 3", 10006, CURRENT_TIMESTAMP, 70000);
+INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id) VALUES("Discussion 4", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 4", 10007, CURRENT_TIMESTAMP, 70001);
 
 -- Group  Comment Table
 INSERT INTO comment (comment_id, content, posted_by_uid, posted_on, discussion_id) VALUES(3300000, "No Comment 1", 10003, CURRENT_TIMESTAMP, 2200000);

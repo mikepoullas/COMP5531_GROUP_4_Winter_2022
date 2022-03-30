@@ -86,7 +86,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-    <h3>Roles</h3>
+    <h2>Roles</h2>
     <hr>
     <table>
         <thead>
@@ -100,7 +100,7 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['role_id'];
                 $role_name = $row['role_name'];
                 $role_description = $row['role_description'];
@@ -137,7 +137,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add Role</u></h4>
+                    <h3>Add Role</h3>
                     <div class="form-input">
                         <label>Role Name</label>
                         <span><input type="text" name="role_name"></span>
@@ -161,7 +161,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM roles WHERE role_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['role_id'];
                 $role_name = $row['role_name'];
                 $role_description = $row['role_description'];
@@ -177,7 +177,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Update Role</u></h4>
+                    <h3>Update Role</h3>
 
                     <div class="form-input">
                         <label>Role Name</label>

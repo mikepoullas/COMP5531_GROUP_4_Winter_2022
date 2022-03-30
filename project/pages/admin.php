@@ -10,7 +10,7 @@
                 </div>
                 <hr>
                 <div class="main-menu">
-                    <h3>Manage</h3>
+                    <h2>Manage</h2>
                     <ul class="menu-list">
                         <li><a href="?page=users">Users</a></li>
                         <li><a href="?page=roles">Roles</a></li>
@@ -23,7 +23,7 @@
                         <li><a href="?page=files">Files</a></li>
                     </ul>
 
-                    <h3>Assign</h3>
+                    <h2>Assign</h2>
                     <ul class="menu-list">
                         <li><a href="?page=assign-professors">Professors</a></li>
                         <li><a href="?page=assign-tas">Teaching Assistants</a></li>
