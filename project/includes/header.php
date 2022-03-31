@@ -4,6 +4,7 @@ session_start();
 
 require_once('../configs/config.php');
 require_once('../helper/functions.php');
+require_once('../includes/server.php');
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {

@@ -25,11 +25,11 @@
 
                 if (isset($_GET['page'])) {
                     $page = $_GET['page'];
-                    if (file_exists("../group/" . $page . ".php")) {
-                        include("../group/" . $page . ".php");
-                    }
                     if (file_exists("../includes/" . $page . ".php")) {
                         include("../includes/" . $page . ".php");
+                    }
+                    if (file_exists("../group/" . $page . ".php")) {
+                        include("../group/" . $page . ".php");
                     }
                 } else {
                     include("../includes/home.php");
