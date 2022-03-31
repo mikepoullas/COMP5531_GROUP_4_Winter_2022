@@ -1,8 +1,10 @@
 <div class="content-body">
     <?php
 
-    display_success();
-    display_error();
+    if (isset($_GET['delete_view'])) {
+        display_success();
+        display_error();
+    }
 
     $query = "SELECT * FROM files as f
                 JOIN users as u ON u.user_id = f.uploaded_by_uid 
@@ -23,7 +25,7 @@
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
                 <th>Downloads</th>
-                <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
+                <?php isAdmin() ? print '<th colspan="3">Action</th>' : ''; ?>
 
             </tr>
         </thead>
@@ -52,6 +54,7 @@
                     <td><?= $downloads ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=server&download_file=' . $id . '">Download</a></td>';
+                        echo '<td><a href="?page=files&update_view=true&update_file=' . $id . '">Update</a></td>';
                         echo '<td><a href="?page=server&delete_file=' . $id . '">Delete</a></td>';
                     } ?>
                 </tr>
@@ -82,6 +85,44 @@
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="upload_file" value="Upload">
+                    </div>
+                </form>
+            </div>
+
+        <?php } ?>
+
+        <?php if (isset($_GET['update_view'])) { ?>
+
+            <?php
+            $id = mysqli_real_escape_string($conn, $_GET['update_file']);
+            $query = "SELECT * FROM files WHERE file_id='$id'";
+            $results = mysqli_query($conn, $query);
+
+            foreach ($results as $row) {
+                $id = $row['file_id'];
+                $file_name = $row['file_name'];
+                $content = $row['content'];
+            }
+            ?>
+
+            <hr>
+            <div class="form-container">
+                <form class="form-body" action="?page=server&update_file=<?= $id ?>" enctype="multipart/form-data" method="POST">
+                    <h3>Update File</h3>
+                    <div class="form-input">
+                        <label>File Name</label>
+                        <span><?= $file_name ?></span>
+                    </div>
+                    <div class="form-input">
+                        <label>File Description</label>
+                        <span><input type="text" name="content" value="<?= $content ?>"></span>
+                    </div>
+                    <div class="form-input">
+                        <label>Update file</label>
+                        <span><input type="file" name="file"> </span>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="update_file" value="Update">
                     </div>
                 </form>
             </div>
