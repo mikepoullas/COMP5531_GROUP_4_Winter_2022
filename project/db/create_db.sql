@@ -10,13 +10,15 @@ use cga;
 50000 - course
 60000 - section
 70000 - groups
-80000 - assignment
-90000 - project
+80000 - submission
+90000 - grades
 
 1100000 - announcement
-2200000 - discussion
-3300000 - comment
-4400000 - files
+2200000 - forum
+3300000 - reply
+4400000 - discussion
+5500000 - comment
+6600000 - files
 
 */
 
@@ -124,26 +126,6 @@ CREATE TABLE Files
   downloads INT NOT NULL
 );
 
-CREATE TABLE Course_Assignment
-(
-  assignment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  content VARCHAR(255) NOT NULL,
-  course_id INT NOT NULL,
-  file_id INT NOT NULL,
-  FOREIGN KEY (course_id) REFERENCES Course(course_id),
-  FOREIGN KEY (file_id) REFERENCES Files(file_id)
-);
-
-CREATE TABLE Course_Project
-(
-  project_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  content VARCHAR(255) NOT NULL,
-  course_id INT NOT NULL,
-  file_id INT NOT NULL,
-  FOREIGN KEY (course_id) REFERENCES Course(course_id),
-  FOREIGN KEY (file_id) REFERENCES Files(file_id)
-);
-
 CREATE TABLE Announcement
 (
   announcement_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -153,6 +135,29 @@ CREATE TABLE Announcement
   posted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   course_id INT NOT NULL,
   FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+
+CREATE TABLE Forum
+(
+  forum_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title INT NOT NULL,
+  content VARCHAR(1024) NOT NULL,
+  posted_by_uid VARCHAR(30) NOT NULL,
+  posted_on DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  file_id INT NOT NULL,
+  course_id INT NOT NULL,
+  FOREIGN KEY (file_id) REFERENCES Files(file_id),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+
+CREATE TABLE Reply
+(
+  reply_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  content VARCHAR(1024) NOT NULL,
+  posted_by_uid INT NOT NULL,
+  posted_on DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  forum_id INT NOT NULL,
+  FOREIGN KEY (forum_id) REFERENCES Forum(forum_id) ON DELETE CASCADE 
 );
 
 CREATE TABLE Discussion
@@ -177,3 +182,44 @@ CREATE TABLE Comment
   discussion_id INT NOT NULL,
   FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id) ON DELETE CASCADE 
 );
+
+CREATE TABLE Graded_Submission
+(
+  submission_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  content VARCHAR(255) NOT NULL,
+  type VARCHAR(30) NOT NULL,
+  deadline DATETIME NOT NULL,
+  file_id INT NOT NULL,
+  course_id INT NOT NULL,
+  discussion_id INT,
+  FOREIGN KEY (file_id) REFERENCES Files(file_id),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id),
+  FOREIGN KEY (discussion_id) REFERENCES Discussion(discussion_id)
+);
+
+CREATE TABLE Student_Grades
+(
+  grade_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  grade INT NOT NULL ,
+  submission_id INT NOT NULL,
+  student_id INT NOT NULL,
+  FOREIGN KEY (submission_id) REFERENCES Graded_Submission(submission_id),
+  FOREIGN KEY (student_id) REFERENCES Student(student_id)
+);
+
+-- SET AI INDEX
+ALTER TABLE roles AUTO_INCREMENT = 1;
+ALTER TABLE users AUTO_INCREMENT = 10000;
+ALTER TABLE student AUTO_INCREMENT = 20000;
+ALTER TABLE ta AUTO_INCREMENT = 30000;
+ALTER TABLE professor AUTO_INCREMENT = 40000;
+ALTER TABLE course AUTO_INCREMENT = 50000;
+ALTER TABLE section AUTO_INCREMENT = 60000;
+ALTER TABLE Student_Group AUTO_INCREMENT = 70000;
+ALTER TABLE Graded_Submission AUTO_INCREMENT = 80000;
+ALTER TABLE Announcement AUTO_INCREMENT = 1100000;
+ALTER TABLE Forum AUTO_INCREMENT = 2200000;
+ALTER TABLE Reply AUTO_INCREMENT = 3300000;
+ALTER TABLE Discussion AUTO_INCREMENT = 4400000;
+ALTER TABLE Comment AUTO_INCREMENT = 5500000;
+ALTER TABLE Files AUTO_INCREMENT = 6600000;

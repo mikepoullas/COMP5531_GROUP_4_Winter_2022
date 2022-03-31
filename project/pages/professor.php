@@ -37,17 +37,17 @@
 
                 if (isset($_GET['page'])) {
                     $page = $_GET['page'];
-                    if (file_exists("../group/" . $page . ".php")) {
-                        include("../group/" . $page . ".php");
+                    if (file_exists("../includes/" . $page . ".php")) {
+                        include("../includes/" . $page . ".php");
                     }
                     if (file_exists("../CRUD/" . $page . ".php")) {
                         include("../CRUD/" . $page . ".php");
                     }
+                    if (file_exists("../group/" . $page . ".php")) {
+                        include("../group/" . $page . ".php");
+                    }
                     if (file_exists("../assigns/" . $page . ".php")) {
                         include("../assigns/" . $page . ".php");
-                    }
-                    if (file_exists("../includes/" . $page . ".php")) {
-                        include("../includes/" . $page . ".php");
                     }
                 } else {
                     include("../includes/home.php");
