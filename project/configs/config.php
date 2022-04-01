@@ -10,7 +10,7 @@ define('DB_NAME', 'cga'); //Add your DB Name
 define('APPROOT', dirname(dirname(__FILE__)));
 
 //URLROOT (Dynamic links)
-define('URLROOT', 'http://localhost/CGA/fresh/');
+define('URLROOT', 'http://localhost/CGA/project/');
 
 //Sitename
 define('SITENAME', 'CGA');
