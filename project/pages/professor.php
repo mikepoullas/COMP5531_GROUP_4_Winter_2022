@@ -10,19 +10,19 @@
             </div>
             <hr>
             <div class="main-menu">
-                <h3>Groups</h3>
+                <h2>Groups</h2>
                 <ul class="menu-list">
                     <li><a href="?page=group-home">Home</a></li>
                     <li><a href="?page=group-submission">Submissions</a></li>
                 </ul>
                 <br>
-                <h3>Manage</h3>
+                <h2>Manage</h2>
                 <ul class="menu-list">
                     <li><a href="?page=groups">Groups</a></li>
                     <li><a href="?page=announcements">Announcements</a></li>
                 </ul>
                 <br>
-                <h3>Assign</h3>
+                <h2>Assign</h2>
                 <ul class="menu-list">
                     <li><a href="?page=assign-students">Students</a></li>
                     <li><a href="?page=assign-tas">Teaching Assistants</a></li>
@@ -37,14 +37,17 @@
 
                 if (isset($_GET['page'])) {
                     $page = $_GET['page'];
-                    if (file_exists("../group/" . $page . ".php")) {
-                        include("../group/" . $page . ".php");
+                    if (file_exists("../includes/" . $page . ".php")) {
+                        include("../includes/" . $page . ".php");
                     }
                     if (file_exists("../CRUD/" . $page . ".php")) {
                         include("../CRUD/" . $page . ".php");
                     }
-                    if (file_exists("../includes/" . $page . ".php")) {
-                        include("../includes/" . $page . ".php");
+                    if (file_exists("../group/" . $page . ".php")) {
+                        include("../group/" . $page . ".php");
+                    }
+                    if (file_exists("../assigns/" . $page . ".php")) {
+                        include("../assigns/" . $page . ".php");
                     }
                 } else {
                     include("../includes/home.php");

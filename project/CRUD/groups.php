@@ -100,7 +100,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-    <h3>Groups</h3>
+    <h2>Groups</h2>
     <hr>
     <table>
         <thead>
@@ -116,7 +116,8 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-            while ($groups = mysqli_fetch_assoc($results)) {
+
+            foreach ($results as $groups) {
                 $id = $groups['group_id'];
                 $group_name = $groups['group_name'];
                 $group_leader_sid = $groups['group_leader_sid'];
@@ -133,7 +134,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=groups&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo '<td><a href="?page=groups&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
+                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -157,7 +158,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add Group</u></h4>
+                    <h3>Add Group</h3>
 
                     <div class="form-input">
                         <label>Group Name</label>
@@ -182,7 +183,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM student_group WHERE group_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['group_id'];
                 $group_name = $row['group_name'];
                 $group_leader_sid = $row['group_leader_sid'];
@@ -198,7 +199,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Update Group</u></h4>
+                    <h3>Update Group</h3>
 
                     <div class="form-input">
                         <label>Group Name</label>

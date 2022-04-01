@@ -10,7 +10,7 @@
             </div>
             <hr>
             <div class="main-menu">
-                <h3>Manage</h3>
+                <h2>Manage</h2>
                 <ul class="menu-list">
                     <li><a href="?page=group-home">Groups</a></li>
                     <li><a href="?page=group-submission">Submissions</a></li>
@@ -25,11 +25,11 @@
 
                 if (isset($_GET['page'])) {
                     $page = $_GET['page'];
-                    if (file_exists("../group/" . $page . ".php")) {
-                        include("../group/" . $page . ".php");
-                    }
                     if (file_exists("../includes/" . $page . ".php")) {
                         include("../includes/" . $page . ".php");
+                    }
+                    if (file_exists("../group/" . $page . ".php")) {
+                        include("../group/" . $page . ".php");
                     }
                 } else {
                     include("../includes/home.php");

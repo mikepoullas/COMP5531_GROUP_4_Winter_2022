@@ -1,3 +1,167 @@
-<main>
-    <p>This is Group Comment</p>
-</main>
+<?php
+
+// initializing variables
+$id = $title = $content = $posted_by = $posted_on = "";
+
+$user_id = $_SESSION['user_id'];
+$discussion_id = $_GET['discussion_id'];
+
+// ADD
+if (isset($_POST['add_comment'])) {
+
+    // receive all input values from the form
+    $content = mysqli_real_escape_string($conn, $_POST['content']);
+
+    // form validation: ensure that the form is correctly filled ...
+    // by adding (array_push()) corresponding error unto $errors array
+    if (empty($content)) {
+        array_push($errors, "Content is required");
+    }
+
+    if (count($errors) == 0) {
+        $add = "INSERT INTO comment (content, posted_by_uid, posted_on, discussion_id)
+                VALUES ('$content', '$user_id', NOW(), '$discussion_id')";
+
+        if (mysqli_query($conn, $add)) {
+            header('location: ?page=group-comment&discussion_id=' . $discussion_id);
+        } else {
+            array_push($errors, "Error adding: ", mysqli_error($conn));
+        }
+    }
+}
+
+
+// UPDATE
+if (isset($_POST['update_comment'])) {
+
+    $id = mysqli_real_escape_string($conn, $_GET['update_id']);
+
+    // receive all input values from the form
+    $content = mysqli_real_escape_string($conn, $_POST['content']);
+
+    // form validation: ensure that the form is correctly filled ...
+    // by adding (array_push()) corresponding error unto $errors array
+    if (empty($content)) {
+        array_push($errors, "Content is required");
+    }
+
+    if (count($errors) == 0) {
+        $update = "UPDATE comment set content = '$content'
+                    WHERE comment_id ='$id'";
+
+        if (mysqli_query($conn, $update)) {
+            header('location: ?page=group-comment&discussion_id=' . $discussion_id);
+        } else {
+            array_push($errors, "Error updating " . mysqli_error($conn));
+        }
+    }
+}
+
+// DELETE
+if (isset($_GET['delete_id'])) {
+    $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
+    $delete = "DELETE FROM comment WHERE comment_id='$id'";
+    if (mysqli_query($conn, $delete)) {
+        header('location: ?page=group-comment&discussion_id=' . $discussion_id);
+    } else {
+        array_push($errors, "Error deleting " . mysqli_error($conn));
+    }
+}
+
+?>
+
+
+<div class="content-body">
+
+    <?php
+
+    display_success();
+    display_error();
+
+    $query = "SELECT d.*, u.username FROM discussion as d
+                JOIN users as u ON u.user_id = d.posted_by_uid
+                WHERE d.discussion_id = '$discussion_id'
+                ORDER BY discussion_id DESC";
+    $discussions = mysqli_query($conn, $query);
+
+    $query = "SELECT c.*, d.title, d.discussion_id, d.posted_by_uid, u.* FROM comment as c
+                JOIN discussion as d ON d.discussion_id = c.discussion_id
+                JOIN users as u ON u.user_id = c.posted_by_uid
+                WHERE c.discussion_id = '$discussion_id'
+                ORDER BY c.comment_id ASC";
+    $comments = mysqli_query($conn, $query);
+    ?>
+
+    <?php foreach ($discussions as $row) {
+        $discussion_title = $row['title'];
+        $discussion_content = $row['content'];
+        $discussion_posted_by = $row['username'];
+        $discussion_posted_on = date_convert($row['posted_on']);
+    } ?>
+
+    <h2><?= $discussion_title ?></h2>
+    <p><?= $discussion_content ?></p>
+    <p>&emsp;by <b><?= $discussion_posted_by ?></b> | <?= $discussion_posted_on ?></p>
+    <hr>
+    <div class="comment-content">
+
+        <?php foreach ($comments as $row) { ?>
+            <ul>
+                <li><?= $row['content'] ?></li>
+                <li>&emsp;by <b><?= $row['username'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
+                <li>
+                    &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $row['discussion_id'] ?>&update_id=<?= $row['comment_id'] ?>">Update</a>
+                    |
+                    <a href="?page=group-comment&delete_view=true&discussion_id=<?= $row['discussion_id'] ?>&delete_id=<?= $row['comment_id'] ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                </li>
+            </ul><br>
+        <?php } ?>
+
+        <hr>
+
+        <?php if (isset($_GET['update_view'])) {
+
+            $id = mysqli_real_escape_string($conn, $_GET['update_id']);
+
+            $query = "SELECT * FROM comment as c
+                WHERE c.comment_id = '$id'
+                ORDER BY c.comment_id ASC";
+            $comments = mysqli_query($conn, $query);
+
+            foreach ($comments as $row) {
+                $content = $row['content'];
+            }
+        ?>
+
+            <div class="form-container">
+                <form class="form-body" action="" method="POST">
+                    <div class="form-input">
+                        <label>Comment</label>
+                        <br>
+                        <textarea name="content"><?= $content ?></textarea>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="update_comment" value="Update">
+                    </div>
+                </form>
+            </div>
+
+
+        <?php } else { ?>
+
+            <div class="form-container">
+                <form class="form-body" action="" method="POST">
+                    <div class="form-input">
+                        <label>Comment</label>
+                        <br>
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="add_comment" value="Comment">
+                    </div>
+                </form>
+            </div>
+
+        <?php } ?>
+
+    </div>

@@ -89,7 +89,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-    <h3>Sections</h3>
+    <h2>Sections</h2>
     <hr>
     <table>
         <thead>
@@ -103,7 +103,7 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['section_id'];
                 $section_name = $row['section_name'];
                 $course_name = $row['course_name'];
@@ -116,7 +116,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $course_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=sections&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo '<td><a href="?page=sections&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
+                        echo "<td><a href='?page=sections&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -140,7 +140,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add Section</u></h4>
+                    <h3>Add Section</h3>
                     <div class="form-input">
                         <label>Section Name</label>
                         <span><input type="text" name="section_name"></span>
@@ -176,7 +176,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM section WHERE section_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['section_id'];
                 $section_name = $row['section_name'];
                 $update_course_id = $row['course_id'];
@@ -192,7 +192,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Update Section</u></h4>
+                    <h3>Update Section</h3>
                     <div class="form-input">
                         <label>Section Name</label>
                         <span><input type="text" name="section_name" value='<?= $section_name ?>'></span>

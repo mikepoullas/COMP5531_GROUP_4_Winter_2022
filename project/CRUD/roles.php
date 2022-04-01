@@ -86,8 +86,7 @@ if (isset($_GET['delete_id'])) {
     $results = mysqli_query($conn, $query);
 
     ?>
-  
-    <h3>Roles</h3>
+    <h2>Roles</h2>
     <hr>
     <table>
         <thead>
@@ -101,7 +100,7 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['role_id'];
                 $role_name = $row['role_name'];
                 $role_description = $row['role_description'];
@@ -110,11 +109,11 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $role_name ?></td>
-                    <td><?php echo $role_description ?></td>
+                    <td><?= $role_name ?></td>
+                    <td><?= $role_description ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=roles&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo '<td><a href="?page=roles&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
+                        echo "<td><a href='?page=roles&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -138,7 +137,7 @@ if (isset($_GET['delete_id'])) {
                     echo display_error();
                     ?>
 
-                    <h4><u>Add Role</u></h4>
+                    <h3>Add Role</h3>
                     <div class="form-input">
                         <label>Role Name</label>
                         <span><input type="text" name="role_name"></span>
@@ -162,7 +161,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM roles WHERE role_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            foreach ($results as $row) {
                 $id = $row['role_id'];
                 $role_name = $row['role_name'];
                 $role_description = $row['role_description'];
@@ -174,11 +173,11 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    display_success();
+                    display_error();
                     ?>
 
-                    <h4><u>Update Role</u></h4>
+                    <h3>Update Role</h3>
 
                     <div class="form-input">
                         <label>Role Name</label>
