@@ -10,9 +10,13 @@
             </div>
             <hr>
             <div class="main-menu">
+                <h2>Course</h2>
+                <ul class="menu-list">
+                    <li><a href="?page=course-home">Forum</a></li>
+                </ul>
                 <h2>Groups</h2>
                 <ul class="menu-list">
-                    <li><a href="?page=group-home">Home</a></li>
+                    <li><a href="?page=group-home">Discussion</a></li>
                     <li><a href="?page=group-submission">Submissions</a></li>
                 </ul>
                 <br>
@@ -42,6 +46,9 @@
                     }
                     if (file_exists("../CRUD/" . $page . ".php")) {
                         include("../CRUD/" . $page . ".php");
+                    }
+                    if (file_exists("../course/" . $page . ".php")) {
+                        include("../course/" . $page . ".php");
                     }
                     if (file_exists("../group/" . $page . ".php")) {
                         include("../group/" . $page . ".php");

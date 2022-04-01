@@ -7,16 +7,17 @@ display_success();
 display_error();
 
 
-
-
 // UPLOAD FILE
 if (isset($_POST['upload_file'])) {
 
     // receive all input values from the form
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    // $content = mysqli_real_escape_string($conn, $_POST['content']);
 
     // name of the uploaded file
     $file_name = $_FILES['file']['name'];
+
+    // unique file description based on username
+    $content = $file_name . "_" . $_SESSION['username'];
 
     // destination of the file on the server
     $destination = '../files/' . $file_name;
@@ -52,7 +53,7 @@ if (isset($_POST['upload_file'])) {
                 $query = "INSERT INTO files (file_name, content, type, size, uploaded_by_uid, uploaded_on, downloads)
                             VALUES('$file_name', '$content', '$extension', $size, $user_id, NOW(), 0)";
                 if (mysqli_query($conn, $query)) {
-                    // array_push($success, "File uploaded successfully");
+                    array_push($success, "File uploaded successfully");
                     header("location: {$_SERVER['HTTP_REFERER']}");
                     exit();
                 }
@@ -117,19 +118,22 @@ if (isset($_POST['update_file'])) {
     $id = $_GET['update_file'];
 
     // receive all input values from the form
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    // $content = mysqli_real_escape_string($conn, $_POST['content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
-    if (empty($content)) {
-        array_push($errors, "File content is required");
-    }
+    // if (empty($content)) {
+    //     array_push($errors, "File content is required");
+    // }
     if (!isset($_FILES)) {
         array_push($errors, "Please upload a file !!");
     }
 
     // name of the uploaded file
     $file_name = $_FILES['file']['name'];
+
+    // unique file description based on username
+    $content = $file_name . "_" . $_SESSION['username'];
 
     // destination of the file on the server
     $destination = '../files/' . $file_name;
@@ -167,7 +171,7 @@ if (isset($_POST['update_file'])) {
         if (move_uploaded_file($file, $destination)) {
             $query = "UPDATE files SET file_name='$file_name', content='$content', type='$extension', size=$size WHERE file_id=$id";
             if (mysqli_query($conn, $query)) {
-                // array_push($success, "File updated successfully");
+                array_push($success, "File updated successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");
                 exit();
             }

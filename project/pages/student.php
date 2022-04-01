@@ -10,9 +10,13 @@
             </div>
             <hr>
             <div class="main-menu">
-                <h2>Manage</h2>
+                <h2>Course</h2>
                 <ul class="menu-list">
-                    <li><a href="?page=group-home">Groups</a></li>
+                    <li><a href="?page=course-home">Forum</a></li>
+                </ul>
+                <h2>Groups</h2>
+                <ul class="menu-list">
+                    <li><a href="?page=group-home">Discussion</a></li>
                     <li><a href="?page=group-submission">Submissions</a></li>
                 </ul>
             </div>
@@ -27,6 +31,9 @@
                     $page = $_GET['page'];
                     if (file_exists("../includes/" . $page . ".php")) {
                         include("../includes/" . $page . ".php");
+                    }
+                    if (file_exists("../course/" . $page . ".php")) {
+                        include("../course/" . $page . ".php");
                     }
                     if (file_exists("../group/" . $page . ".php")) {
                         include("../group/" . $page . ".php");

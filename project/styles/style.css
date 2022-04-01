@@ -10,8 +10,11 @@ body {
     font-size: large;
 }
 
+/**********************************************/
+
 li {
     list-style-type: none;
+    max-width: 40em;
 }
 
 /**********************************************/
@@ -144,6 +147,13 @@ td {
     border-collapse: collapse;
     text-align: left;
     padding: 0.5em;
+}
+
+td {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 button {

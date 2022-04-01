@@ -99,7 +99,9 @@ if (!isAdmin()) {
                     <tr>
                         <th>Course</th>
                         <th>Course Number</th>
-                        <th>Section Name</th>
+                        <?php if (!isProfessor()) { ?>
+                            <th>Section</th>
+                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,9 +112,11 @@ if (!isAdmin()) {
                         $section_name = $row['section_name'];
                     ?>
                         <tr>
-                            <td><?php echo $course_name ?></td>
-                            <td><?php echo $course_number ?></td>
-                            <td><?php echo $section_name ?></td>
+                            <td><?= $course_name ?></td>
+                            <td><?= $course_number ?></td>
+                            <?php if (!isProfessor()) { ?>
+                                <td><?= $section_name ?></td>
+                            <?php } ?>
                         </tr>
                     <?php
                     }
@@ -145,9 +149,9 @@ if (!isAdmin()) {
 
                     ?>
                         <tr>
-                            <td><?php echo $group_name ?></td>
-                            <td><?php echo $course_name ?></td>
-                            <td><?php echo $section_name ?></td>
+                            <td><?= $group_name ?></td>
+                            <td><?= $course_name ?></td>
+                            <td><?= $section_name ?></td>
                             <?php
                             if ($row['group_leader_sid'] == $row['student_id']) {
                                 echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
@@ -174,9 +178,9 @@ if (!isAdmin()) {
                 <ul>
                     <li> <b><?= $row['title'] ?></b> </li>
                     <li> <?= $row['content'] ?></li>
-                    <li>&emsp;by <?= $row['username'] ?></li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b></li>
                     <li>&emsp;<?= $row['posted_on'] ?></li>
-                    <li>&emsp;<?= $row['course_name'] ?> '</li>
+                    <li>&emsp;<?= $row['course_name'] ?></li>
                 </ul><br>
             <?php } ?>
         </div>

@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $title = $content = $posted_by = $posted_on = "";
-
 $user_id = $_SESSION['user_id'];
 $discussion_id = $_GET['discussion_id'];
 
@@ -78,7 +75,7 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT d.*, u.username FROM discussion as d
+    $query = "SELECT d.*, u.* FROM discussion as d
                 JOIN users as u ON u.user_id = d.posted_by_uid
                 WHERE d.discussion_id = '$discussion_id'
                 ORDER BY discussion_id DESC";
@@ -95,7 +92,7 @@ if (isset($_GET['delete_id'])) {
     <?php foreach ($discussions as $row) {
         $discussion_title = $row['title'];
         $discussion_content = $row['content'];
-        $discussion_posted_by = $row['username'];
+        $discussion_posted_by = $row['first_name'] . " " . $row['last_name'];
         $discussion_posted_on = date_convert($row['posted_on']);
     } ?>
 
@@ -108,7 +105,7 @@ if (isset($_GET['delete_id'])) {
         <?php foreach ($comments as $row) { ?>
             <ul>
                 <li><?= $row['content'] ?></li>
-                <li>&emsp;by <b><?= $row['username'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
+                <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
                 <li>
                     &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $row['discussion_id'] ?>&update_id=<?= $row['comment_id'] ?>">Update</a>
                     |

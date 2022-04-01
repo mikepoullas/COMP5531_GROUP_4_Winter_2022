@@ -25,14 +25,17 @@
 
                 if (isset($_GET['page'])) {
                     $page = $_GET['page'];
-                    if (file_exists("../group/" . $page . ".php")) {
-                        include("../group/" . $page . ".php");
+                    if (file_exists("../includes/" . $page . ".php")) {
+                        include("../includes/" . $page . ".php");
                     }
                     if (file_exists("../CRUD/" . $page . ".php")) {
                         include("../CRUD/" . $page . ".php");
                     }
-                    if (file_exists("../includes/" . $page . ".php")) {
-                        include("../includes/" . $page . ".php");
+                    if (file_exists("../course/" . $page . ".php")) {
+                        include("../course/" . $page . ".php");
+                    }
+                    if (file_exists("../group/" . $page . ".php")) {
+                        include("../group/" . $page . ".php");
                     }
                 } else {
                     include("../includes/home.php");

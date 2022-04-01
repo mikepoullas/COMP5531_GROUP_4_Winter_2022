@@ -32,13 +32,16 @@ if (isset($_POST['login_user'])) {
         if (mysqli_num_rows($result) == 1) {
 
             $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $username;
 
             $check = mysqli_fetch_assoc($result);
             $_SESSION['first_login'] = $check['first_login'];
-            $_SESSION['user_id'] = $check['user_id'];
-            $_SESSION['role_id'] = $check['role_id'];
 
+            $_SESSION['user_id'] = $check['user_id'];
+            $_SESSION['username'] = $username;
+            $_SESSION['first_name'] = $check['first_name'];
+            $_SESSION['last_name'] = $check['last_name'];
+
+            $_SESSION['role_id'] = $check['role_id'];
             $roles = get_records_where('roles', 'role_id', $check['role_id']);
             foreach ($roles as $role) {
                 if ($role['role_id'] == $check['role_id']) {

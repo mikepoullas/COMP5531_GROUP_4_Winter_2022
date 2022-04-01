@@ -3,10 +3,6 @@
 $user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
-// initializing variables
-$id = $group_name = $group_leader_sid = $section_name = $course_name = "";
-
-
 if (isStudent()) {
     $query = "SELECT g.*, u.*, s.section_name, c.course_name FROM student_group as g
                 JOIN member_of_group as mg ON mg.group_id = g.group_id
@@ -94,7 +90,7 @@ $group = mysqli_query($conn, $query);
                     JOIN group_of_course as gc ON gc.group_id = g.group_id
                     JOIN course as c ON c.course_id = gc.course_id
                     JOIN users as u ON u.user_id = d.posted_by_uid
-                    WHERE g.group_id = $group_id
+                    WHERE g.group_id = '$group_id'
                     ORDER BY d.discussion_id DESC";
         $discussion = mysqli_query($conn, $query);
 
@@ -110,7 +106,7 @@ $group = mysqli_query($conn, $query);
                         <b><a href='?page=group-comment&discussion_id=<?= $row['discussion_id'] ?>'><?= $row['title'] ?></a></b>
                     </li>
                     <li><?= $row['content'] ?></li>
-                    <li>&emsp;by <b><?= $row['username'] ?></b> </li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> </li>
                     <li>&emsp;<?= date_convert($row['posted_on']) ?></li>
                     <li>&emsp;<?= $row['group_name'] ?> | <?= $row['course_name'] ?></li>
                 </ul><br>
@@ -126,6 +122,7 @@ $group = mysqli_query($conn, $query);
                     JOIN student_group as g ON g.group_id = d.group_id
                     JOIN group_of_course as gc ON gc.group_id = g.group_id
                     JOIN course as c ON c.course_id = gc.course_id
+                    JOIN member_of_group as mg ON mg.group_id = g.group_id
                     JOIN users as u ON u.user_id = d.posted_by_uid
                     ORDER BY d.discussion_id DESC LIMIT 5";
         $discussion_all = mysqli_query($conn, $query);
@@ -141,7 +138,7 @@ $group = mysqli_query($conn, $query);
                         <b><a href='?page=group-comment&discussion_id=<?= $row['discussion_id'] ?>'><?= $row['title'] ?></a></b>
                     </li>
                     <li><?= $row['content'] ?></li>
-                    <li>&emsp;by <b><?= $row['username'] ?></b> </li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> </li>
                     <li>&emsp;<?= date_convert($row['posted_on']) ?></li>
                     <li>&emsp;<?= $row['group_name'] ?> | <?= $row['course_name'] ?></li>
                 </ul><br>
