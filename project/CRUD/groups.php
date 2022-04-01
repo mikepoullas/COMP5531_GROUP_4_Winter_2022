@@ -134,7 +134,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=groups&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo '<td><a href="?page=groups&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
+                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php

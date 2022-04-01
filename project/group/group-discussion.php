@@ -133,7 +133,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $posted_on ?></td>
                     <td><?= $course_name ?></td>
                     <td><a href="?page=group-discussion&update_view=true&group_id=<?= $group_id ?>&update_id=<?= $discussion_id ?>">Update</a></td>
-                    <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&delete_id=<?= $discussion_id ?>">Delete</a></td>
+                    <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&delete_id=<?= $discussion_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
                 </tr>
             <?php
             }

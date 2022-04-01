@@ -144,7 +144,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $group_name ?></td>
                     <td><?= $course_name ?></td>
                     <?php if (isAdmin()) {
-                        echo '<td><a href="?page=discussions&delete_view=true&delete_id=' . $id . '">Delete</a></td>';
+                        echo "<td><a href='?page=discussions&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php

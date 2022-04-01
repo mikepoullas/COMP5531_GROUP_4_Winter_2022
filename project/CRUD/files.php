@@ -55,7 +55,7 @@
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=server&download_file=' . $id . '">Download</a></td>';
                         echo '<td><a href="?page=files&update_view=true&update_file=' . $id . '">Update</a></td>';
-                        echo '<td><a href="?page=server&delete_file=' . $id . '">Delete</a></td>';
+                        echo "<td><a href='?page=server&delete_file=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php

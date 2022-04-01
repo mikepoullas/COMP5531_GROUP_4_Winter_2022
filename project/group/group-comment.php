@@ -112,7 +112,7 @@ if (isset($_GET['delete_id'])) {
                 <li>
                     &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $row['discussion_id'] ?>&update_id=<?= $row['comment_id'] ?>">Update</a>
                     |
-                    <a href="?page=group-comment&delete_view=true&discussion_id=<?= $row['discussion_id'] ?>&delete_id=<?= $row['comment_id'] ?>">Delete</a>
+                    <a href="?page=group-comment&delete_view=true&discussion_id=<?= $row['discussion_id'] ?>&delete_id=<?= $row['comment_id'] ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
                 </li>
             </ul><br>
         <?php } ?>
