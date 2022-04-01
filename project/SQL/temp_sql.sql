@@ -56,8 +56,11 @@ ORDER BY g.group_id ASC;
 
 SELECT * FROM discussion as d
 JOIN student_group as g ON g.group_id = d.group_id
+JOIN member_of_group as mg ON mg.group_id = g.group_id
+JOIN student as st ON st.student_id = mg.student_id
+JOIN users as u ON u.user_id = st.user_id
 JOIN group_of_course as gc ON gc.group_id = g.group_id
-JOIN users as u ON u.user_id = d.posted_by_uid
+JOIN course as c ON c.course_id = gc.course_id
 ORDER BY d.discussion_id DESC LIMIT 5;
 
 SELECT * FROM discussion as d
@@ -69,4 +72,21 @@ ORDER BY d.discussion_id DESC;
 SELECT * FROM comment as c
 JOIN discussion as d ON d.discussion_id = c.discussion_id
 JOIN users as u ON u.user_id = c.posted_by_uid
-ORDER BY c.comment_id DESC; 
+ORDER BY c.comment_id DESC;
+
+SELECT * FROM course as c
+JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+JOIN users as u ON u.user_id = ucs.user_id
+ORDER BY u.user_id ASC;
+
+SELECT * FROM course as c
+JOIN section as s ON s.course_id = c.course_id
+JOIN user_course_section as ucs ON ucs.section_id = s.section_id
+JOIN users as u ON u.user_id = ucs.user_id
+ORDER BY u.user_id ASC;
+
+SELECT * FROM forum as f
+JOIN course as c ON c.course_id = f.course_id
+JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+JOIN users as u ON u.user_id = ucs.user_id
+ORDER BY f.forum_id DESC;

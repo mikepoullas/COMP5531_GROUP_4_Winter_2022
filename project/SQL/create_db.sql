@@ -140,14 +140,14 @@ CREATE TABLE Announcement
 CREATE TABLE Forum
 (
   forum_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title INT NOT NULL,
+  title VARCHAR(30) NOT NULL,
   content VARCHAR(1024) NOT NULL,
-  posted_by_uid VARCHAR(30) NOT NULL,
+  posted_by_uid INT NOT NULL,
   posted_on DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  file_id INT NOT NULL,
   course_id INT NOT NULL,
-  FOREIGN KEY (file_id) REFERENCES Files(file_id),
-  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+  file_id INT,
+  FOREIGN KEY (course_id) REFERENCES Course(course_id),
+  FOREIGN KEY (file_id) REFERENCES Files(file_id)
 );
 
 CREATE TABLE Reply
