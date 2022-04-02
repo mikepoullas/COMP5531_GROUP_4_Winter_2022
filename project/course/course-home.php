@@ -115,17 +115,20 @@ $professor_info = mysqli_query($conn, $query);
         <hr>
 
         <?php
-        $query = "SELECT * FROM forum as f
+        $query = "SELECT f.*,c.*,u.* FROM forum as f
                     JOIN course as c ON c.course_id = f.course_id
+                    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
                     JOIN users as u ON u.user_id = f.posted_by_uid
-                    ORDER BY f.forum_id DESC LIMIT 5";
+                    JOIN users as us ON us.user_id = ucs.user_id
+                    WHERE us.user_id = '$user_id'
+                    ORDER BY f.forum_id DESC LIMIT 10";
 
         $forum_all = mysqli_query($conn, $query);
         $course_name = mysqli_fetch_assoc($forum_all)['course_name'];
         ?>
 
         <div class="discussion-content">
-            <h3>Top 5 Recent Forums</h3>
+            <h3>Top 10 Recent Forums</h3>
             <br>
             <?php foreach ($forum_all as $row) { ?>
                 <ul>

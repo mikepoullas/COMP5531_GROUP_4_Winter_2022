@@ -54,18 +54,35 @@ JOIN section as s ON s.course_id = c.course_id
 JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND  ucs.user_id = u.user_id
 ORDER BY g.group_id ASC;
 
-SELECT * FROM discussion as d
+SELECT d.*,u.*,c.*,g.* FROM discussion as d
 JOIN student_group as g ON g.group_id = d.group_id
 JOIN member_of_group as mg ON mg.group_id = g.group_id
 JOIN student as st ON st.student_id = mg.student_id
-JOIN users as u ON u.user_id = st.user_id
+JOIN users as u ON u.user_id = d.posted_by_uid
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
-ORDER BY d.discussion_id DESC LIMIT 5;
+JOIN users as us ON us.user_id = st.user_id;
+
+SELECT d.*,u.*,c.*,g.* FROM discussion as d
+JOIN student_group as g ON g.group_id = d.group_id
+JOIN member_of_group as mg ON mg.group_id = g.group_id
+JOIN student as st ON st.student_id = mg.student_id
+JOIN users as u ON u.user_id = d.posted_by_uid
+JOIN group_of_course as gc ON gc.group_id = g.group_id
+JOIN course as c ON c.course_id = gc.course_id
+JOIN users as us ON us.user_id = st.user_id
+WHERE us.user_id = 10007
+ORDER BY d.discussion_id DESC LIMIT 10;
+
+SELECT * FROM student_group as g
+JOIN member_of_group as mg ON mg.group_id = g.group_id
+JOIN student as st ON st.student_id = mg.student_id
+JOIN users as u ON u.user_id = st.user_id;
 
 SELECT * FROM discussion as d
 JOIN student_group as g ON g.group_id = d.group_id
 JOIN group_of_course as gc ON gc.group_id = g.group_id
+JOIN course as c ON c.course_id = gc.course_id
 JOIN users as u ON u.user_id = d.posted_by_uid
 ORDER BY d.discussion_id DESC;
 
@@ -88,5 +105,7 @@ ORDER BY u.user_id ASC;
 SELECT * FROM forum as f
 JOIN course as c ON c.course_id = f.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-JOIN users as u ON u.user_id = ucs.user_id
-ORDER BY f.forum_id DESC;
+JOIN users as u ON u.user_id = f.posted_by_uid
+JOIN users as us ON us.user_id = ucs.user_id
+WHERE us.user_id = 10007
+ORDER BY f.forum_id DESC LIMIT 10;

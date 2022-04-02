@@ -57,9 +57,12 @@ $group = mysqli_query($conn, $query);
                     $group_id = $row['group_id'];
                     $group_name = $row['group_name'];
                     $group_leader_sid = $row['group_leader_sid'];
-                    $group_leader_name = $row['first_name'] . " " . $row['last_name'];
                     $section_name = $row['section_name'];
                     $course_name = $row['course_name'];
+
+                    $query = "SELECT * FROM users as u JOIN student as st ON u.user_id = st.user_id WHERE st.student_id = " . $group_leader_sid;
+                    $row = mysqli_fetch_assoc(mysqli_query($conn, $query));
+                    $group_leader_name = $row['first_name'] . " " . $row['last_name'];
                 ?>
                     <tr>
                         <td><?php echo $group_name ?></td>
@@ -118,19 +121,22 @@ $group = mysqli_query($conn, $query);
         <hr>
 
         <?php
-        $query = "SELECT * FROM discussion as d
+        $query = "SELECT d.*,u.*,c.*,g.* FROM discussion as d
                     JOIN student_group as g ON g.group_id = d.group_id
+                    JOIN member_of_group as mg ON mg.group_id = g.group_id
+                    JOIN student as st ON st.student_id = mg.student_id
+                    JOIN users as u ON u.user_id = d.posted_by_uid
                     JOIN group_of_course as gc ON gc.group_id = g.group_id
                     JOIN course as c ON c.course_id = gc.course_id
-                    JOIN member_of_group as mg ON mg.group_id = g.group_id
-                    JOIN users as u ON u.user_id = d.posted_by_uid
-                    ORDER BY d.discussion_id DESC LIMIT 5";
+                    JOIN users as us ON us.user_id = st.user_id
+                    WHERE us.user_id = '$user_id'
+                    ORDER BY d.discussion_id DESC LIMIT 10";
         $discussion_all = mysqli_query($conn, $query);
         $group_name = mysqli_fetch_assoc($discussion_all)['group_name'];
         ?>
 
         <div class="discussion-content">
-            <h3>Top 5 Recent Discussions</h3>
+            <h3>Top 10 Recent Discussions</h3>
             <br>
             <?php foreach ($discussion_all as $row) { ?>
                 <ul>

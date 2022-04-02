@@ -146,7 +146,6 @@ if (!isAdmin()) {
                         $group_name = $row['group_name'];
                         $course_name = $row['course_name'];
                         $section_name = $row['section_name'];
-
                     ?>
                         <tr>
                             <td><?= $group_name ?></td>
@@ -156,8 +155,9 @@ if (!isAdmin()) {
                             if ($row['group_leader_sid'] == $row['student_id']) {
                                 echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
                             } else {
-                                $group_leader_name = get_records_where('users', 'user_id', $row['group_leader_sid'])[0]['first_name']
-                                    . " " . get_records_where('users', 'user_id', $row['group_leader_sid'])[0]['last_name'];
+                                $query = "SELECT * FROM users as u JOIN student as st ON u.user_id = st.user_id WHERE st.student_id = " . $row['group_leader_sid'];
+                                $row = mysqli_fetch_assoc(mysqli_query($conn, $query));
+                                $group_leader_name = $row['first_name'] . " " . $row['last_name'];
                                 echo "<td>" . $group_leader_name . "</td>";
                             }
                             ?>
