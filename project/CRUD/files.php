@@ -24,7 +24,6 @@
                 <th>Size</th>
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
-                <th>Downloads</th>
                 <?php isAdmin() ? print '<th colspan="3">Action</th>' : ''; ?>
 
             </tr>
@@ -34,12 +33,11 @@
             foreach ($results as $row) {
                 $id = $row['file_id'];
                 $file_name = $row['file_name'];
-                $content = $row['content'];
-                $type = $row['type'];
-                $size = $row['size'];
+                $content = $row['file_content'];
+                $type = $row['file_type'];
+                $size = $row['file_size'];
                 $uploaded_by_uid = $row['username'];
                 $uploaded_on = date_convert($row['uploaded_on']);
-                $downloads = $row['downloads'];
             ?>
                 <tr>
                     <?php if (isAdmin()) {
@@ -51,10 +49,9 @@
                     <td><?= $size ?></td>
                     <td><?= $uploaded_by_uid ?></td>
                     <td><?= $uploaded_on ?></td>
-                    <td><?= $downloads ?></td>
                     <?php if (isAdmin()) {
-                        echo '<td><a href="?page=files&download_file=' . $id . '">Download</a></td>';
-                        echo '<td><a href="?page=files&update_view=true&update_file=' . $id . '">Update</a></td>';
+                        echo "<td><a href='?page=files&download_file=" . $id . "'>Download</a></td>";
+                        echo "<td><a href='?page=files&update_view=true&update_file=" . $id . "'>Update</a></td>";
                         echo "<td><a href='?page=files&delete_file=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
@@ -99,7 +96,7 @@
             foreach ($results as $row) {
                 $id = $row['file_id'];
                 $file_name = $row['file_name'];
-                $content = $row['content'];
+                $content = $row['file_content'];
             }
 
             ?>

@@ -149,12 +149,12 @@ td {
     padding: 0.5em;
 }
 
-td {
+/* td {
     max-width: 250px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
+} */
 
 button {
     padding: 0.5em 1em;

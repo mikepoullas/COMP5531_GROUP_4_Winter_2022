@@ -55,8 +55,8 @@ if (!isAdmin()) {
             echo '<li>Courses: <b> ' . mysqli_num_rows(get_table_array('course')) . '</b> </li>';
             echo '<li>Sections: <b> ' . mysqli_num_rows(get_table_array('section')) . '</b> </li>';
             echo '<li>Groups: <b> ' . mysqli_num_rows(get_table_array('student_group')) . '</b> </li>';
-            echo '<li>Submission: <b> ' . mysqli_num_rows(get_table_array('graded_submission')) . '</b> </li>';
-            echo '<li>Grades: <b> ' . mysqli_num_rows(get_table_array('student_grades')) . '</b> </li>';
+            echo '<li>Submission: <b> ' . mysqli_num_rows(get_table_array('submission')) . '</b> </li>';
+            echo '<li>Grades: <b> ' . mysqli_num_rows(get_table_array('grades')) . '</b> </li>';
             echo '<br>';
             echo '<li>Announcements: <b> ' . mysqli_num_rows(get_table_array('announcement')) . '</b> </li>';
             echo '<li>Forums: <b> ' . mysqli_num_rows(get_table_array('forum')) . '</b> </li>';
@@ -176,8 +176,8 @@ if (!isAdmin()) {
             <h3>Announcements</h3><br>
             <?php foreach ($announcements as $row) { ?>
                 <ul>
-                    <li> <b><?= $row['title'] ?></b> </li>
-                    <li> <?= $row['content'] ?></li>
+                    <li> <b><?= $row['announcement_title'] ?></b> </li>
+                    <li> <?= $row['announcement_content'] ?></li>
                     <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b></li>
                     <li>&emsp;<?= $row['posted_on'] ?></li>
                     <li>&emsp;<?= $row['course_name'] ?></li>

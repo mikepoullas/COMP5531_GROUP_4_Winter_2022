@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $group_name = $group_leader_sid = "";
-
 // ADD
 if (isset($_POST['add_group'])) {
 
@@ -33,8 +30,6 @@ if (isset($_POST['add_group'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Group added Successful");
-            // clear variables
-            $group_name = $group_leader_sid = "";
         } else {
             array_push($errors, "Error adding groups: ", mysqli_error($conn));
         }
@@ -64,8 +59,6 @@ if (isset($_POST['update_group'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $group_name = $group_leader_sid = "";
         } else {
             array_push($errors, "Error updating groups: ", mysqli_error($conn));
         }

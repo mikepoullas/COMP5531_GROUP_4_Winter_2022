@@ -67,29 +67,29 @@ if (isset($_POST['reset_email'])) {
                 echo display_error();
                 ?>
 
-                <div class="form-input">
-                    <label>Current Email</label>
-                    <span> <b><?= mysqli_fetch_assoc(get_records_where('users', 'user_id', $user_id))['email'] ?></b></span>
-                </div>
+                <?php if (!isset($_POST['reset_email']) || count($errors) > 0) { ?>
+                    <div class="form-input">
+                        <label>Current Email</label>
+                        <span> <b><?= mysqli_fetch_assoc(get_records_where('users', 'user_id', $user_id))['email'] ?></b></span>
+                    </div>
+                    <div class="form-input">
+                        <label>New Email</label>
+                        <span>
+                            <input type="email" name="email_new">
+                        </span>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="reset_email" value="Reset">
+                    </div>
+                <?php } ?>
 
-                <div class="form-input">
-                    <label>New Email</label>
+                <?php if (isset($_POST['reset_email']) && count($errors) == 0) { ?>
                     <span>
-                        <input type="email" name="email_new">
+                        <a href="../index.php">Welcome</a>
                     </span>
-                </div>
-
-                <div class="form-submit">
-                    <input type="submit" name="reset_email" value="Reset">
-                </div>
-
-                <span>
-                    <a href="../index.php">Welcome</a>
-                </span>
+                <?php } ?>
 
             </form>
-
-
 
         </div>
 

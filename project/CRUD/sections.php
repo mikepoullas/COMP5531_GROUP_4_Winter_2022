@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $section_name = $course_id = "";
-
 // ADD
 if (isset($_POST['add_section'])) {
 
@@ -24,8 +21,6 @@ if (isset($_POST['add_section'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Section added Successful");
-            // clear variables
-            $section_name = $course_id = "";
         } else {
             array_push($errors, "Error adding sections: ", mysqli_error($conn));
         }
@@ -55,8 +50,6 @@ if (isset($_POST['update_section'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $section_name = $course_id = "";
         } else {
             array_push($errors, "Error updating sections: ", mysqli_error($conn));
         }

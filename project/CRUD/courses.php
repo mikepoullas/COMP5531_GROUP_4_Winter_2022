@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $course_name = $course_number = "";
-
 // ADD
 if (isset($_POST['add_course'])) {
 
@@ -24,8 +21,6 @@ if (isset($_POST['add_course'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Course added Successful");
-            // clear variables
-            $course_name = $course_number = "";
         } else {
             array_push($errors, "Error adding course: " . mysqli_error($conn));
         }
@@ -55,8 +50,6 @@ if (isset($_POST['update_course'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $course_name = $course_number = "";
         } else {
             array_push($errors, "Error updating course: ", mysqli_error($conn));
         }

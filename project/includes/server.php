@@ -2,10 +2,8 @@
 
 $user_id = $_SESSION['user_id'];
 
-
-display_success();
 display_error();
-
+display_success();
 
 // UPLOAD FILE
 if (isset($_POST['upload_file'])) {
@@ -17,7 +15,7 @@ if (isset($_POST['upload_file'])) {
     $file_name = $_FILES['file']['name'];
 
     // unique file description based on username
-    $content = $file_name . "_" . $_SESSION['username'];
+    $content = $_SESSION['username'] . "_" . date('d_m_Y', time()) . "_" . $file_name;
 
     // destination of the file on the server
     $destination = '../files/' . $file_name;
@@ -50,8 +48,8 @@ if (isset($_POST['upload_file'])) {
             }
             // move the uploaded (temporary) file to the specified destination
             elseif (move_uploaded_file($file, $destination)) {
-                $query = "INSERT INTO files (file_name, content, type, size, uploaded_by_uid, uploaded_on, downloads)
-                            VALUES('$file_name', '$content', '$extension', $size, $user_id, NOW(), 0)";
+                $query = "INSERT INTO files (file_name, file_content, file_type, file_size, uploaded_by_uid, uploaded_on)
+                            VALUES('$file_name', '$content', '$extension', $size, $user_id, NOW())";
                 if (mysqli_query($conn, $query)) {
                     array_push($success, "File uploaded successfully");
                     header("location: {$_SERVER['HTTP_REFERER']}");
@@ -87,18 +85,18 @@ if (isset($_GET['download_file'])) {
     if (file_exists($filepath)) {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
-        // header('Content-Transfer-Encoding: Binary');
         header('Content-Disposition: attachment; filename="' . basename($filepath) . '"');
         header('Content-Length: ' . filesize($filepath));
+        // header('Content-Transfer-Encoding: Binary');
         // header('Expires: 0');
         // header('Cache-Control: must-revalidate');
         // header('Pragma: public');
         readfile($filepath);
 
         // Now update downloads count
-        $count_download = $file['downloads'] + 1;
-        $update_count = "UPDATE files SET downloads=$count_download WHERE file_id=$id";
-        mysqli_query($conn, $update_count);
+        // $count_download = $file['downloads'] + 1;
+        // $update_count = "UPDATE files SET downloads=$count_download WHERE file_id=$id";
+        // mysqli_query($conn, $update_count);
         exit();
     }
 }
@@ -133,7 +131,7 @@ if (isset($_POST['update_file'])) {
     $file_name = $_FILES['file']['name'];
 
     // unique file description based on username
-    $content = $file_name . "_" . $_SESSION['username'];
+    $content = $_SESSION['username'] . "_" . date('d_m_Y', time()) . "_" . $file_name;
 
     // destination of the file on the server
     $destination = '../files/' . $file_name;
@@ -151,8 +149,6 @@ if (isset($_POST['update_file'])) {
         array_push($errors, "File already exists!");
     }
 
-
-
     if (!in_array($extension, ['zip', 'pdf', 'docx', 'txt'])) {
         array_push($errors, "You file extension must be zip / pdf / docx / txt");
     } elseif ($_FILES['file']['size'] > 1000000) { // file shouldn't be larger than 1Megabyte
@@ -169,7 +165,7 @@ if (isset($_POST['update_file'])) {
 
         // move the uploaded (temporary) file to the specified destination
         if (move_uploaded_file($file, $destination)) {
-            $query = "UPDATE files SET file_name='$file_name', content='$content', type='$extension', size=$size WHERE file_id=$id";
+            $query = "UPDATE files SET file_name='$file_name', file_content='$content', file_type='$extension', file_size=$size WHERE file_id=$id";
             if (mysqli_query($conn, $query)) {
                 array_push($success, "File updated successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");

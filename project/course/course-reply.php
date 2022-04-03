@@ -75,13 +75,13 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT f.*, u.* FROM forum as f
+    $query = "SELECT * FROM forum as f
                 JOIN users as u ON u.user_id = f.posted_by_uid
                 WHERE f.forum_id = '$forum_id'
                 ORDER BY f.forum_id DESC";
     $forums = mysqli_query($conn, $query);
 
-    $query = "SELECT r.*, f.title, f.forum_id, f.posted_by_uid, u.* FROM reply as r
+    $query = "SELECT * FROM reply as r
                 JOIN forum as f ON f.forum_id = r.forum_id
                 JOIN users as u ON u.user_id = r.posted_by_uid
                 WHERE r.forum_id = '$forum_id'
@@ -90,8 +90,8 @@ if (isset($_GET['delete_id'])) {
     ?>
 
     <?php foreach ($forums as $row) {
-        $forum_title = $row['title'];
-        $forum_content = $row['content'];
+        $forum_title = $row['forum_title'];
+        $forum_content = $row['forum_content'];
         $forum_posted_by = $row['first_name'] . ' ' . $row['last_name'];
         $forum_posted_on = date_convert($row['posted_on']);
     } ?>
@@ -104,7 +104,7 @@ if (isset($_GET['delete_id'])) {
 
         <?php foreach ($replys as $row) { ?>
             <ul>
-                <li><?= $row['content'] ?></li>
+                <li><?= $row['reply_content'] ?></li>
                 <li>&emsp;by <b><?= $row['first_name'] . ' ' . $row['last_name'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
                 <li>
                     &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $row['forum_id'] ?>&update_id=<?= $row['reply_id'] ?>">Update</a>

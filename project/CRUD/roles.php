@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $role_name = $role_description = "";
-
 // ADD
 if (isset($_POST['add_role'])) {
 
@@ -24,8 +21,6 @@ if (isset($_POST['add_role'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Role added Successful");
-            // clear variables
-            $role_name = $role_description = "";
         } else {
             array_push($errors, "Error adding role: ", mysqli_error($conn));
         }
@@ -55,8 +50,6 @@ if (isset($_POST['update_role'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $role_name = "";
         } else {
             array_push($errors, "Error updating role: ", mysqli_error($conn));
         }

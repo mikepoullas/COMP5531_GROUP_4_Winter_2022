@@ -3,12 +3,12 @@
 $user_id = $_SESSION['user_id'];
 
 // ADD
-if (isset($_POST['add_discussion'])) {
+if (isset($_POST['add_forum'])) {
 
     // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
-    $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
-    $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
+    $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
+    $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
+    $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -18,13 +18,13 @@ if (isset($_POST['add_discussion'])) {
     if (empty($content)) {
         array_push($errors, "Content is required");
     }
-    if (empty($group_id)) {
-        array_push($errors, "Group is required");
+    if (empty($course_id)) {
+        array_push($errors, "course is required");
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, group_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$group_id')";
+        $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id)
+            VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
@@ -35,14 +35,14 @@ if (isset($_POST['add_discussion'])) {
 }
 
 // UPDATE
-if (isset($_POST['update_discussion'])) {
+if (isset($_POST['update_forum'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
     // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
-    $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
-    // $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
+    $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
+    $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
+    // $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -52,14 +52,14 @@ if (isset($_POST['update_discussion'])) {
     if (empty($content)) {
         array_push($errors, "Content is required");
     }
-    // if (empty($group_id)) {
-    //     array_push($errors, "Group is required");
+    // if (empty($course_id)) {
+    //     array_push($errors, "course is required");
     // }
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE discussion set discussion_title = '$title', discussion_content = '$content'
-                    WHERE discussion_id ='$id'";
+        $update = "UPDATE forum set forum_title = '$title', forum_content = '$content'
+                    WHERE forum_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
@@ -72,7 +72,7 @@ if (isset($_POST['update_discussion'])) {
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
-    $delete = "DELETE FROM discussion WHERE discussion_id='$id'";
+    $delete = "DELETE FROM forum WHERE forum_id='$id'";
     if (mysqli_query($conn, $delete)) {
         array_push($success, "Delete successful");
     } else {
@@ -89,26 +89,23 @@ if (isset($_GET['delete_id'])) {
         display_error();
     }
 
-    $query = "SELECT d.*, u.username, g.group_name, c.course_name FROM discussion as d
-    JOIN users as u ON d.posted_by_uid = u.user_id
-    JOIN student_group as g ON g.group_id = d.group_id
-    JOIN group_of_course as gc ON gc.group_id = g.group_id
-    JOIN course as c ON c.course_id = gc.course_id
-    ORDER BY discussion_id ASC";
-    $discussions = mysqli_query($conn, $query);
+    $query = "SELECT f.*, u.username, c.course_name FROM forum as f
+                JOIN users as u ON  u.user_id = f.posted_by_uid
+                JOIN course as c ON c.course_id = f.course_id
+                ORDER BY f.forum_id ASC";
+    $forums = mysqli_query($conn, $query);
 
     ?>
-    <h2>Discussions</h2>
+    <h2>Forums</h2>
     <hr>
     <table>
         <thead>
             <tr>
-                <th>Discussion ID</th>
-                <th>Title</th>
+                <th>Forum ID</th>
+                <th>Forum Title</th>
                 <th>Content</th>
                 <th>Posted by</th>
                 <th>Posted on</th>
-                <th>Group Name</th>
                 <th>Course Name</th>
                 <th>Action</th>
 
@@ -116,30 +113,27 @@ if (isset($_GET['delete_id'])) {
         </thead>
         <tbody>
             <?php
-
-            foreach ($discussions as $row) {
-                $id = $row['discussion_id'];
-                $title = $row['discussion_title'];
-                $content = $row['discussion_content'];
+            foreach ($forums as $row) {
+                $id = $row['forum_id'];
+                $title = $row['forum_title'];
+                $content = $row['forum_content'];
                 $posted_by = $row['username'];
                 $posted_on = date_convert($row['posted_on']);
-                $group_id = $row['group_id'];
-                $group_name = $row['group_name'];
+                $course_id = $row['course_id'];
                 $course_name = $row['course_name'];
             ?>
                 <tr>
+
                     <td><?= $id ?></td>
                     <td><?= $title ?></td>
                     <td><?= $content ?></td>
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>
-                    <td><?= $group_name ?></td>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=discussions&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <td><a href="?page=forums&delete_view=true&delete_id=?<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
                 </tr>
-            <?php
-            }
-            ?>
+
+            <?php } ?>
         </tbody>
     </table>
 

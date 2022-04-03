@@ -79,9 +79,6 @@
 
 <?php
 
-// initializing variables
-$user_id = $first_name = $last_name = $dob = $email = $username = $password_new = $password_confirm = $role = "";
-
 // ADD
 if (isset($_POST['add_user'])) {
 
@@ -95,34 +92,6 @@ if (isset($_POST['add_user'])) {
     $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
     $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    /*
-    if (empty($first_name)) {
-        array_push($errors, "First Name is required");
-    }
-    if (empty($last_name)) {
-        array_push($errors, "Last Name is required");
-    }
-    if (empty($dob)) {
-        array_push($errors, "Date of Birth is required");
-    }
-    if (empty($email)) {
-        array_push($errors, "Email is required");
-    }
-    // if (empty($username)) {
-    //     array_push($errors, "Username is required");
-    // }
-    if (empty($password_new)) {
-        array_push($errors, "Password is required");
-    }
-    if ($password_new !== $password_confirm) {
-        array_push($errors, "The two passwords do not match");
-    }
-    if (empty($role_name)) {
-        array_push($errors, "Role is required");
-    }
-*/
     //make a unique username
     $username = strtolower($first_name[0] . "_" . $last_name . "_" . rand(1, 99));
 
@@ -195,27 +164,6 @@ if (isset($_POST['update_user'])) {
     //    $username = mysqli_real_escape_string($conn, $_POST['username']);
     //    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    /*    if (empty($first_name)) {
-        array_push($errors, "First Name is required");
-    }
-    if (empty($last_name)) {
-        array_push($errors, "Last Name is required");
-    }
-    if (empty($dob)) {
-        array_push($errors, "Date of Birth is required");
-    }
-    if (empty($email)) {
-        array_push($errors, "Email is required");
-    }
-    if (empty($username)) {
-        array_push($errors, "Username is required");
-    }
-    if (empty($role_name)) {
-        array_push($errors, "Role is required");
-    }
-*/
     if (count($errors) == 0) {
         $update = "UPDATE users set first_name = '$first_name', last_name = '$last_name', 
                     dob = '$dob', email = '$email' WHERE user_id ='$user_id'";
