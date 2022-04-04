@@ -12,12 +12,11 @@
             <div class="main-menu">
                 <h2>Course</h2>
                 <ul class="menu-list">
-                    <li><a href="?page=course-home">Forum</a></li>
-                    <li><a href="?page=course-submission">Submissions</a></li>
+                    <li><a href="?page=course-home">View</a></li>
                 </ul>
                 <h2>Groups</h2>
                 <ul class="menu-list">
-                    <li><a href="?page=group-home">Discussion</a></li>
+                    <li><a href="?page=group-home">View</a></li>
                 </ul>
             </div>
         </section>

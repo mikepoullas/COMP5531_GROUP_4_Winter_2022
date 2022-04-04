@@ -2,73 +2,6 @@
 
 $user_id = $_SESSION['user_id'];
 
-// ADD
-if (isset($_POST['add_discussion'])) {
-
-    // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
-    $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
-    $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
-
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    if (empty($title)) {
-        array_push($errors, "Title is required");
-    }
-    if (empty($content)) {
-        array_push($errors, "Content is required");
-    }
-    if (empty($group_id)) {
-        array_push($errors, "Group is required");
-    }
-
-    if (count($errors) == 0) {
-        $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, group_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$group_id')";
-
-        if (mysqli_query($conn, $add)) {
-            array_push($success, "Added successfully");
-        } else {
-            array_push($errors, "Error adding: ", mysqli_error($conn));
-        }
-    }
-}
-
-// UPDATE
-if (isset($_POST['update_discussion'])) {
-
-    $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-
-    // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
-    $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
-    // $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
-
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    if (empty($title)) {
-        array_push($errors, "Title is required");
-    }
-    if (empty($content)) {
-        array_push($errors, "Content is required");
-    }
-    // if (empty($group_id)) {
-    //     array_push($errors, "Group is required");
-    // }
-
-    if (count($errors) == 0) {
-
-        $update = "UPDATE discussion set discussion_title = '$title', discussion_content = '$content'
-                    WHERE discussion_id ='$id'";
-
-        if (mysqli_query($conn, $update)) {
-            array_push($success, "Update Successful");
-        } else {
-            array_push($errors, "Error updating " . mysqli_error($conn));
-        }
-    }
-}
-
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
@@ -84,10 +17,9 @@ if (isset($_GET['delete_id'])) {
 
 <div class="content-body">
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+
+    display_success();
+    display_error();
 
     $query = "SELECT d.*, u.username, g.group_name, c.course_name FROM discussion as d
     JOIN users as u ON d.posted_by_uid = u.user_id

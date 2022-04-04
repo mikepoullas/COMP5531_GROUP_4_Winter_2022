@@ -71,10 +71,9 @@ if (isset($_GET['delete_id'])) {
 
 <div class="content-body">
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM section as s
             JOIN course as c ON c.course_id = s.course_id

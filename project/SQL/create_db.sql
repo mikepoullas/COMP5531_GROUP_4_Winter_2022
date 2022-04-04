@@ -134,6 +134,7 @@ CREATE TABLE Solution
 (
   solution_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   solution_type VARCHAR(30) NOT NULL,
+  solution_content VARCHAR(255) NOT NULL,
   task_id INT NOT NULL,
   file_id INT NOT NULL,
   FOREIGN KEY (task_id) REFERENCES Task(task_id),
@@ -143,8 +144,8 @@ ALTER TABLE Solution AUTO_INCREMENT = 90000;
 
 CREATE TABLE Grades
 (
-  grade INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  grade_id INT NOT NULL,
+  grade_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  grade INT NOT NULL,
   student_id INT NOT NULL,
   solution_id INT NOT NULL,
   FOREIGN KEY (student_id) REFERENCES Student(student_id),
@@ -198,7 +199,7 @@ CREATE TABLE Discussion
   discussion_content VARCHAR(1024) NOT NULL,
   posted_by_uid INT NOT NULL,
   posted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
-  group_id INT NOT NULL,
+  group_id INT,
   task_id INT,
   file_id INT,
   FOREIGN KEY (group_id) REFERENCES Student_Group(group_id),

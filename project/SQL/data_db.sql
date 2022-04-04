@@ -1,6 +1,6 @@
 /*
 
-10000 - user, 
+10000 - user
 20000 - student
 30000 - ta
 40000 - professor
@@ -8,7 +8,7 @@
 60000 - section
 70000 - groups
 80000 - task
-90000 - grades
+90000 - solution
 
 1100000 - announcement
 2200000 - forum
@@ -16,6 +16,7 @@
 4400000 - discussion
 5500000 - comment
 6600000 - files
+7700000 - grades
 
 */
 
@@ -138,6 +139,11 @@ INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, pos
 ("Discussion 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 1", 10007, CURRENT_TIMESTAMP, 70000),
 ("Discussion 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 2", 10008, CURRENT_TIMESTAMP, 70001),
 ("Discussion 3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 3", 10009, CURRENT_TIMESTAMP, 70002);
+INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, task_id) VALUES
+("Discussion Assignment DB", "Lorem ipsum dolor sit amet, consectetur adipiscing elit DB", 10007, CURRENT_TIMESTAMP, 80000),
+("Discussion Project DB", "Lorem ipsum dolor sit amet, consectetur adipiscing elit DB", 10007, CURRENT_TIMESTAMP, 80001),
+("Discussion Assignment OS", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 3", 10008, CURRENT_TIMESTAMP, 80002),
+("Discussion Project OS", "Lorem ipsum dolor sit amet, consectetur adipiscing elit 3", 10008, CURRENT_TIMESTAMP, 80003);
 
 -- Group  Comment Table
 INSERT INTO comment (comment_content, posted_by_uid, posted_on, discussion_id) VALUES
@@ -147,20 +153,36 @@ INSERT INTO comment (comment_content, posted_by_uid, posted_on, discussion_id) V
 
 -- Files Table
 INSERT INTO files (file_name, file_content, file_type, file_size, uploaded_by_uid, uploaded_on) VALUES
-("assignment_1.txt", "assignment content 1", "txt", 100, 10001, CURRENT_TIMESTAMP),
-("project_1.txt", "project content 1", "txt", 100, 10001, CURRENT_TIMESTAMP),
-("assignment_2.txt", "assignment content 2", "txt", 100, 10002, CURRENT_TIMESTAMP),
-("project_2.txt", "project content 2", "txt", 100, 10002, CURRENT_TIMESTAMP);
+("assignment_DB.txt", "assignment DB task", "txt", 100, 10001, CURRENT_TIMESTAMP),
+("project_DB.txt", "project DB task", "txt", 100, 10001, CURRENT_TIMESTAMP),
+("assignment_OS.txt", "assignment OS task", "txt", 100, 10002, CURRENT_TIMESTAMP),
+("project_OS.txt", "project OS task", "txt", 100, 10002, CURRENT_TIMESTAMP),
+("assignment_DB_sol.txt", "assignment DB solve", "txt", 100, 10007, CURRENT_TIMESTAMP),
+("project_DB_sol.txt", "project DB solve", "txt", 100, 10007, CURRENT_TIMESTAMP),
+("assignment_OS_sol.txt", "assignment OS solve", "txt", 100, 10008, CURRENT_TIMESTAMP),
+("project_OS_sol.txt", "project OS solve", "txt", 100, 10008, CURRENT_TIMESTAMP);
 
 -- Task Table
 INSERT INTO task (task_type, task_content, task_deadline, course_id, file_id) VALUES
-("Assignment", "Assignment 1", "2022-04-15 23:59:00" ,50000, 6600000),
-("Project", "Project 1", "2022-04-15 23:59:00" ,50000, 6600001),
-("Assignment", "Assignment 2", "2022-04-15 23:59:00" ,50001, 6600002),
-("Project", "Project 2", "2022-04-15 23:59:00" ,50001, 6600003);
+("Assignment", "Assignment DB", "2022-04-15 23:59:00" ,50000, 6600000),
+("Project", "Project DB", "2022-04-15 23:59:00" ,50000, 6600001),
+("Assignment", "Assignment OS", "2022-04-15 23:59:00" ,50001, 6600002),
+("Project", "Project OS", "2022-04-15 23:59:00" ,50001, 6600003);
 
--- INSERT INTO solution (solution_type, task_id, file_id) VALUES
--- ("Assignment", 50000, 6600000),
--- ("Project", 50000, 6600001),
--- ("Assignment", 50001, 6600002),
--- ("Project", 50001, 6600003);
+-- Solution Table
+INSERT INTO solution (solution_type, solution_content, task_id, file_id) VALUES
+("Assignment", "Assignment DB Solve", 80000, 6600000),
+("Project", "Project DB Solve", 80001, 6600001),
+("Assignment", "Assignment OS Solve", 80002, 6600002),
+("Project", "Project OS Solve", 80003, 6600003);
+
+-- Solution Table
+INSERT INTO grades (grade, student_id, solution_id) VALUES
+(100, 20000, 90000),
+(90, 20000, 90001),
+(50, 20000, 90002),
+(40, 20000, 90003),
+(100, 20001, 90000),
+(90, 20001, 90001),
+(50, 20001, 90002),
+(60, 20001, 90003);

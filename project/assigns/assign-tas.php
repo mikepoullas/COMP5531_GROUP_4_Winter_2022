@@ -26,8 +26,6 @@
 
 <?php
 
-$user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
-
 /*******************************************************
  * ADD SQL
  ********************************************************/
@@ -71,8 +69,6 @@ if (isset($_POST['assign'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "TA has been assigned successfully!");
-            // clear variables
-            $user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
         } else {
             array_push($errors, "Could not INSERT Error: " . mysqli_error($conn));
         }
@@ -121,8 +117,6 @@ if (isset($_POST['update'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Updated Successfully.");
-            // clear variables
-            $user_id = $course_id = $section_id = "";
         } else {
             array_push($errors, "Could not UPDATE error: " . mysqli_error($conn));
         }
@@ -161,10 +155,10 @@ Always visible and shows delete error if delete_view is set true -->
 <div class="content-body">
 
     <?php
-    if (isset($_GET['delete_view'])) {
+
         display_success();
         display_error();
-    }
+    
 
     $query = "SELECT * FROM users as u
                 JOIN ta as t ON t.user_id = u.user_id

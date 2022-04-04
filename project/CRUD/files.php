@@ -1,10 +1,8 @@
 <div class="content-body">
     <?php
 
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM files as f
                 JOIN users as u ON u.user_id = f.uploaded_by_uid 

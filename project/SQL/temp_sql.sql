@@ -12,6 +12,16 @@ JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
 ORDER BY discussion_id ASC;
 
+SELECT d.*, u.*, c.course_name, g.group_name FROM discussion as d
+JOIN student_group as g ON g.group_id = d.group_id
+JOIN users as u ON u.user_id = d.posted_by_uid
+JOIN group_of_course as gc ON gc.group_id = g.group_id
+JOIN course as c ON c.course_id = gc.course_id
+JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+JOIN users as us ON us.user_id = ucs.user_id
+WHERE us.user_id = 10001
+ORDER BY d.discussion_id DESC LIMIT 10;
+
 SELECT * FROM student_group as g
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id;
@@ -21,6 +31,14 @@ JOIN student as s ON g.group_leader_sid = s.student_id
 JOIN users as u ON s.user_id = u.user_id
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
+ORDER BY g.group_id ASC;
+
+SELECT g.*, u.*, s.section_name, c.course_name FROM student_group as g
+JOIN group_of_course as gc ON gc.group_id = g.group_id
+JOIN course as c ON c.course_id = gc.course_id
+JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+LEFT JOIN section as s ON s.section_id = ucs.section_id
+JOIN users as u ON u.user_id = ucs. user_id 
 ORDER BY g.group_id ASC;
 
 SELECT * FROM users as u

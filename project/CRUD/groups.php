@@ -79,10 +79,10 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="content-body">
-    <?php if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    <?php
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM student_group as g
     JOIN student as s ON g.group_leader_sid = s.student_id

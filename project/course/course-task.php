@@ -1,6 +1,12 @@
 <?php
 
 $user_id = $_SESSION['user_id'];
+$course_id = $_GET['course_id'];
+if (isset($_GET['file_id'])) {
+    $file_id = $_GET['file_id'];
+}
+
+pre_print($_REQUEST);
 
 // ADD
 if (isset($_POST['upload_file'])) {
@@ -11,22 +17,30 @@ if (isset($_POST['upload_file'])) {
     $task_type = mysqli_real_escape_string($conn, $_POST['task_type']);
     $task_content = mysqli_real_escape_string($conn, $_POST['task_content']);
     $task_deadline = mysqli_real_escape_string($conn, $_POST['task_deadline']);
-
+    $today = date('Y-m-d', time());
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
-    if (empty($course_name)) {
-        array_push($errors, "Course Name is required");
+    if (empty($task_type)) {
+        array_push($errors, "Type is required");
     }
-    if (empty($course_number)) {
-        array_push($errors, "Course Number is required");
+    if (empty($task_content)) {
+        array_push($errors, "Content is required");
     }
+    if (empty($task_deadline)) {
+        array_push($errors, "Deadline is required");
+    } elseif ($task_deadline <= $today) {
+        array_push($errors, "Deadline invalid");
+    } else {
+        $task_deadline = date_convert($task_deadline);
+    }
+
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO course (course_name, course_number) VALUES('$course_name', '$course_number');";
+        $add = "INSERT INTO task (task_type, task_content, task_deadline, course_id, file_id) VALUES('$task_type', '$task_content', '$task_deadline', '$course_id', '$file_id')";
 
         if (mysqli_query($conn, $add)) {
-            array_push($success, "Course added Successful");
+            array_push($success, "Task added Successful");
         } else {
             array_push($errors, "Error adding course: " . mysqli_error($conn));
         }
@@ -49,23 +63,23 @@ if (isset($_GET['delete_id'])) {
 <div class="content-body">
     <?php
 
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    display_success();
+    display_error();
 
-    $query = "SELECT * FROM task as s
-                JOIN course as c ON c.course_id = s.course_id
-                JOIN files as f ON f.file_id = s.file_id
+    $query = "SELECT * FROM task as t
+                JOIN course as c ON c.course_id = t.course_id
+                JOIN files as f ON f.file_id = t.file_id
                 JOIN users as u ON u.user_id = f.uploaded_by_uid
                 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
                 JOIN users as us ON us.user_id = ucs.user_id
-                WHERE us.user_id = '$user_id'
-                ORDER BY s.task_id ASC";
+                WHERE us.user_id = '$user_id' AND c.course_id = '$course_id'
+                ORDER BY t.task_type ASC";
     $results = mysqli_query($conn, $query);
 
+    $course_name = mysqli_fetch_assoc($results)['course_name'];
+
     ?>
-    <h2>tasks</h2>
+    <h2><?= $course_name ?> Tasks</h2>
     <hr>
     <table>
         <thead>
@@ -119,54 +133,53 @@ if (isset($_GET['delete_id'])) {
         </tbody>
     </table>
 
-    <?php if (!isTA()) { ?>
-        <a href="?page=course-task&upload_view=true">
+    <?php if (isProfessor()) { ?>
+        <a href="?page=course-task&upload_view=true&course_id=<?= $course_id ?>">
             <button>Upload File</button>
         </a>
-    <?php } ?>
 
-    <?php if (isset($_GET['upload_view'])) { ?>
-        <hr>
-        <div class="form-container">
-            <form class="form-body" action="" enctype="multipart/form-data" method="POST">
+        <?php if (isset($_GET['upload_view'])) { ?>
+            <hr>
+            <div class="form-container">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
 
-                <h3>Upload task</h3>
+                    <h3>Upload task</h3>
 
-                <div class="form-input">
-                    <label>Description</label>
-                    <span><input type="text" name="task_content"></span>
-                </div>
+                    <div class="form-input">
+                        <label for="task_type">Upload type</label>
+                        <span>
+                            <select name="task_type">
+                                <option value="" selected hidden>Choose a type</option>
+                                <?php if (isProfessor()) { ?>
+                                    <option value="Assignment">Assignment</option>
+                                    <option value="Project">Project</option>
+                                <?php } ?>
+                            </select>
+                        </span>
+                    </div>
 
-                <div class="form-input">
-                    <label for="task_type">Upload type</label>
-                    <span>
-                        <select name="task_type">
-                            <option value="" selected hidden>Choose a type</option>
-                            <?php if (isProfessor()) { ?>
-                                <option value="Assignment">Assignment</option>
-                                <option value="Project">Project</option>
-                            <?php } elseif (isStudent()) { ?>
-                                <option value="Assignment_Solution">Solution - Assignment</option>
-                                <option value="Project_Solution">Solution - Project</option>
-                            <?php } ?>
-                        </select>
-                    </span>
-                </div>
+                    <div class="form-input">
+                        <label>Description</label>
+                        <span><input type="text" name="task_content"></span>
+                    </div>
 
-                <div class="form-input">
-                    <label>Select file</label>
-                    <span><input type="file" name="file"> </span>
-                </div>
+                    <div class="form-input">
+                        <label>Deadline</label>
+                        <span><input type="date" name="task_deadline"></span>
+                    </div>
 
-                <div class="form-submit">
-                    <input type="submit" name="upload_file" value="Upload">
-                </div>
-            </form>
-        </div>
+                    <div class="form-input">
+                        <label>Select file</label>
+                        <span><input type="file" name="file"> </span>
+                    </div>
 
-    <?php } ?>
+                    <div class="form-submit">
+                        <input type="submit" name="upload_file" value="Upload">
+                    </div>
+                </form>
+            </div>
 
-    <?php if (!isStudent()) { ?>
+        <?php } ?>
 
         <?php if (isset($_GET['update_view'])) { ?>
 

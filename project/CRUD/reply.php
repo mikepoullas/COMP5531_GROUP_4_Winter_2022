@@ -29,7 +29,7 @@ if (isset($_GET['delete_id'])) {
     $replys = mysqli_query($conn, $query);
 
     ?>
-    <h2>replys</h2>
+    <h2>Replys</h2>
     <hr>
     <table>
         <thead>

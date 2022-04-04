@@ -79,10 +79,10 @@ if (isset($_GET['delete_id'])) {
 
 <div class="content-body">
     <?php
-    if (isset($_GET['delete_view'])) {
+
         display_success();
         display_error();
-    }
+    
 
     $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
     JOIN users as u ON a.posted_by_uid = u.user_id

@@ -2,73 +2,6 @@
 
 $user_id = $_SESSION['user_id'];
 
-// ADD
-if (isset($_POST['add_forum'])) {
-
-    // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
-    $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
-    $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    if (empty($title)) {
-        array_push($errors, "Title is required");
-    }
-    if (empty($content)) {
-        array_push($errors, "Content is required");
-    }
-    if (empty($course_id)) {
-        array_push($errors, "course is required");
-    }
-
-    if (count($errors) == 0) {
-        $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
-
-        if (mysqli_query($conn, $add)) {
-            array_push($success, "Added successfully");
-        } else {
-            array_push($errors, "Error adding: ", mysqli_error($conn));
-        }
-    }
-}
-
-// UPDATE
-if (isset($_POST['update_forum'])) {
-
-    $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-
-    // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
-    $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
-    // $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    if (empty($title)) {
-        array_push($errors, "Title is required");
-    }
-    if (empty($content)) {
-        array_push($errors, "Content is required");
-    }
-    // if (empty($course_id)) {
-    //     array_push($errors, "course is required");
-    // }
-
-    if (count($errors) == 0) {
-
-        $update = "UPDATE forum set forum_title = '$title', forum_content = '$content'
-                    WHERE forum_id ='$id'";
-
-        if (mysqli_query($conn, $update)) {
-            array_push($success, "Update Successful");
-        } else {
-            array_push($errors, "Error updating " . mysqli_error($conn));
-        }
-    }
-}
-
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
@@ -84,10 +17,10 @@ if (isset($_GET['delete_id'])) {
 
 <div class="content-body">
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+
+    display_success();
+    display_error();
+
 
     $query = "SELECT f.*, u.username, c.course_name FROM forum as f
                 JOIN users as u ON  u.user_id = f.posted_by_uid

@@ -17,6 +17,10 @@ li {
     max-width: 40em;
 }
 
+a {
+    text-decoration: none;
+}
+
 /**********************************************/
 
 /* .title-bar {

@@ -70,10 +70,10 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="content-body">
-    <?php if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    <?php
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM roles ORDER BY role_id ASC";
     $results = mysqli_query($conn, $query);

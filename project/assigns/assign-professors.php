@@ -21,8 +21,6 @@
 
 <?php
 
-$user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
-
 /*******************************************************
  * ADD SQL
  ********************************************************/
@@ -33,14 +31,14 @@ if (isset($_POST['assign'])) {
     //        array_push($errors, "Please select a user");
     //    } else {
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
-	$_GET['user_id'] = $user_id;
+    $_GET['user_id'] = $user_id;
     //    }
 
     //    if (empty($_POST['course_id'])) {
     //        array_push($errors, "Please select a course");
     //    } else {
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-	$_GET['course_id'] = $course_id;
+    $_GET['course_id'] = $course_id;
     //    }
 
     $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
@@ -60,8 +58,6 @@ if (isset($_POST['assign'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Professor successfully assigned to this course.");
-            // clear variables
-            $user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
         } else {
             array_push($errors, "Could not INSERT error: " . mysqli_error($conn));
         }
@@ -73,14 +69,14 @@ if (isset($_POST['assign'])) {
  ********************************************************/
 
 if (isset($_POST['update'])) {
-	
+
     $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
 
     //    if (empty($_POST['course_id'])) {
     //        array_push($errors, "Please select a course");
     //    } else {
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-	$_GET['course_id'] = $course_id;
+    $_GET['course_id'] = $course_id;
     //    }
 
     $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
@@ -88,19 +84,17 @@ if (isset($_POST['update'])) {
 
     foreach ($check as $row) {
         $check_course_id = $row['course_id'];
-		if ($check_course_id == $course_id) {
-				array_push($errors, "Professor is already assigned to this course.");
-			}
-	}
-    
+        if ($check_course_id == $course_id) {
+            array_push($errors, "Professor is already assigned to this course.");
+        }
+    }
+
     if (count($errors) == 0) {
 
         $update = "UPDATE user_course_section set course_id = '$course_id', section_id = null WHERE user_id ='$user_id'";
-		
+
         if (mysqli_query($conn, $update)) {
             array_push($success, "Updated successfully.");
-            // clear variables
-            $user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
         } else {
             array_push($errors, "Could not UPDATE error: " . mysqli_error($conn));
         }
@@ -139,10 +133,10 @@ Always visible and shows delete error if delete_view is set true -->
 <div class="content-body">
 
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+
+    display_success();
+    display_error();
+
 
     $query = "SELECT * FROM users as u
                 JOIN professor as p ON p.user_id = u.user_id
@@ -271,7 +265,7 @@ Always visible and shows delete error if delete_view is set true -->
         JOIN user_course_section as ucs ON ucs.user_id = u.user_id
         JOIN course as c ON c.course_id = ucs.course_id
         WHERE u.user_id='$user_id' AND c.course_id = '$course_id'";
-		
+
         $results = mysqli_query($conn, $query);
 
         foreach ($results as $row) {

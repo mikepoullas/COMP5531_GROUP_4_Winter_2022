@@ -7,8 +7,8 @@ $course_id = $_GET['course_id'];
 if (isset($_POST['add_forum'])) {
 
     // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
+    $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -20,7 +20,7 @@ if (isset($_POST['add_forum'])) {
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO forum (title, content, posted_by_uid, posted_on, course_id)
+        $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id)
             VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
 
         if (mysqli_query($conn, $add)) {
@@ -38,8 +38,8 @@ if (isset($_POST['update_forum'])) {
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
     // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
+    $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
     // $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
     // form validation: ensure that the form is correctly filled ...
@@ -56,7 +56,7 @@ if (isset($_POST['update_forum'])) {
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE forum set title = '$title', content = '$content'
+        $update = "UPDATE forum set forum_title = '$title', forum_content = '$content'
                     WHERE forum_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
@@ -84,10 +84,8 @@ if (isset($_GET['delete_id'])) {
 <div class="content-body">
     <?php
 
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    display_success();
+    display_error();
 
     $query = "SELECT f.*, u.username, c.course_name FROM forum as f
                 JOIN users as u ON  u.user_id = f.posted_by_uid
@@ -115,8 +113,8 @@ if (isset($_GET['delete_id'])) {
 
             foreach ($forum as $row) {
                 $forum_id = $row['forum_id'];
-                $title = $row['title'];
-                $content = $row['content'];
+                $title = $row['forum_title'];
+                $content = $row['forum_content'];
                 $posted_by = $row['username'];
                 $posted_on = date_convert($row['posted_on']);
             ?>
@@ -177,8 +175,8 @@ if (isset($_GET['delete_id'])) {
 
         foreach ($results as $row) {
             $id = $row['forum_id'];
-            $title = $row['title'];
-            $content = $row['content'];
+            $title = $row['forum_title'];
+            $content = $row['forum_content'];
             $course_name = $row['course_name'];
         }
 

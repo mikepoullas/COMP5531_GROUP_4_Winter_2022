@@ -75,33 +75,110 @@ $course_info = mysqli_query($conn, $query);
     <?php if (isset($_GET['forum_view'])) { ?>
 
         <hr>
-
         <?php
-
         $course_id = $_GET['course_id'];
-
         $query = "SELECT * FROM forum as f
                     JOIN course as c ON c.course_id = f.course_id
                     JOIN users as u ON u.user_id = f.posted_by_uid
                     WHERE c.course_id = '$course_id'
                     ORDER BY f.forum_id DESC";
-        $fourm = mysqli_query($conn, $query);
-
-        $course_name = mysqli_fetch_assoc($fourm)['course_name'];
-
+        $forum = mysqli_query($conn, $query);
+        $course_name = mysqli_fetch_assoc($forum)['course_name'];
         ?>
         <div class="forum-content">
             <h3><?= $course_name ?> Forum</h3>
             <br>
-            <?php foreach ($fourm as $row) { ?>
+            <?php
+            foreach ($forum as $row) {
+                $forum_id = $row['forum_id'];
+                $forum_title = $row['forum_title'];
+                $forum_content = $row['forum_content'];
+                $posted_by = $row['first_name'] . " " . $row['last_name'];
+                $posted_on = date_convert($row['posted_on']);
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+            ?>
                 <ul>
                     <li>
-                        <b><a href='?page=course-reply&forum_id=<?= $row['forum_id'] ?>'><?= $row['forum_title'] ?></a></b>
+                        <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
                     </li>
-                    <li><?= $row['forum_content'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> </li>
-                    <li>&emsp;<?= date_convert($row['posted_on']) ?></li>
-                    <li>&emsp;<?= $row['course_name'] ?> | <?= $row['course_number'] ?></li>
+                    <li><?= $forum_content ?></li>
+                    <li>&emsp;<?= $posted_on ?></li>
+                    <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?> | <?= $course_number ?></li>
+                </ul><br>
+            <?php } ?>
+        </div>
+
+    <?php } elseif (isset($_GET['task_view'])) { ?>
+
+        <hr>
+        <?php
+        $course_id = $_GET['course_id'];
+        $query = "SELECT * FROM task as t
+                    JOIN files as f ON f.file_id = t.file_id
+                    JOIN course as c ON c.course_id = t.course_id
+                    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+                    JOIN users as u ON u.user_id = f.uploaded_by_uid
+                    JOIN users as us ON us.user_id = ucs.user_id
+                    WHERE c.course_id = '$course_id' AND us.user_id = '$user_id' AND t.task_type = 'Assignment'
+                    ORDER BY t.task_id DESC";
+        $assignment = mysqli_query($conn, $query);
+
+        $query = "SELECT * FROM task as t
+                    JOIN files as f ON f.file_id = t.file_id
+                    JOIN course as c ON c.course_id = t.course_id
+                    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+                    JOIN users as u ON u.user_id = f.uploaded_by_uid
+                    JOIN users as us ON us.user_id = ucs.user_id
+                    WHERE c.course_id = '$course_id' AND us.user_id = '$user_id' AND t.task_type = 'Project'
+                    ORDER BY t.task_id DESC";
+        $project = mysqli_query($conn, $query);
+        ?>
+
+        <div class="task-content">
+            <h3>Course Tasks</h3>
+            <br>
+            <?php
+            foreach ($assignment as $row) {
+                $task_id = $row['task_id'];
+                $task_type = $row['task_type'];
+                $task_content = $row['task_content'];
+                $file_id = $row['file_id'];
+                $file_name = $row['file_name'];
+                $task_deadline = date_convert($row['task_deadline']);
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+                $uploaded_by = $row['first_name'] . " " . $row['last_name'];
+            ?>
+                <h4><?= $task_type ?></h4><br>
+                <ul>
+                    <li><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></li>
+                    <li>
+                        <a href='?page=course-home&download_file=<?= $file_id ?>'>[<?= $file_name ?>]</a>
+                    </li>
+                    <li>&emsp;Deadline: <b><?= $task_deadline ?></b></li>
+                    <li>&emsp;by <b><?= $uploaded_by ?></b> | <?= $course_name ?> | <?= $course_number ?></li>
+                </ul><br>
+            <?php } ?>
+            <?php
+            foreach ($project as $row) {
+                $task_id = $row['task_id'];
+                $task_type = $row['task_type'];
+                $task_content = $row['task_content'];
+                $file_name = $row['file_name'];
+                $task_deadline = date_convert($row['task_deadline']);
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+                $uploaded_by = $row['first_name'] . " " . $row['last_name'];
+            ?>
+                <h4><?= $task_type ?></h4><br>
+                <ul>
+                    <li><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></li>
+                    <li>
+                        <a href='?page=course-home&download_file=<?= $file_id ?>'>[<?= $file_name ?>]</a>
+                    </li>
+                    <li>&emsp;Deadline: <b><?= $task_deadline ?></b></li>
+                    <li>&emsp;by <b><?= $uploaded_by ?></b> | <?= $course_name ?> | <?= $course_number ?></li>
                 </ul><br>
             <?php } ?>
         </div>
@@ -111,16 +188,14 @@ $course_info = mysqli_query($conn, $query);
         <hr>
 
         <?php
-        $query = "SELECT * FROM forum as f
+        $query = "SELECT f.*, c.*, u.* FROM forum as f
                     JOIN course as c ON c.course_id = f.course_id
                     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
                     JOIN users as u ON u.user_id = f.posted_by_uid
                     JOIN users as us ON us.user_id = ucs.user_id
                     WHERE us.user_id = '$user_id'
                     ORDER BY f.forum_id DESC LIMIT 10";
-
         $forum_all = mysqli_query($conn, $query);
-        $course_name = mysqli_fetch_assoc($forum_all)['course_name'];
 
         $query = "SELECT * FROM task as t
                     JOIN files as f ON f.file_id = t.file_id
@@ -128,80 +203,92 @@ $course_info = mysqli_query($conn, $query);
                     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
                     JOIN users as u ON u.user_id = f.uploaded_by_uid
                     JOIN users as us ON us.user_id = ucs.user_id
-                    WHERE us.user_id = '$user_id'
+                    WHERE us.user_id = '$user_id' AND t.task_type = 'Assignment'
                     ORDER BY t.task_id DESC";
-        $task_all = mysqli_query($conn, $query);
+        $assignment = mysqli_query($conn, $query);
+
+        $query = "SELECT * FROM task as t
+                    JOIN files as f ON f.file_id = t.file_id
+                    JOIN course as c ON c.course_id = t.course_id
+                    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+                    JOIN users as u ON u.user_id = f.uploaded_by_uid
+                    JOIN users as us ON us.user_id = ucs.user_id
+                    WHERE us.user_id = '$user_id' AND t.task_type = 'Project'
+                    ORDER BY t.task_id DESC";
+        $project = mysqli_query($conn, $query);
+
         ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <div class="task-content">
             <h3>Course Tasks</h3>
             <br>
-            <?php foreach ($task_all as $row) { ?>
+            <?php
+            foreach ($assignment as $row) {
+                $task_id = $row['task_id'];
+                $task_type = $row['task_type'];
+                $task_content = $row['task_content'];
+                $file_id = $row['file_id'];
+                $file_name = $row['file_name'];
+                $task_deadline = date_convert($row['task_deadline']);
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+                $uploaded_by = $row['first_name'] . " " . $row['last_name'];
+            ?>
+                <h4><?= $task_type ?></h4><br>
                 <ul>
+                    <li><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></li>
                     <li>
-                        <b><a href='?page=group-discussion&task_id=<?= $row['task_id'] ?>'><?= $row['task_content'] ?></a></b>
+                        <a href='?page=course-home&download_file=<?= $file_id ?>'>[<?= $file_name ?>]</a>
                     </li>
-                    <li>Type: <?= $row['task_type'] ?></li>
+                    <li>&emsp;Deadline: <b><?= $task_deadline ?></b></li>
+                    <li>&emsp;by <b><?= $uploaded_by ?></b> | <?= $course_name ?> | <?= $course_number ?></li>
+                </ul><br>
+            <?php } ?>
+            <?php
+            foreach ($project as $row) {
+                $task_id = $row['task_id'];
+                $task_type = $row['task_type'];
+                $task_content = $row['task_content'];
+                $file_name = $row['file_name'];
+                $task_deadline = date_convert($row['task_deadline']);
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+                $uploaded_by = $row['first_name'] . " " . $row['last_name'];
+            ?>
+                <h4><?= $task_type ?></h4><br>
+                <ul>
+                    <li><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></li>
                     <li>
-                        <b><a href='?page=group-discussion&task_id=<?= $row['task_id'] ?>'><?= $row['file_name'] ?></a></b>
+                        <a href='?page=course-home&download_file=<?= $file_id ?>'>[<?= $file_name ?>]</a>
                     </li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b></li>
-                    <li>&emsp;<?= date_convert($row['task_deadline']) ?></li>
-                    <li>&emsp;<?= $row['course_name'] ?> | <?= $row['course_number'] ?></li>
+                    <li>&emsp;Deadline: <b><?= $task_deadline ?></b></li>
+                    <li>&emsp;by <b><?= $uploaded_by ?></b> | <?= $course_name ?> | <?= $course_number ?></li>
                 </ul><br>
             <?php } ?>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+        <hr>
 
         <div class="forum-content">
             <h3>Top 10 Recent Forums</h3>
             <br>
-            <?php foreach ($forum_all as $row) { ?>
+            <?php
+            foreach ($forum_all as $row) {
+                $forum_id = $row['forum_id'];
+                $forum_title = $row['forum_title'];
+                $forum_content = $row['forum_content'];
+                $posted_by = $row['first_name'] . " " . $row['last_name'];
+                $posted_on = date_convert($row['posted_on']);
+                $course_name = $row['course_name'];
+                $course_number = $row['course_number'];
+            ?>
                 <ul>
                     <li>
-                        <b><a href='?page=course-reply&forum_id=<?= $row['forum_id'] ?>'><?= $row['forum_title'] ?></a></b>
+                        <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
                     </li>
-                    <li><?= $row['forum_content'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b></li>
-                    <li>&emsp;<?= date_convert($row['posted_on']) ?></li>
-                    <li>&emsp;<?= $row['course_name'] ?> | <?= $row['course_number'] ?></li>
+                    <li><?= $forum_content ?></li>
+                    <li>&emsp;<?= $posted_on ?></li>
+                    <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?> | <?= $course_number ?></li>
                 </ul><br>
             <?php } ?>
         </div>

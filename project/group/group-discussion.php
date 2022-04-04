@@ -1,14 +1,25 @@
 <?php
 
 $user_id = $_SESSION['user_id'];
-$group_id = $_GET['group_id'];
+
+if (isset($_GET['group_id'])) {
+    $group_id = $_GET['group_id'];
+} else {
+    $group_id = null;
+}
+
+if (isset($_GET['task_id'])) {
+    $task_id = $_GET['task_id'];
+} else {
+    $task_id = null;
+}
 
 // ADD
 if (isset($_POST['add_discussion'])) {
 
     // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
+    $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -20,12 +31,18 @@ if (isset($_POST['add_discussion'])) {
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO discussion (title, content, posted_by_uid, posted_on, group_id)
+        if ($group_id != null) {
+            $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, group_id)
             VALUES('$title', '$content', '$user_id', NOW(),'$group_id')";
+        }
+        if ($task_id != null) {
+            $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, task_id)
+            VALUES('$title', '$content', '$user_id', NOW(),'$task_id')";
+        }
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
-            header('location: ?page=group-discussion&group_id=' . $group_id);
+            header('location: ?page=group-discussion&group_id=' . $group_id . '&task_id=' . $task_id);
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -38,8 +55,8 @@ if (isset($_POST['update_discussion'])) {
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
     // receive all input values from the form
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
+    $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
     // $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
 
     // form validation: ensure that the form is correctly filled ...
@@ -56,12 +73,12 @@ if (isset($_POST['update_discussion'])) {
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE discussion set title = '$title', content = '$content'
+        $update = "UPDATE discussion set discussion_title = '$title', discussion_content = '$content'
                     WHERE discussion_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            header('location: ?page=group-discussion&group_id=' . $group_id);
+            header('location: ?page=group-discussion&group_id=' . $group_id . '&task_id=' . $task_id);
         } else {
             array_push($errors, "Error updating " . mysqli_error($conn));
         }
@@ -73,7 +90,7 @@ if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM discussion WHERE discussion_id='$id'";
     if (mysqli_query($conn, $delete)) {
-        header('location: ?page=group-discussion&group_id=' . $group_id);
+        header('location: ?page=group-discussion&group_id=' . $group_id . '&task_id=' . $task_id);
     } else {
         array_push($errors, "Error deleting " . mysqli_error($conn));
     }
@@ -84,23 +101,29 @@ if (isset($_GET['delete_id'])) {
 <div class="content-body">
     <?php
 
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    display_success();
+    display_error();
 
-    $query = "SELECT d.*, u.username, g.group_name, c.course_name FROM discussion as d
-    JOIN users as u ON u.user_id = d.posted_by_uid
-    JOIN student_group as g ON g.group_id = d.group_id
-    JOIN group_of_course as gc ON gc.group_id = g.group_id
-    JOIN course as c ON c.course_id = gc.course_id
-    WHERE g.group_id = '$group_id'
-    ORDER BY discussion_id DESC";
+    $query = "SELECT * FROM discussion as d
+                JOIN users as u ON u.user_id = d.posted_by_uid
+                LEFT JOIN student_group as g ON g.group_id = d.group_id
+                LEFT JOIN task as t ON t.task_id = d.task_id
+                LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
+                JOIN course as c ON c.course_id = gc.course_id OR c.course_id = t.course_id
+                WHERE g.group_id = '$group_id' OR t.task_id = '$task_id'
+                ORDER BY discussion_id DESC";
     $discussions = mysqli_query($conn, $query);
+
+    if ($group_id != null) {
+        $discussion_heading = mysqli_fetch_assoc($discussions)['group_name'];
+    }
+    if ($task_id != null) {
+        $discussion_heading = mysqli_fetch_assoc($discussions)['task_content'];
+    }
 
     ?>
 
-    <h2><?= mysqli_fetch_assoc($discussions)['group_name'] ?> Discussions</h2>
+    <h2><?= $discussion_heading ?> Discussions</h2>
     <hr>
     <table>
         <thead>
@@ -118,8 +141,8 @@ if (isset($_GET['delete_id'])) {
 
             foreach ($discussions as $row) {
                 $discussion_id = $row['discussion_id'];
-                $title = $row['title'];
-                $content = $row['content'];
+                $title = $row['discussion_title'];
+                $content = $row['discussion_content'];
                 $posted_by = $row['username'];
                 $posted_on = date_convert($row['posted_on']);
                 $group_id = $row['group_id'];
@@ -131,8 +154,8 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=group-discussion&update_view=true&group_id=<?= $group_id ?>&update_id=<?= $discussion_id ?>">Update</a></td>
-                    <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&delete_id=<?= $discussion_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <td><a href="?page=group-discussion&update_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&update_id=<?= $discussion_id ?>">Update</a></td>
+                    <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&delete_id=<?= $discussion_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
                 </tr>
             <?php
             }
@@ -140,7 +163,7 @@ if (isset($_GET['delete_id'])) {
         </tbody>
     </table>
 
-    <a href="?page=group-discussion&add_view=true&group_id=<?= $group_id ?>">
+    <a href="?page=group-discussion&add_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>">
         <button>Post Discussion</button>
     </a>
 
@@ -153,13 +176,13 @@ if (isset($_GET['delete_id'])) {
 
                 <div class="form-input">
                     <label>Title</label>
-                    <span><input type="text" name="title"></span>
+                    <span><input type="text" name="discussion_title"></span>
                 </div>
 
                 <div class="form-input">
                     <label>Content </label>
                     <br>
-                    <textarea name="content"></textarea>
+                    <textarea name="discussion_content"></textarea>
                 </div>
 
                 <div class="form-submit">
@@ -185,8 +208,8 @@ if (isset($_GET['delete_id'])) {
 
         foreach ($results as $row) {
             $id = $row['discussion_id'];
-            $title = $row['title'];
-            $content = $row['content'];
+            $title = $row['discussion_title'];
+            $content = $row['discussion_content'];
             $group_name = $row['group_name'];
             $course_name = $row['course_name'];
         }
@@ -201,13 +224,13 @@ if (isset($_GET['delete_id'])) {
 
                 <div class="form-input">
                     <label>Title</label>
-                    <span><input type="text" name="title" value='<?= $title ?>'></span>
+                    <span><input type="text" name="discussion_title" value='<?= $title ?>'></span>
                 </div>
 
                 <div class="form-input">
                     <label>Content</label>
                     <br>
-                    <textarea name="content"><?= $content ?></textarea>
+                    <textarea name="discussion_content"><?= $content ?></textarea>
                 </div>
 
                 <div class="form-submit">

@@ -83,8 +83,8 @@
 if (isset($_POST['add_user'])) {
 
     // receive all input values from the form
-    $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
-    $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
+    $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     // $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -144,8 +144,6 @@ if (isset($_POST['add_user'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Registration Successful");
-            // clear variables
-            $user_id = $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role_id = "";
         } else {
             array_push($errors, "Error registering user: ", mysqli_error($conn));
         }
@@ -170,8 +168,6 @@ if (isset($_POST['update_user'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "User profile updated successfully");
-            // clear variables
-            $first_name = $last_name = $dob = $email = $username = $role_id = "";
         } else {
             array_push($errors, "Error updating user: ", mysqli_error($conn));
         }
@@ -182,7 +178,6 @@ if (isset($_POST['update_user'])) {
 if (isset($_GET['delete_id'])) {
     $user_id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $role_id = mysqli_real_escape_string($conn, $_GET['role_id']);
-    $table_name = "";
 
     //Delete User from Student, TA or Professor table accordingly first to avoid constraint issue
 
@@ -209,8 +204,6 @@ if (isset($_GET['delete_id'])) {
 
     if (mysqli_query($conn, $delete)) {
         array_push($success, "Delete successful");
-        // clear variables
-        $user_id = $role_id = $table_name = "";
     } else {
         array_push($errors, "Delete user error: " . mysqli_error($conn));
     }
@@ -221,10 +214,10 @@ if (isset($_GET['delete_id'])) {
 <div class="content-body">
 
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+
+    display_success();
+    display_error();
+
     $query = "SELECT * FROM users as u JOIN roles as r ON u.role_id = r.role_id ORDER BY user_id ASC";
     $results = mysqli_query($conn, $query);
 
@@ -301,11 +294,11 @@ if (isset($_GET['delete_id'])) {
 
                     <div class="form-input">
                         <label>First Name</label>
-                        <span><input type="text" name="firstname" id="first_name"></span>
+                        <span><input type="text" name="first_name" id="first_name"></span>
                     </div>
                     <div class="form-input">
                         <label>Last Name</label>
-                        <span> <input type="text" name="lastname" id="last_name"> </span>
+                        <span> <input type="text" name="last_name" id="last_name"> </span>
                     </div>
                     <div class="form-input">
                         <label>Date of Birth</label>

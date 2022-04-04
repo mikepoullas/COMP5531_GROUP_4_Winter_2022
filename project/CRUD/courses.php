@@ -70,10 +70,10 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="content-body">
-    <?php if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    <?php
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM course ORDER BY course_id ASC";
     $results = mysqli_query($conn, $query);
@@ -155,7 +155,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM course WHERE course_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            foreach ($results as $row){
+            foreach ($results as $row) {
                 $id = $row['course_id'];
                 $course_name = $row['course_name'];
                 $course_number = $row['course_number'];

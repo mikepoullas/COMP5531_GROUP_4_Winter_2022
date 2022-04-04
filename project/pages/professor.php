@@ -29,6 +29,7 @@
                 <ul class="menu-list">
                     <li><a href="?page=assign-students">Students</a></li>
                     <li><a href="?page=assign-tas">Teaching Assistants</a></li>
+                    <li><a href="?page=assign-group">Group Members</a></li>
                 </ul>
             </div>
         </section>
