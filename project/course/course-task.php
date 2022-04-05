@@ -36,8 +36,14 @@ if (isset($_POST['upload_file'])) {
     }
 
 
+
+    var_dump($task_type, $task_content, $task_deadline);
+
+
+
     if (count($errors) == 0) {
-        $add = "INSERT INTO task (task_type, task_content, task_deadline, course_id, file_id) VALUES('$task_type', '$task_content', '$task_deadline', '$course_id', '$file_id')";
+        $add = "INSERT INTO task (task_type, task_content, task_deadline, course_id, file_id)
+                VALUES('$task_type', '$task_content', '$task_deadline', '$course_id', '$file_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Task added Successful");
@@ -127,9 +133,7 @@ if (isset($_GET['delete_id'])) {
                     }
                     ?>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 

@@ -7,7 +7,7 @@ $forum_id = $_GET['forum_id'];
 if (isset($_POST['add_reply'])) {
 
     // receive all input values from the form
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $content = mysqli_real_escape_string($conn, $_POST['reply_content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -16,7 +16,7 @@ if (isset($_POST['add_reply'])) {
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO reply (content, posted_by_uid, posted_on, forum_id)
+        $add = "INSERT INTO reply (reply_content, posted_by_uid, posted_on, forum_id)
                 VALUES ('$content', '$user_id', NOW(), '$forum_id')";
 
         if (mysqli_query($conn, $add)) {
@@ -43,7 +43,7 @@ if (isset($_POST['update_reply'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE reply set content = '$content'
+        $update = "UPDATE reply set reply_content = '$content'
                     WHERE reply_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
@@ -137,7 +137,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Reply</label>
                         <br>
-                        <textarea name="content"><?= $content ?></textarea>
+                        <textarea name="reply_content"><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_reply" value="Update">
@@ -153,7 +153,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Reply</label>
                         <br>
-                        <textarea name="content"></textarea>
+                        <textarea name="reply_content"></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_reply" value="reply">

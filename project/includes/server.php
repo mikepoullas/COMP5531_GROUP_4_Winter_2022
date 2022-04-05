@@ -54,19 +54,13 @@ if (isset($_POST['upload_file'])) {
             if (mysqli_query($conn, $query)) {
                 array_push($success, "File uploaded successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}&file_id={$conn->insert_id}");
-                exit();
+                // exit();
             }
         } else {
             array_push($errors, "Failed to upload file" . mysqli_error($conn));
         }
     }
 }
-
-
-
-
-
-
 
 
 
@@ -97,16 +91,9 @@ if (isset($_GET['download_file'])) {
         // $count_download = $file['downloads'] + 1;
         // $update_count = "UPDATE files SET downloads=$count_download WHERE file_id=$id";
         // mysqli_query($conn, $update_count);
-        exit();
+        // exit();
     }
 }
-
-
-
-
-
-
-
 
 
 
@@ -169,8 +156,8 @@ if (isset($_POST['update_file'])) {
             $query = "UPDATE files SET file_name='$file_name', file_content='$content', file_type='$extension', file_size=$size WHERE file_id=$id";
             if (mysqli_query($conn, $query)) {
                 array_push($success, "File updated successfully");
-                header("location: {$_SERVER['HTTP_REFERER']}");
-                exit();
+                header("location: {$_SERVER['HTTP_REFERER']}&file_id={$conn_insert_id}");
+                // exit();
             }
         } else {
             array_push($errors, "Failed to update file " . mysqli_error($conn));
@@ -195,7 +182,7 @@ if (isset($_GET['delete_file'])) {
         if (unlink($filepath) && mysqli_query($conn, $delete)) {
             array_push($success, "Delete successful");
             header("location: {$_SERVER['HTTP_REFERER']}");
-            exit();
+            // exit();
         }
     } else {
         array_push($errors, "Delete error " . mysqli_error($conn));
