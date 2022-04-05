@@ -34,7 +34,7 @@ if (isset($_POST['update_comment'])) {
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
     // receive all input values from the form
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $content = mysqli_real_escape_string($conn, $_POST['comment_content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
