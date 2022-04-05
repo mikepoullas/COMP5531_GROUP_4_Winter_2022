@@ -144,7 +144,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Comment</label>
                         <br>
-                        <textarea name="comment-content"><?= $content ?></textarea>
+                        <textarea name="comment_content"><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_comment" value="Update">
@@ -160,7 +160,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Comment</label>
                         <br>
-                        <textarea name="comment-content"></textarea>
+                        <textarea name="comment_content"></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_comment" value="Comment">
