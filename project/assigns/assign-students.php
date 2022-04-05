@@ -164,7 +164,6 @@ Always visible and shows delete error if delete_view is set true -->
     display_success();
     display_error();
 
-
     $query = "SELECT * FROM users as u
                 JOIN student as st ON st.user_id = u.user_id
                 JOIN user_course_section as ucs ON ucs.user_id = u.user_id
@@ -229,8 +228,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST" onSubmit="return validateStudentCourseSection()">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">
@@ -346,8 +345,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">

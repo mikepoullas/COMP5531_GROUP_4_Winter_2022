@@ -61,7 +61,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $task_content ?></td>
                     <td><?= $solution_content ?></td>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=grades&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <td><a href="?page=grades&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Grade</a></td>
                 </tr>
             <?php } ?>
         </tbody>

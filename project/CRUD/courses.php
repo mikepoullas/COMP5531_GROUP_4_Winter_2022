@@ -106,7 +106,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $course_number ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=courses&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=courses&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=courses&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Course</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -126,8 +126,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add Course</h3>
@@ -166,8 +166,8 @@ if (isset($_GET['delete_id'])) {
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Update Course</h3>

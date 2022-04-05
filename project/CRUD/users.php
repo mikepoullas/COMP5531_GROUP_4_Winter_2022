@@ -264,7 +264,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $role_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=users&update_view=true&update_id=' . $user_id . '">Update</a></td>';
-                        echo "<td><a href='?page=users&delete_view=true&delete_id=" . $user_id . "&role_id=" . $role_id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=users&delete_view=true&delete_id=" . $user_id . "&role_id=" . $role_id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete User</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -286,8 +286,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST" onSubmit="return validateUserInput()">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add a new user</h3>
@@ -366,8 +366,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST" onSubmit="return validateUpdateUserInput()">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Update a user profile</h3>

@@ -63,7 +63,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=forums&delete_view=true&delete_id=?<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <td><a href="?page=forums&delete_view=true&delete_id=?<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Forum</a></td>
                 </tr>
 
             <?php } ?>

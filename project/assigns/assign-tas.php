@@ -140,6 +140,7 @@ if (isset($_GET['delete_view'])) {
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
     }
+		
 }
 
 if (isset($_POST["course_id"])) {
@@ -157,16 +158,16 @@ Always visible and shows delete error if delete_view is set true -->
     <?php
 
         display_success();
-        display_error();
+		display_error();
     
 
-    $query = "SELECT * FROM users as u
-                JOIN ta as t ON t.user_id = u.user_id
-                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-                JOIN course as c ON c.course_id = ucs.course_id
-                JOIN section as s ON s.section_id = ucs.section_id
-                ORDER BY u.user_id ASC";
-    $results = mysqli_query($conn, $query);
+		$query = "SELECT * FROM users as u
+					JOIN ta as t ON t.user_id = u.user_id
+					JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+					JOIN course as c ON c.course_id = ucs.course_id
+					JOIN section as s ON s.section_id = ucs.section_id
+					ORDER BY u.user_id ASC";
+		$results = mysqli_query($conn, $query);
 
     ?>
 
@@ -223,8 +224,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST" onSubmit="return validateTACourseSection()">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">
@@ -335,8 +336,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">

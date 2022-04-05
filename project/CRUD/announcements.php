@@ -128,7 +128,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=announcements&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=announcements&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=announcements&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete Announcement</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -148,8 +148,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add Announcement</h3>
@@ -213,8 +213,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Update Announcement</h3>

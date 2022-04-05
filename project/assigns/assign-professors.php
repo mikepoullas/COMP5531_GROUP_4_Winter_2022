@@ -196,8 +196,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST" onSubmit="return validateProfessorCourse()">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">
@@ -279,8 +279,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">
