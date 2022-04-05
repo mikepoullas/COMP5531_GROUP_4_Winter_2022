@@ -106,11 +106,13 @@ if (isset($_GET['delete_id'])) {
             <ul>
                 <li><?= $row['reply_content'] ?></li>
                 <li>&emsp;by <b><?= $row['first_name'] . ' ' . $row['last_name'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
-                <li>
-                    &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $row['forum_id'] ?>&update_id=<?= $row['reply_id'] ?>">Update</a>
-                    |
-                    <a href="?page=course-reply&delete_view=true&forum_id=<?= $row['forum_id'] ?>&delete_id=<?= $row['reply_id'] ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
-                </li>
+                <?php if ($user_id == $row['posted_by_uid']) { ?>
+                    <li>
+                        &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $row['forum_id'] ?>&update_id=<?= $row['reply_id'] ?>">Update</a>
+                        |
+                        <a href="?page=course-reply&delete_view=true&forum_id=<?= $row['forum_id'] ?>&delete_id=<?= $row['reply_id'] ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                    </li>
+                <?php } ?>
             </ul><br>
         <?php } ?>
 

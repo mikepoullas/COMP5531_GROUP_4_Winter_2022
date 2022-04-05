@@ -113,11 +113,13 @@ if (isset($_GET['delete_id'])) {
             <ul>
                 <li><?= $comment_content ?></li>
                 <li>&emsp;by <b><?= $comment_posted_by ?></b> | <?= $comment_posted_on ?></li>
-                <li>
-                    &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $discussion_id ?>&update_id=<?= $comment_id ?>">Update</a>
-                    |
-                    <a href="?page=group-comment&delete_view=true&discussion_id=<?= $discussion_id ?>&delete_id=<?= $comment_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
-                </li>
+                <?php if ($user_id == $row['posted_by_uid']) { ?>
+                    <li>
+                        &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $discussion_id ?>&update_id=<?= $comment_id ?>">Update</a>
+                        |
+                        <a href="?page=group-comment&delete_view=true&discussion_id=<?= $discussion_id ?>&delete_id=<?= $comment_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                    </li>
+                <?php } ?>
             </ul><br>
         <?php } ?>
 
