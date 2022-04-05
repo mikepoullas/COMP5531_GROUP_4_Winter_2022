@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $role_name = $role_description = "";
-
 // ADD
 if (isset($_POST['add_role'])) {
 
@@ -24,8 +21,6 @@ if (isset($_POST['add_role'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Role added Successful");
-            // clear variables
-            $role_name = $role_description = "";
         } else {
             array_push($errors, "Error adding role: ", mysqli_error($conn));
         }
@@ -55,8 +50,6 @@ if (isset($_POST['update_role'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $role_name = "";
         } else {
             array_push($errors, "Error updating role: ", mysqli_error($conn));
         }
@@ -77,10 +70,10 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="content-body">
-    <?php if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    <?php
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM roles ORDER BY role_id ASC";
     $results = mysqli_query($conn, $query);
@@ -113,7 +106,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $role_description ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=roles&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=roles&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=roles&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Role</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -133,8 +126,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add Role</h3>
@@ -173,8 +166,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    display_success();
-                    display_error();
+                    //display_success();
+                    //display_error();
                     ?>
 
                     <h3>Update Role</h3>

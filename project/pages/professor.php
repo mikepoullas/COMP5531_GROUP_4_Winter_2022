@@ -10,10 +10,13 @@
             </div>
             <hr>
             <div class="main-menu">
+                <h2>Course</h2>
+                <ul class="menu-list">
+                    <li><a href="?page=course-home">View</a></li>
+                </ul>
                 <h2>Groups</h2>
                 <ul class="menu-list">
-                    <li><a href="?page=group-home">Home</a></li>
-                    <li><a href="?page=group-submission">Submissions</a></li>
+                    <li><a href="?page=group-home">View</a></li>
                 </ul>
                 <br>
                 <h2>Manage</h2>
@@ -26,6 +29,7 @@
                 <ul class="menu-list">
                     <li><a href="?page=assign-students">Students</a></li>
                     <li><a href="?page=assign-tas">Teaching Assistants</a></li>
+                    <li><a href="?page=assign-group">Group Members</a></li>
                 </ul>
             </div>
         </section>
@@ -42,6 +46,9 @@
                     }
                     if (file_exists("../CRUD/" . $page . ".php")) {
                         include("../CRUD/" . $page . ".php");
+                    }
+                    if (file_exists("../course/" . $page . ".php")) {
+                        include("../course/" . $page . ".php");
                     }
                     if (file_exists("../group/" . $page . ".php")) {
                         include("../group/" . $page . ".php");

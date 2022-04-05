@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $course_name = $course_number = "";
-
 // ADD
 if (isset($_POST['add_course'])) {
 
@@ -24,8 +21,6 @@ if (isset($_POST['add_course'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Course added Successful");
-            // clear variables
-            $course_name = $course_number = "";
         } else {
             array_push($errors, "Error adding course: " . mysqli_error($conn));
         }
@@ -55,8 +50,6 @@ if (isset($_POST['update_course'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $course_name = $course_number = "";
         } else {
             array_push($errors, "Error updating course: ", mysqli_error($conn));
         }
@@ -77,10 +70,10 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="content-body">
-    <?php if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    <?php
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM course ORDER BY course_id ASC";
     $results = mysqli_query($conn, $query);
@@ -113,7 +106,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $course_number ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=courses&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=courses&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=courses&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Course</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -133,8 +126,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add Course</h3>
@@ -162,7 +155,7 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM course WHERE course_id='$id'";
             $results = mysqli_query($conn, $query);
 
-            foreach ($results as $row){
+            foreach ($results as $row) {
                 $id = $row['course_id'];
                 $course_name = $row['course_name'];
                 $course_number = $row['course_number'];
@@ -173,8 +166,8 @@ if (isset($_GET['delete_id'])) {
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Update Course</h3>

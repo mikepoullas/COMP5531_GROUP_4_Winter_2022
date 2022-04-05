@@ -79,15 +79,12 @@
 
 <?php
 
-// initializing variables
-$user_id = $first_name = $last_name = $dob = $email = $username = $password_new = $password_confirm = $role = "";
-
 // ADD
 if (isset($_POST['add_user'])) {
 
     // receive all input values from the form
-    $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
-    $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
+    $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     // $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -95,34 +92,6 @@ if (isset($_POST['add_user'])) {
     $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
     $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    /*
-    if (empty($first_name)) {
-        array_push($errors, "First Name is required");
-    }
-    if (empty($last_name)) {
-        array_push($errors, "Last Name is required");
-    }
-    if (empty($dob)) {
-        array_push($errors, "Date of Birth is required");
-    }
-    if (empty($email)) {
-        array_push($errors, "Email is required");
-    }
-    // if (empty($username)) {
-    //     array_push($errors, "Username is required");
-    // }
-    if (empty($password_new)) {
-        array_push($errors, "Password is required");
-    }
-    if ($password_new !== $password_confirm) {
-        array_push($errors, "The two passwords do not match");
-    }
-    if (empty($role_name)) {
-        array_push($errors, "Role is required");
-    }
-*/
     //make a unique username
     $username = strtolower($first_name[0] . "_" . $last_name . "_" . rand(1, 99));
 
@@ -175,8 +144,6 @@ if (isset($_POST['add_user'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Registration Successful");
-            // clear variables
-            $user_id = $first_name = $last_name = $dob = $email = $username = $password_1 = $password_2 = $role_id = "";
         } else {
             array_push($errors, "Error registering user: ", mysqli_error($conn));
         }
@@ -195,35 +162,12 @@ if (isset($_POST['update_user'])) {
     //    $username = mysqli_real_escape_string($conn, $_POST['username']);
     //    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
-    /*    if (empty($first_name)) {
-        array_push($errors, "First Name is required");
-    }
-    if (empty($last_name)) {
-        array_push($errors, "Last Name is required");
-    }
-    if (empty($dob)) {
-        array_push($errors, "Date of Birth is required");
-    }
-    if (empty($email)) {
-        array_push($errors, "Email is required");
-    }
-    if (empty($username)) {
-        array_push($errors, "Username is required");
-    }
-    if (empty($role_name)) {
-        array_push($errors, "Role is required");
-    }
-*/
     if (count($errors) == 0) {
         $update = "UPDATE users set first_name = '$first_name', last_name = '$last_name', 
                     dob = '$dob', email = '$email' WHERE user_id ='$user_id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "User profile updated successfully");
-            // clear variables
-            $first_name = $last_name = $dob = $email = $username = $role_id = "";
         } else {
             array_push($errors, "Error updating user: ", mysqli_error($conn));
         }
@@ -234,7 +178,6 @@ if (isset($_POST['update_user'])) {
 if (isset($_GET['delete_id'])) {
     $user_id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $role_id = mysqli_real_escape_string($conn, $_GET['role_id']);
-    $table_name = "";
 
     //Delete User from Student, TA or Professor table accordingly first to avoid constraint issue
 
@@ -261,8 +204,6 @@ if (isset($_GET['delete_id'])) {
 
     if (mysqli_query($conn, $delete)) {
         array_push($success, "Delete successful");
-        // clear variables
-        $user_id = $role_id = $table_name = "";
     } else {
         array_push($errors, "Delete user error: " . mysqli_error($conn));
     }
@@ -273,10 +214,10 @@ if (isset($_GET['delete_id'])) {
 <div class="content-body">
 
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+
+    display_success();
+    display_error();
+
     $query = "SELECT * FROM users as u JOIN roles as r ON u.role_id = r.role_id ORDER BY user_id ASC";
     $results = mysqli_query($conn, $query);
 
@@ -323,7 +264,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $role_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=users&update_view=true&update_id=' . $user_id . '">Update</a></td>';
-                        echo "<td><a href='?page=users&delete_view=true&delete_id=" . $user_id . "&role_id=" . $role_id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=users&delete_view=true&delete_id=" . $user_id . "&role_id=" . $role_id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete User</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -345,19 +286,19 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST" onSubmit="return validateUserInput()">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add a new user</h3>
 
                     <div class="form-input">
                         <label>First Name</label>
-                        <span><input type="text" name="firstname" id="first_name"></span>
+                        <span><input type="text" name="first_name" id="first_name"></span>
                     </div>
                     <div class="form-input">
                         <label>Last Name</label>
-                        <span> <input type="text" name="lastname" id="last_name"> </span>
+                        <span> <input type="text" name="last_name" id="last_name"> </span>
                     </div>
                     <div class="form-input">
                         <label>Date of Birth</label>
@@ -425,8 +366,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST" onSubmit="return validateUpdateUserInput()">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Update a user profile</h3>

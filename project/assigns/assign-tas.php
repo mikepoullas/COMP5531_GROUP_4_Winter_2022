@@ -26,8 +26,6 @@
 
 <?php
 
-$user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
-
 /*******************************************************
  * ADD SQL
  ********************************************************/
@@ -71,8 +69,6 @@ if (isset($_POST['assign'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "TA has been assigned successfully!");
-            // clear variables
-            $user_id = $course_id = $section_id = $user_id_selected = $course_id_selected = "";
         } else {
             array_push($errors, "Could not INSERT Error: " . mysqli_error($conn));
         }
@@ -121,8 +117,6 @@ if (isset($_POST['update'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Updated Successfully.");
-            // clear variables
-            $user_id = $course_id = $section_id = "";
         } else {
             array_push($errors, "Could not UPDATE error: " . mysqli_error($conn));
         }
@@ -146,6 +140,7 @@ if (isset($_GET['delete_view'])) {
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
     }
+		
 }
 
 if (isset($_POST["course_id"])) {
@@ -161,18 +156,18 @@ Always visible and shows delete error if delete_view is set true -->
 <div class="content-body">
 
     <?php
-    if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
 
-    $query = "SELECT * FROM users as u
-                JOIN ta as t ON t.user_id = u.user_id
-                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-                JOIN course as c ON c.course_id = ucs.course_id
-                JOIN section as s ON s.section_id = ucs.section_id
-                ORDER BY u.user_id ASC";
-    $results = mysqli_query($conn, $query);
+        display_success();
+		display_error();
+    
+
+		$query = "SELECT * FROM users as u
+					JOIN ta as t ON t.user_id = u.user_id
+					JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+					JOIN course as c ON c.course_id = ucs.course_id
+					JOIN section as s ON s.section_id = ucs.section_id
+					ORDER BY u.user_id ASC";
+		$results = mysqli_query($conn, $query);
 
     ?>
 
@@ -229,8 +224,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST" onSubmit="return validateTACourseSection()">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">
@@ -341,8 +336,8 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                // display_success();
+                // display_error();
                 ?>
 
                 <div class="form-input">

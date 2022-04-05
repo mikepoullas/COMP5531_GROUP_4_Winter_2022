@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $group_name = $group_leader_sid = "";
-
 // ADD
 if (isset($_POST['add_group'])) {
 
@@ -33,8 +30,6 @@ if (isset($_POST['add_group'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Group added Successful");
-            // clear variables
-            $group_name = $group_leader_sid = "";
         } else {
             array_push($errors, "Error adding groups: ", mysqli_error($conn));
         }
@@ -64,8 +59,6 @@ if (isset($_POST['update_group'])) {
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $group_name = $group_leader_sid = "";
         } else {
             array_push($errors, "Error updating groups: ", mysqli_error($conn));
         }
@@ -86,10 +79,10 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="content-body">
-    <?php if (isset($_GET['delete_view'])) {
-        display_success();
-        display_error();
-    }
+    <?php
+
+    display_success();
+    display_error();
 
     $query = "SELECT * FROM student_group as g
     JOIN student as s ON g.group_leader_sid = s.student_id
@@ -134,7 +127,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?php echo $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=groups&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Group</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -154,8 +147,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add Group</h3>

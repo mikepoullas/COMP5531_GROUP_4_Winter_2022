@@ -80,40 +80,41 @@ if (isset($_POST['reset_password'])) {
 
             <form class="form-body" action="" method="POST">
 
-            <?php
+                <?php
                 echo display_success();
                 echo display_error();
                 ?>
 
-                <div class="form-input">
-                    <label>Old Password</label>
+
+                <?php if (!isset($_POST['reset_password']) || count($errors) > 0) { ?>
+                    <div class="form-input">
+                        <label>Old Password</label>
+                        <span>
+                            <input type="password" name="password_old">
+                        </span>
+                    </div>
+                    <div class="form-input">
+                        <label>New Password</label>
+                        <span>
+                            <input type="password" name="password_new">
+                        </span>
+                    </div>
+                    <div class="form-input">
+                        <label>Confirm Password</label>
+                        <span>
+                            <input type="password" name="password_confirm">
+                        </span>
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" name="reset_password" value="Reset">
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($_POST['reset_password']) && count($errors) == 0) { ?>
                     <span>
-                        <input type="password" name="password_old">
+                        <a href="../index.php">Welcome</a>
                     </span>
-                </div>
-
-                <div class="form-input">
-                    <label>New Password</label>
-                    <span>
-                        <input type="password" name="password_new">
-                    </span>
-                </div>
-
-                <div class="form-input">
-                    <label>Confirm Password</label>
-                    <span>
-                        <input type="password" name="password_confirm">
-                    </span>
-
-                </div>
-
-                <div class="form-submit">
-                    <input type="submit" name="reset_password" value="Reset">
-                </div>
-
-                <span>
-                    <a href="../index.php">Welcome</a>
-                </span>
+                <?php } ?>
 
             </form>
         </div>

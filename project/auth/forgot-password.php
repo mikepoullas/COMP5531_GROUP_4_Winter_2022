@@ -5,8 +5,6 @@ session_start();
 require_once('../configs/config.php');
 require_once('../helper/functions.php');
 
-$email = $password = "";
-
 if (isset($_POST['recover_password'])) {
 
     $email = mysqli_real_escape_string($conn, $_POST['email']);

@@ -1,7 +1,5 @@
 <?php
 
-// initializing variables
-$id = $title = $posted_by = $posted_on = $content = $course_id = $course_name = "";
 $user_id = $_SESSION['user_id'];
 
 // ADD
@@ -25,13 +23,11 @@ if (isset($_POST['add_announcement'])) {
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO announcement (title, content, posted_by_uid, posted_on, course_id)
+        $add = "INSERT INTO announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id)
             VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
-            // clear variables
-            $title = $content = $course_id = "";
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -46,7 +42,6 @@ if (isset($_POST['update_announcement'])) {
     // receive all input values from the form
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $content = mysqli_real_escape_string($conn, $_POST['content']);
-    $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -56,18 +51,13 @@ if (isset($_POST['update_announcement'])) {
     if (empty($content)) {
         array_push($errors, "Content is required");
     }
-    if (empty($content)) {
-        array_push($errors, "Course is required");
-    }
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE announcement set title = '$title', content = '$content', course_id = '$course_id' WHERE announcement_id ='$id'";
+        $update = "UPDATE announcement set announcement_title = '$title', announcement_content = '$content' WHERE announcement_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            // clear variables
-            $course_name = $course_number = "";
         } else {
             array_push($errors, "Error updating: " . mysqli_error($conn));
         }
@@ -89,10 +79,10 @@ if (isset($_GET['delete_id'])) {
 
 <div class="content-body">
     <?php
-    if (isset($_GET['delete_view'])) {
+
         display_success();
         display_error();
-    }
+    
 
     $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
     JOIN users as u ON a.posted_by_uid = u.user_id
@@ -120,8 +110,8 @@ if (isset($_GET['delete_id'])) {
             <?php
             foreach ($announcements as $row) {
                 $id = $row['announcement_id'];
-                $title = $row['title'];
-                $content = $row['content'];
+                $title = $row['announcement_title'];
+                $content = $row['announcement_content'];
                 $posted_by = $row['username'];
                 $posted_on = date_convert($row['posted_on']);
                 $course_id = $row['course_id'];
@@ -138,7 +128,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=announcements&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=announcements&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=announcements&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete Announcement</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -158,8 +148,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Add Announcement</h3>
@@ -212,10 +202,9 @@ if (isset($_GET['delete_id'])) {
 
             foreach ($results as $row) {
                 $id = $row['announcement_id'];
-                $title = $row['title'];
-                $content = $row['content'];
+                $title = $row['announcement_title'];
+                $content = $row['announcement_content'];
                 $course_name = $row['course_name'];
-                // $update_course_id = $row['course_id'];
             }
             ?>
 
@@ -224,8 +213,8 @@ if (isset($_GET['delete_id'])) {
                 <form class="form-body" action="" method="POST">
 
                     <?php
-                    echo display_success();
-                    echo display_error();
+                    // display_success();
+                    // display_error();
                     ?>
 
                     <h3>Update Announcement</h3>
@@ -245,26 +234,6 @@ if (isset($_GET['delete_id'])) {
                         <br>
                         <textarea name="content"><?= $content ?></textarea>
                     </div>
-
-                    <!-- <div class="form-input">
-                        <label for="course_id">For Course</label>
-                        <span>
-                            <select name="course_id">
-                                <?php
-                                // $courses = get_table_array('course');
-                                // foreach ($courses as $row) {
-                                //     $course_id = $row['course_id'];
-                                //     $course_name = $row['course_name'];
-                                //     if ($update_course_id == $course_id) {
-                                //         echo "<option name=course_id value='$course_id' selected>$course_name</option>";
-                                //     } else {
-                                //         echo "<option name=course_id value='$course_id'>$course_name</option>";
-                                //     }
-                                // }
-                                ?>
-                            </select>
-                        </span>
-                    </div> -->
 
                     <div class="form-submit">
                         <input type="submit" name="update_announcement" value="Update">

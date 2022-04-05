@@ -1,8 +1,5 @@
 <?php
 
-// initializing variables
-$id = $title = $content = $posted_by = $posted_on = "";
-
 $user_id = $_SESSION['user_id'];
 $discussion_id = $_GET['discussion_id'];
 
@@ -10,7 +7,7 @@ $discussion_id = $_GET['discussion_id'];
 if (isset($_POST['add_comment'])) {
 
     // receive all input values from the form
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $content = mysqli_real_escape_string($conn, $_POST['comment_content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -19,7 +16,7 @@ if (isset($_POST['add_comment'])) {
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO comment (content, posted_by_uid, posted_on, discussion_id)
+        $add = "INSERT INTO comment (comment_content, posted_by_uid, posted_on, discussion_id)
                 VALUES ('$content', '$user_id', NOW(), '$discussion_id')";
 
         if (mysqli_query($conn, $add)) {
@@ -46,7 +43,7 @@ if (isset($_POST['update_comment'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE comment set content = '$content'
+        $update = "UPDATE comment set comment_content = '$content'
                     WHERE comment_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
@@ -78,13 +75,13 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT d.*, u.username FROM discussion as d
+    $query = "SELECT * FROM discussion as d
                 JOIN users as u ON u.user_id = d.posted_by_uid
                 WHERE d.discussion_id = '$discussion_id'
                 ORDER BY discussion_id DESC";
     $discussions = mysqli_query($conn, $query);
 
-    $query = "SELECT c.*, d.title, d.discussion_id, d.posted_by_uid, u.* FROM comment as c
+    $query = "SELECT * FROM comment as c
                 JOIN discussion as d ON d.discussion_id = c.discussion_id
                 JOIN users as u ON u.user_id = c.posted_by_uid
                 WHERE c.discussion_id = '$discussion_id'
@@ -93,9 +90,9 @@ if (isset($_GET['delete_id'])) {
     ?>
 
     <?php foreach ($discussions as $row) {
-        $discussion_title = $row['title'];
-        $discussion_content = $row['content'];
-        $discussion_posted_by = $row['username'];
+        $discussion_title = $row['discussion_title'];
+        $discussion_content = $row['discussion_content'];
+        $discussion_posted_by = $row['first_name'] . " " . $row['last_name'];
         $discussion_posted_on = date_convert($row['posted_on']);
     } ?>
 
@@ -105,15 +102,24 @@ if (isset($_GET['delete_id'])) {
     <hr>
     <div class="comment-content">
 
-        <?php foreach ($comments as $row) { ?>
+        <?php
+        foreach ($comments as $row) {
+            $comment_id = $row['comment_id'];
+            $comment_content = $row['comment_content'];
+            $comment_posted_by = $row['first_name'] . " " . $row['last_name'];
+            $comment_posted_on = date_convert($row['posted_on']);
+            $discussion_id = $row['discussion_id'];
+        ?>
             <ul>
-                <li><?= $row['content'] ?></li>
-                <li>&emsp;by <b><?= $row['username'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
-                <li>
-                    &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $row['discussion_id'] ?>&update_id=<?= $row['comment_id'] ?>">Update</a>
-                    |
-                    <a href="?page=group-comment&delete_view=true&discussion_id=<?= $row['discussion_id'] ?>&delete_id=<?= $row['comment_id'] ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
-                </li>
+                <li><?= $comment_content ?></li>
+                <li>&emsp;by <b><?= $comment_posted_by ?></b> | <?= $comment_posted_on ?></li>
+                <?php if ($user_id == $row['posted_by_uid']) { ?>
+                    <li>
+                        &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $discussion_id ?>&update_id=<?= $comment_id ?>">Update</a>
+                        |
+                        <a href="?page=group-comment&delete_view=true&discussion_id=<?= $discussion_id ?>&delete_id=<?= $comment_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                    </li>
+                <?php } ?>
             </ul><br>
         <?php } ?>
 
