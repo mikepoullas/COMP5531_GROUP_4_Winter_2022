@@ -7,7 +7,7 @@ $forum_id = $_GET['forum_id'];
 if (isset($_POST['add_reply'])) {
 
     // receive all input values from the form
-    $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $content = mysqli_real_escape_string($conn, $_POST['reply_content']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -16,7 +16,7 @@ if (isset($_POST['add_reply'])) {
     }
 
     if (count($errors) == 0) {
-        $add = "INSERT INTO reply (content, posted_by_uid, posted_on, forum_id)
+        $add = "INSERT INTO reply (reply_content, posted_by_uid, posted_on, forum_id)
                 VALUES ('$content', '$user_id', NOW(), '$forum_id')";
 
         if (mysqli_query($conn, $add)) {
@@ -43,7 +43,7 @@ if (isset($_POST['update_reply'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE reply set content = '$content'
+        $update = "UPDATE reply set reply_content = '$content'
                     WHERE reply_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
@@ -81,7 +81,7 @@ if (isset($_GET['delete_id'])) {
                 ORDER BY f.forum_id DESC";
     $forums = mysqli_query($conn, $query);
 
-    $query = "SELECT * FROM reply as r
+    $query = "SELECT r.*,u.* FROM reply as r
                 JOIN forum as f ON f.forum_id = r.forum_id
                 JOIN users as u ON u.user_id = r.posted_by_uid
                 WHERE r.forum_id = '$forum_id'
@@ -102,15 +102,23 @@ if (isset($_GET['delete_id'])) {
     <hr>
     <div class="reply-content">
 
-        <?php foreach ($replys as $row) { ?>
+        <?php
+        foreach ($replys as $row) {
+            $reply_id = $row['reply_id'];
+            $reply_content = $row['reply_content'];
+            $reply_posted_by = $row['first_name'] . " " . $row['last_name'];
+            $reply_posted_on = date_convert($row['posted_on']);
+            $forum_id = $row['forum_id'];
+
+        ?>
             <ul>
-                <li><?= $row['reply_content'] ?></li>
-                <li>&emsp;by <b><?= $row['first_name'] . ' ' . $row['last_name'] ?></b> | <?= date_convert($row['posted_on']) ?></li>
+                <li><?= $reply_content ?></li>
+                <li>&emsp;by <b><?= $reply_posted_by ?></b> | <?= $reply_posted_on ?></li>
                 <?php if ($user_id == $row['posted_by_uid']) { ?>
                     <li>
-                        &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $row['forum_id'] ?>&update_id=<?= $row['reply_id'] ?>">Update</a>
+                        &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $forum_id ?>&update_id=<?= $reply_id ?>">Update</a>
                         |
-                        <a href="?page=course-reply&delete_view=true&forum_id=<?= $row['forum_id'] ?>&delete_id=<?= $row['reply_id'] ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                        <a href="?page=course-reply&delete_view=true&forum_id=<?= $forum_id ?>&delete_id=<?= $reply_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
                     </li>
                 <?php } ?>
             </ul><br>
@@ -137,7 +145,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Reply</label>
                         <br>
-                        <textarea name="content"><?= $content ?></textarea>
+                        <textarea name="reply_content"><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_reply" value="Update">
@@ -153,7 +161,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Reply</label>
                         <br>
-                        <textarea name="content"></textarea>
+                        <textarea name="reply_content"></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_reply" value="reply">

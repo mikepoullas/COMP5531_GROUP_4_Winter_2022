@@ -81,7 +81,7 @@ if (isset($_GET['delete_id'])) {
                 ORDER BY discussion_id DESC";
     $discussions = mysqli_query($conn, $query);
 
-    $query = "SELECT * FROM comment as c
+    $query = "SELECT c.*, u.*, d.discussion_id FROM comment as c
                 JOIN discussion as d ON d.discussion_id = c.discussion_id
                 JOIN users as u ON u.user_id = c.posted_by_uid
                 WHERE c.discussion_id = '$discussion_id'
@@ -144,7 +144,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Comment</label>
                         <br>
-                        <textarea name="content"><?= $content ?></textarea>
+                        <textarea name="comment_content"><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_comment" value="Update">
@@ -160,7 +160,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label>Comment</label>
                         <br>
-                        <textarea name="content"></textarea>
+                        <textarea name="comment_content"></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_comment" value="Comment">
