@@ -10,13 +10,13 @@
     $results = mysqli_query($conn, $query);
 
     if (isset($_POST['upload_file'])) {
-        upload_file();
+        upload_file('files');
     }
     if (isset($_GET['download_file'])) {
         download_file();
     }
     if (isset($_POST['update_file'])) {
-        update_file();
+        update_file('files');
     }
     if (isset($_GET['delete_file'])) {
         delete_file();

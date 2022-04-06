@@ -3,7 +3,7 @@
 $user_id = $_SESSION['user_id'];
 
 // UPLOAD FILE
-function upload_file()
+function upload_file($table)
 {
     global $conn, $user_id, $errors, $success;
 
@@ -19,7 +19,7 @@ function upload_file()
         $name = pathinfo($_FILES['file']['name'], PATHINFO_FILENAME);
 
         // unique file description based on username
-        $content = $_SESSION['username'] . "_" . $name;
+        $content = $table . "_" . $_SESSION['username'] . "_" . $name;
         // date('d_m_Y', time())
 
         // destination of the file on the server
@@ -102,7 +102,7 @@ function download_file()
 
 
 // UPDATE FILE
-function update_file()
+function update_file($table)
 {
     global $conn, $errors, $success;
 
@@ -126,7 +126,7 @@ function update_file()
         $file_name = $_FILES['file']['name'];
 
         // unique file description based on username
-        $content = $_SESSION['username'] . "_" . $file_name;
+        $content = $table . "_" . $_SESSION['username'] . "_" . $file_name;
         // date('d_m_Y', time())
 
         // destination of the file on the server
@@ -191,7 +191,7 @@ function delete_file()
         $file_name = mysqli_fetch_assoc($result)['file_name'];
         $filepath = '../files/' . $file_name;
 
-        if (unlink($filepath) && mysqli_query($conn, $delete)) {
+        if (mysqli_query($conn, $delete) && unlink($filepath)) {
             array_push($success, "Delete successful");
             header("location: {$_SERVER['HTTP_REFERER']}");
             exit();
