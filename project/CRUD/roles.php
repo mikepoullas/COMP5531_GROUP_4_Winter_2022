@@ -109,9 +109,7 @@ if (isset($_GET['delete_id'])) {
                         echo "<td><a href='?page=roles&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Role</a></td>";
                     } ?>
                 </tr>
-            <?php
-            }
-            ?>
+                <?php } ?>
         </tbody>
     </table>
 
@@ -124,11 +122,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Add Role</h3>
                     <div class="form-input">
@@ -164,11 +157,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    //display_success();
-                    //display_error();
-                    ?>
 
                     <h3>Update Role</h3>
 

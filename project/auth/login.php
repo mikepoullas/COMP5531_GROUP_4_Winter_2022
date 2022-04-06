@@ -88,8 +88,8 @@ if (isset($_POST['login_user'])) {
             <form class="form-body" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                display_success();
+                display_error();
                 ?>
 
                 <div class="form-input">

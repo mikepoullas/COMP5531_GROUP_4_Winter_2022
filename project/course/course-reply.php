@@ -78,7 +78,7 @@ if (isset($_GET['delete_id'])) {
     $query = "SELECT * FROM forum as f
                 JOIN users as u ON u.user_id = f.posted_by_uid
                 WHERE f.forum_id = '$forum_id'
-                ORDER BY f.forum_id DESC";
+                ORDER BY f.forum_id ASC";
     $forums = mysqli_query($conn, $query);
 
     $query = "SELECT r.*,u.* FROM reply as r

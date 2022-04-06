@@ -91,7 +91,7 @@ if (isset($_GET['delete_id'])) {
                 JOIN users as u ON  u.user_id = f.posted_by_uid
                 JOIN course as c ON c.course_id = f.course_id
                 WHERE c.course_id = $course_id
-                ORDER BY f.forum_id DESC";
+                ORDER BY f.forum_id ASC";
     $forum = mysqli_query($conn, $query);
 
     ?>

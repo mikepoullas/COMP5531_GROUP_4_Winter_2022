@@ -80,9 +80,8 @@ if (isset($_GET['delete_id'])) {
 <div class="content-body">
     <?php
 
-        display_success();
-        display_error();
-    
+    display_success();
+    display_error();
 
     $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
     JOIN users as u ON a.posted_by_uid = u.user_id
@@ -147,11 +146,6 @@ if (isset($_GET['delete_id'])) {
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
 
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
-
                     <h3>Add Announcement</h3>
 
                     <div class="form-input">
@@ -211,11 +205,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Update Announcement</h3>
 

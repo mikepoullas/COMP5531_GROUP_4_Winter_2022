@@ -130,9 +130,7 @@ if (isset($_GET['delete_id'])) {
                         echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Group</a></td>";
                     } ?>
                 </tr>
-            <?php
-            }
-            ?>
+                <?php } ?>
         </tbody>
     </table>
 
@@ -145,11 +143,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Add Group</h3>
 
@@ -186,11 +179,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    echo display_success();
-                    echo display_error();
-                    ?>
 
                     <h3>Update Group</h3>
 

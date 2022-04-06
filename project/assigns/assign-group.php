@@ -227,11 +227,6 @@ Always visible and shows delete error if delete_view is set true -->
             <div class="form-container">
                 <form class="form-body" action="" method="POST" onSubmit="return validateStudentCourseSection()">
 
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
-
                     <div class="form-input">
                         <p>Student</p>
                         <div class="scroll-list">
@@ -343,11 +338,6 @@ Always visible and shows delete error if delete_view is set true -->
 
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    //display_success();
-                    //display_error();
-                    ?>
 
                     <div class="form-input">
                         <label>Student: </label>

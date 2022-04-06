@@ -111,9 +111,7 @@ if (isset($_GET['delete_id'])) {
                         echo "<td><a href='?page=sections&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Section</a></td>";
                     } ?>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 
@@ -126,11 +124,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Add Section</h3>
                     <div class="form-input">
@@ -178,11 +171,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Update Section</h3>
                     <div class="form-input">

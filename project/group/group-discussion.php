@@ -111,7 +111,7 @@ if (isset($_GET['delete_id'])) {
                 LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
                 JOIN course as c ON c.course_id = gc.course_id OR c.course_id = t.course_id
                 WHERE g.group_id = '$group_id' OR t.task_id = '$task_id'
-                ORDER BY discussion_id DESC";
+                ORDER BY discussion_id ASC";
     $discussions = mysqli_query($conn, $query);
 
     if ($group_id != null) {

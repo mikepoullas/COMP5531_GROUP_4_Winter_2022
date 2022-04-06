@@ -32,7 +32,7 @@ if (!isAdmin()) {
     $query = "SELECT * FROM announcement as a
     JOIN users as u ON a.posted_by_uid = u.user_id
     JOIN course as c ON c.course_id = a.course_id
-    ORDER BY a.announcement_id DESC";
+    ORDER BY a.announcement_id ASC";
     $announcements = mysqli_query($conn, $query);
 }
 

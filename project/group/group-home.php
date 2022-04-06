@@ -86,7 +86,7 @@ $group = mysqli_query($conn, $query);
                     JOIN course as c ON c.course_id = gc.course_id
                     JOIN users as u ON u.user_id = d.posted_by_uid
                     WHERE g.group_id = '$group_id'
-                    ORDER BY d.discussion_id DESC";
+                    ORDER BY d.discussion_id ASC";
         $discussion = mysqli_query($conn, $query);
 
         $group_name = mysqli_fetch_assoc($discussion)['group_name'];
@@ -129,7 +129,7 @@ $group = mysqli_query($conn, $query);
                     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
                     JOIN users as us ON us.user_id = ucs.user_id
                     WHERE us.user_id = '$user_id'
-                    ORDER BY d.discussion_id DESC LIMIT 10";
+                    ORDER BY d.discussion_id ASC LIMIT 10";
         $discussion_all = mysqli_query($conn, $query);
 
         $group_name = mysqli_fetch_assoc($discussion_all)['group_name'];

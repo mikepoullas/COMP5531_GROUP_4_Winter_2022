@@ -63,8 +63,8 @@ if (isset($_POST['reset_email'])) {
             <form class="form-body" action="" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                display_success();
+                display_error();
                 ?>
 
                 <?php if (!isset($_POST['reset_email']) || count($errors) > 0) { ?>
