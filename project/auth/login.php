@@ -85,17 +85,17 @@ if (isset($_POST['login_user'])) {
 
         <div class="form-container">
 
-            <form class="form-body" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form class="form-body" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                display_success();
+                display_error();
                 ?>
 
                 <div class="form-input">
                     <label>Username</label>
                     <span>
-                        <input type="text" name="username" value="<?php echo $username; ?>">
+                        <input type="text" name="username" value="<?= $username; ?>">
                     </span>
 
                 </div>

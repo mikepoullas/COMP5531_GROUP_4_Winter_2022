@@ -22,10 +22,10 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM task as t
-                JOIN files as f ON f.file_id = t.file_id
-                JOIN course as c ON c.course_id = t.course_id
-                JOIN users as u ON u.user_id = f.uploaded_by_uid
-                ORDER BY t.task_id ASC";
+    JOIN files as f ON f.file_id = t.file_id
+    JOIN course as c ON c.course_id = t.course_id
+    JOIN users as u ON u.user_id = f.uploaded_by_uid
+    ORDER BY t.task_id ASC";
     $task = mysqli_query($conn, $query);
 
     ?>

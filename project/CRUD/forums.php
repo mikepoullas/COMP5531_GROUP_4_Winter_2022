@@ -23,9 +23,9 @@ if (isset($_GET['delete_id'])) {
 
 
     $query = "SELECT f.*, u.username, c.course_name FROM forum as f
-                JOIN users as u ON  u.user_id = f.posted_by_uid
-                JOIN course as c ON c.course_id = f.course_id
-                ORDER BY f.forum_id ASC";
+    JOIN users as u ON  u.user_id = f.posted_by_uid
+    JOIN course as c ON c.course_id = f.course_id
+    ORDER BY f.forum_id ASC";
     $forums = mysqli_query($conn, $query);
 
     ?>

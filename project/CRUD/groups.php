@@ -17,7 +17,7 @@ if (isset($_POST['add_group'])) {
     }
 
     $check = "SELECT * FROM member_of_group as mg
-                WHERE mg.student_id = '$group_leader_sid'";
+    WHERE mg.student_id = '$group_leader_sid'";
     $result = mysqli_query($conn, $check);
 
     if (mysqli_num_rows($result) !== 0) {
@@ -121,18 +121,16 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $group_name ?></td>
-                    <td><?php echo $group_leader_sid ?></td>
-                    <td><?php echo $group_leader_name ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $group_name ?></td>
+                    <td><?= $group_leader_sid ?></td>
+                    <td><?= $group_leader_name ?></td>
+                    <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=groups&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Group</a></td>";
                     } ?>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 
@@ -145,11 +143,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Add Group</h3>
 
@@ -186,11 +179,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    echo display_success();
-                    echo display_error();
-                    ?>
 
                     <h3>Update Group</h3>
 

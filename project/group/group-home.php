@@ -4,13 +4,13 @@ $user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
 $query = "SELECT g.*, u.*, s.section_name, c.course_name FROM student_group as g
-            JOIN group_of_course as gc ON gc.group_id = g.group_id
-            JOIN course as c ON c.course_id = gc.course_id
-            JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-            LEFT JOIN section as s ON s.section_id = ucs.section_id
-            JOIN users as u ON u.user_id = ucs. user_id 
-            WHERE u.user_id = '$user_id'
-            ORDER BY g.group_id ASC";
+JOIN group_of_course as gc ON gc.group_id = g.group_id
+JOIN course as c ON c.course_id = gc.course_id
+JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+LEFT JOIN section as s ON s.section_id = ucs.section_id
+JOIN users as u ON u.user_id = ucs. user_id 
+WHERE u.user_id = '$user_id'
+ORDER BY g.group_id ASC";
 $group = mysqli_query($conn, $query);
 
 ?>
@@ -49,8 +49,8 @@ $group = mysqli_query($conn, $query);
                     $course_name = $row['course_name'];
 
                     $query = "SELECT * FROM users as u
-                                JOIN student as st ON u.user_id = st.user_id
-                                WHERE st.student_id = '$group_leader_sid'";
+                    JOIN student as st ON u.user_id = st.user_id
+                    WHERE st.student_id = '$group_leader_sid'";
                     $row = mysqli_fetch_assoc(mysqli_query($conn, $query));
                     $group_leader_name = $row['first_name'] . " " . $row['last_name'];
                 ?>
@@ -81,12 +81,12 @@ $group = mysqli_query($conn, $query);
         $group_id = $_GET['group_id'];
 
         $query = "SELECT * FROM discussion as d
-                    JOIN student_group as g ON g.group_id = d.group_id
-                    JOIN group_of_course as gc ON gc.group_id = g.group_id
-                    JOIN course as c ON c.course_id = gc.course_id
-                    JOIN users as u ON u.user_id = d.posted_by_uid
-                    WHERE g.group_id = '$group_id'
-                    ORDER BY d.discussion_id DESC";
+        JOIN student_group as g ON g.group_id = d.group_id
+        JOIN group_of_course as gc ON gc.group_id = g.group_id
+        JOIN course as c ON c.course_id = gc.course_id
+        JOIN users as u ON u.user_id = d.posted_by_uid
+        WHERE g.group_id = '$group_id'
+        ORDER BY d.discussion_id ASC";
         $discussion = mysqli_query($conn, $query);
 
         $group_name = mysqli_fetch_assoc($discussion)['group_name'];
@@ -122,14 +122,14 @@ $group = mysqli_query($conn, $query);
 
         <?php
         $query = "SELECT d.*, u.*, c.course_name, g.group_name FROM discussion as d
-                    JOIN student_group as g ON g.group_id = d.group_id
-                    JOIN users as u ON u.user_id = d.posted_by_uid
-                    JOIN group_of_course as gc ON gc.group_id = g.group_id
-                    JOIN course as c ON c.course_id = gc.course_id
-                    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-                    JOIN users as us ON us.user_id = ucs.user_id
-                    WHERE us.user_id = '$user_id'
-                    ORDER BY d.discussion_id DESC LIMIT 10";
+        JOIN student_group as g ON g.group_id = d.group_id
+        JOIN users as u ON u.user_id = d.posted_by_uid
+        JOIN group_of_course as gc ON gc.group_id = g.group_id
+        JOIN course as c ON c.course_id = gc.course_id
+        JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+        JOIN users as us ON us.user_id = ucs.user_id
+        WHERE us.user_id = '$user_id'
+        ORDER BY d.discussion_id ASC LIMIT 10";
         $discussion_all = mysqli_query($conn, $query);
 
         $group_name = mysqli_fetch_assoc($discussion_all)['group_name'];

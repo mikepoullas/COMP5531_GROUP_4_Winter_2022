@@ -44,7 +44,7 @@ if (isset($_POST['update_reply'])) {
 
     if (count($errors) == 0) {
         $update = "UPDATE reply set reply_content = '$content'
-                    WHERE reply_id ='$id'";
+        WHERE reply_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             header('location: ?page=course-reply&forum_id=' . $forum_id);
@@ -76,16 +76,16 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM forum as f
-                JOIN users as u ON u.user_id = f.posted_by_uid
-                WHERE f.forum_id = '$forum_id'
-                ORDER BY f.forum_id DESC";
+    JOIN users as u ON u.user_id = f.posted_by_uid
+    WHERE f.forum_id = '$forum_id'
+    ORDER BY f.forum_id ASC";
     $forums = mysqli_query($conn, $query);
 
     $query = "SELECT r.*,u.* FROM reply as r
-                JOIN forum as f ON f.forum_id = r.forum_id
-                JOIN users as u ON u.user_id = r.posted_by_uid
-                WHERE r.forum_id = '$forum_id'
-                ORDER BY r.reply_id ASC";
+    JOIN forum as f ON f.forum_id = r.forum_id
+    JOIN users as u ON u.user_id = r.posted_by_uid
+    WHERE r.forum_id = '$forum_id'
+    ORDER BY r.reply_id ASC";
     $replys = mysqli_query($conn, $query);
     ?>
 
@@ -131,8 +131,8 @@ if (isset($_GET['delete_id'])) {
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
             $query = "SELECT * FROM reply as c
-                WHERE c.reply_id = '$id'
-                ORDER BY c.reply_id ASC";
+    WHERE c.reply_id = '$id'
+    ORDER BY c.reply_id ASC";
             $replys = mysqli_query($conn, $query);
 
             foreach ($replys as $row) {

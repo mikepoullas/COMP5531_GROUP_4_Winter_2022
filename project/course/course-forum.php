@@ -57,7 +57,7 @@ if (isset($_POST['update_forum'])) {
     if (count($errors) == 0) {
 
         $update = "UPDATE forum set forum_title = '$title', forum_content = '$content'
-                    WHERE forum_id ='$id'";
+        WHERE forum_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
@@ -88,10 +88,10 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT f.*, u.username, c.course_name FROM forum as f
-                JOIN users as u ON  u.user_id = f.posted_by_uid
-                JOIN course as c ON c.course_id = f.course_id
-                WHERE c.course_id = $course_id
-                ORDER BY f.forum_id DESC";
+    JOIN users as u ON  u.user_id = f.posted_by_uid
+    JOIN course as c ON c.course_id = f.course_id
+    WHERE c.course_id = $course_id
+    ORDER BY f.forum_id ASC";
     $forum = mysqli_query($conn, $query);
 
     ?>
@@ -167,10 +167,10 @@ if (isset($_GET['delete_id'])) {
 
         $id = mysqli_real_escape_string($conn, $_GET['update_id']);
         $query = "SELECT f.*, u.username, c.course_name FROM forum as f
-                        JOIN users as u ON u.user_id = f.posted_by_uid
-                        JOIN course as c ON c.course_id = f.course_id
-                        WHERE f.forum_id='$id'
-                        ORDER BY forum_id ASC";
+            JOIN users as u ON u.user_id = f.posted_by_uid
+            JOIN course as c ON c.course_id = f.course_id
+            WHERE f.forum_id='$id'
+            ORDER BY forum_id ASC";
         $results = mysqli_query($conn, $query);
 
         foreach ($results as $row) {

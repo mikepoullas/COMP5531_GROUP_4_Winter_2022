@@ -69,9 +69,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $course_name ?></td>
                     <td><a href="?page=discussions&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Discussion</a></td>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 

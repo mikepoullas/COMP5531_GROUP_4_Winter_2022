@@ -22,10 +22,10 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM reply as r
-                JOIN forum as f ON f.forum_id = r.forum_id
-                JOIN course as c ON c.course_id = f.course_id
-                JOIN users as u ON u.user_id = r.posted_by_uid
-                ORDER BY r.reply_id ASC";
+    JOIN forum as f ON f.forum_id = r.forum_id
+    JOIN course as c ON c.course_id = f.course_id
+    JOIN users as u ON u.user_id = r.posted_by_uid
+    ORDER BY r.reply_id ASC";
     $replys = mysqli_query($conn, $query);
 
     ?>

@@ -76,8 +76,8 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM section as s
-            JOIN course as c ON c.course_id = s.course_id
-            ORDER BY section_id ASC";
+JOIN course as c ON c.course_id = s.course_id
+ORDER BY section_id ASC";
     $results = mysqli_query($conn, $query);
 
     ?>
@@ -104,16 +104,14 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $section_name ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $section_name ?></td>
+                    <td><?= $course_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=sections&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo "<td><a href='?page=sections&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Section</a></td>";
                     } ?>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 
@@ -126,11 +124,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Add Section</h3>
                     <div class="form-input">
@@ -178,11 +171,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Update Section</h3>
                     <div class="form-input">

@@ -139,10 +139,10 @@ Always visible and shows delete error if delete_view is set true -->
 
 
     $query = "SELECT * FROM users as u
-                JOIN professor as p ON p.user_id = u.user_id
-                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-                JOIN course as c ON c.course_id = ucs.course_id
-                ORDER BY u.user_id ASC";
+    JOIN professor as p ON p.user_id = u.user_id
+    JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+    JOIN course as c ON c.course_id = ucs.course_id
+    ORDER BY u.user_id ASC";
     $results = mysqli_query($conn, $query);
 
     ?>
@@ -169,9 +169,9 @@ Always visible and shows delete error if delete_view is set true -->
                 $course_name = $row['course_name'];
             ?>
                 <tr>
-                    <td><?php echo $professor_id ?></td>
-                    <td><?php echo $first_name . " " . $last_name ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $professor_id ?></td>
+                    <td><?= $first_name . " " . $last_name ?></td>
+                    <td><?= $course_name ?></td>
                     <!-- <td><a href="?page=assign-professors&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>">Change Course</a></td> -->
                     <td><a href="?page=assign-professors&delete_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Course</a></td>
                 </tr>
@@ -195,11 +195,6 @@ Always visible and shows delete error if delete_view is set true -->
         <div class="form-container">
             <form class="form-body" action="" method="POST" onSubmit="return validateProfessorCourse()">
 
-                <?php
-                // display_success();
-                // display_error();
-                ?>
-
                 <div class="form-input">
                     <p>Professor</p>
                     <div class="scroll-list">
@@ -207,8 +202,8 @@ Always visible and shows delete error if delete_view is set true -->
                             <option value="" selected hidden>Choose a Professor</option>
                             <?php
                             $query = "SELECT * FROM users as u
-                                        JOIN professor as p ON p.user_id = u.user_id
-                                        WHERE role_id != 1";
+                            JOIN professor as p ON p.user_id = u.user_id
+                            WHERE role_id != 1";
                             $users = mysqli_query($conn, $query);
                             foreach ($users as $user) {
                                 $user_id = $user['user_id'];
@@ -277,11 +272,6 @@ Always visible and shows delete error if delete_view is set true -->
 
         <div class="form-container">
             <form class="form-body" action="" method="POST">
-
-                <?php
-                // display_success();
-                // display_error();
-                ?>
 
                 <div class="form-input">
                     <label>Professor: </label>

@@ -81,10 +81,9 @@ if (isset($_POST['reset_password'])) {
             <form class="form-body" action="" method="POST">
 
                 <?php
-                echo display_success();
-                echo display_error();
+                display_success();
+                display_error();
                 ?>
-
 
                 <?php if (!isset($_POST['reset_password']) || count($errors) > 0) { ?>
                     <div class="form-input">

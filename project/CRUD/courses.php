@@ -102,8 +102,8 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $course_name ?></td>
-                    <td><?php echo $course_number ?></td>
+                    <td><?= $course_name ?></td>
+                    <td><?= $course_number ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=courses&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo "<td><a href='?page=courses&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Course</a></td>";

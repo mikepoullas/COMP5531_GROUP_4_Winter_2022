@@ -24,15 +24,19 @@ if (!isAdmin()) {
     JOIN group_of_course as gc ON gc.group_id = g.group_id
     JOIN course as c ON c.course_id = gc.course_id
     JOIN section as s ON s.course_id = c.course_id
-    JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND  ucs.user_id = u.user_id
+    JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND ucs.user_id = u.user_id
     WHERE u.user_id = $user_id
     ORDER BY g.group_id ASC";
     $group_info = mysqli_query($conn, $query);
 
     $query = "SELECT * FROM announcement as a
-    JOIN users as u ON a.posted_by_uid = u.user_id
     JOIN course as c ON c.course_id = a.course_id
-    ORDER BY a.announcement_id DESC";
+    JOIN users as u ON u.user_id = a.posted_by_uid
+    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+    LEFT JOIN section as s ON s.section_id = ucs.section_id
+    JOIN users as us ON us.user_id = ucs.user_id
+    WHERE us.user_id = '$user_id'
+    ORDER BY a.announcement_id ASC";
     $announcements = mysqli_query($conn, $query);
 }
 
@@ -158,7 +162,9 @@ if (!isAdmin()) {
                             if ($row['group_leader_sid'] == $row['student_id']) {
                                 echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
                             } else {
-                                $query = "SELECT * FROM users as u JOIN student as st ON u.user_id = st.user_id WHERE st.student_id = " . $row['group_leader_sid'];
+                                $query = "SELECT * FROM users as u
+                                JOIN student as st ON u.user_id = st.user_id
+                                WHERE st.student_id = " . $row['group_leader_sid'];
                                 $row = mysqli_fetch_assoc(mysqli_query($conn, $query));
                                 $group_leader_name = $row['first_name'] . " " . $row['last_name'];
                                 echo "<td>" . $group_leader_name . "</td>";
@@ -181,9 +187,8 @@ if (!isAdmin()) {
                 <ul>
                     <li> <b><?= $row['announcement_title'] ?></b> </li>
                     <li> <?= $row['announcement_content'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b></li>
                     <li>&emsp;<?= $row['posted_on'] ?></li>
-                    <li>&emsp;<?= $row['course_name'] ?></li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?></li>
                 </ul><br>
             <?php } ?>
         </div>

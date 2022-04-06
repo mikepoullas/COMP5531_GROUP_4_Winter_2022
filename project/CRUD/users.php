@@ -285,11 +285,6 @@ if (isset($_GET['delete_id'])) {
             <div class="form-container">
                 <form class="form-body" action="" method="POST" onSubmit="return validateUserInput()">
 
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
-
                     <h3>Add a new user</h3>
 
                     <div class="form-input">
@@ -364,11 +359,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST" onSubmit="return validateUpdateUserInput()">
-
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Update a user profile</h3>
 
