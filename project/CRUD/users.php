@@ -93,7 +93,8 @@ if (isset($_POST['add_user'])) {
     $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
     //make a unique username
-    $username = strtolower($first_name[0] . "_" . $last_name . "_" . rand(1, 99));
+    $username = strtolower($first_name[0] . "_" . $last_name . "_" . "$role_id");
+    // rand(1, 99));
 
     // first check the database to make sure 
     // a user does not already exist with the same username and/or email
