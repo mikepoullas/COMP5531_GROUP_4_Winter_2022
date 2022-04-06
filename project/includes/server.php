@@ -19,7 +19,7 @@ function upload_file($table)
         $name = pathinfo($_FILES['file']['name'], PATHINFO_FILENAME);
 
         // unique file description based on username
-        $content = $table . "_" . $_SESSION['username'] . "_" . $name;
+        $content = $table . "_" . $name;
         // date('d_m_Y', time())
 
         // destination of the file on the server
@@ -126,7 +126,7 @@ function update_file($table)
         $file_name = $_FILES['file']['name'];
 
         // unique file description based on username
-        $content = $table . "_" . $_SESSION['username'] . "_" . $file_name;
+        $content = $table . "_" . $file_name;
         // date('d_m_Y', time())
 
         // destination of the file on the server
