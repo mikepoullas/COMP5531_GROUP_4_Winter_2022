@@ -9,6 +9,19 @@
     ORDER BY file_id ASC";
     $results = mysqli_query($conn, $query);
 
+    if (isset($_POST['upload_file'])) {
+        upload_file();
+    }
+    if (isset($_GET['download_file'])) {
+        download_file();
+    }
+    if (isset($_POST['update_file'])) {
+        update_file();
+    }
+    if (isset($_GET['delete_file'])) {
+        delete_file();
+    }
+
     ?>
     <h2>Files</h2>
     <hr>
@@ -29,7 +42,7 @@
         <tbody>
             <?php
             foreach ($results as $row) {
-                $id = $row['file_id'];
+                $file_id = $row['file_id'];
                 $file_name = $row['file_name'];
                 $content = $row['file_content'];
                 $type = $row['file_type'];
@@ -39,7 +52,7 @@
             ?>
                 <tr>
                     <?php if (isAdmin()) {
-                        echo '<td>' . $id . '</td>';
+                        echo '<td>' . $file_id . '</td>';
                     } ?>
                     <td><?= $file_name ?></td>
                     <td><?= $content ?></td>
@@ -48,14 +61,12 @@
                     <td><?= $uploaded_by_uid ?></td>
                     <td><?= $uploaded_on ?></td>
                     <?php if (isAdmin()) {
-                        echo "<td><a href='?page=files&download_file=" . $id . "'>Download</a></td>";
-                        echo "<td><a href='?page=files&update_view=true&update_file=" . $id . "'>Update</a></td>";
-                        echo "<td><a href='?page=files&delete_file=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete File</a></td>";
+                        echo "<td><a href='?page=files&download_file=" . $file_id . "'>Download</a></td>";
+                        echo "<td><a href='?page=files&update_view=true&update_file=" . $file_id . "'>Update</a></td>";
+                        echo "<td><a href='?page=files&delete_file=" . $file_id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete File</a></td>";
                     } ?>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 
@@ -101,12 +112,8 @@
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="?update_file=<?= $id ?>" enctype="multipart/form-data" method="POST">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
                     <h3>Update File</h3>
-                    <!-- <div class="form-input">
-                        <label>File Name</label>
-                        <span><?= $file_name ?></span>
-                    </div> -->
                     <div class="form-input">
                         <label>Select file</label>
                         <span><input type="file" name="file"> </span>
