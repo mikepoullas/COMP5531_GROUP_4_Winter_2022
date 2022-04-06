@@ -169,9 +169,9 @@ Always visible and shows delete error if delete_view is set true -->
                 $course_name = $row['course_name'];
             ?>
                 <tr>
-                    <td><?php echo $professor_id ?></td>
-                    <td><?php echo $first_name . " " . $last_name ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $professor_id ?></td>
+                    <td><?= $first_name . " " . $last_name ?></td>
+                    <td><?= $course_name ?></td>
                     <!-- <td><a href="?page=assign-professors&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>">Change Course</a></td> -->
                     <td><a href="?page=assign-professors&delete_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Course</a></td>
                 </tr>

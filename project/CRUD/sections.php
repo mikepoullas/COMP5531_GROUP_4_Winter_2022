@@ -104,8 +104,8 @@ ORDER BY section_id ASC";
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $section_name ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $section_name ?></td>
+                    <td><?= $course_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=sections&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo "<td><a href='?page=sections&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Section</a></td>";

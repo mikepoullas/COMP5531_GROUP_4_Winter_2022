@@ -121,10 +121,10 @@ if (isset($_GET['delete_id'])) {
                     <?php if (isAdmin()) {
                         echo '<td>' . $id . '</td>';
                     } ?>
-                    <td><?php echo $group_name ?></td>
-                    <td><?php echo $group_leader_sid ?></td>
-                    <td><?php echo $group_leader_name ?></td>
-                    <td><?php echo $course_name ?></td>
+                    <td><?= $group_name ?></td>
+                    <td><?= $group_leader_sid ?></td>
+                    <td><?= $group_leader_name ?></td>
+                    <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=groups&update_view=true&update_id=' . $id . '">Update</a></td>';
                         echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Group</a></td>";

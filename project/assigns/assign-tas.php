@@ -194,10 +194,10 @@ Always visible and shows delete error if delete_view is set true -->
                 $section_name = $row['section_name'];
             ?>
                 <tr>
-                    <td><?php echo $ta_id ?></td>
-                    <td><?php echo $first_name . " " . $last_name ?></td>
-                    <td><?php echo $course_name ?></td>
-                    <td><?php echo $section_name ?></td>
+                    <td><?= $ta_id ?></td>
+                    <td><?= $first_name . " " . $last_name ?></td>
+                    <td><?= $course_name ?></td>
+                    <td><?= $section_name ?></td>
                     <td><a href="?page=assign-tas&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Change Section</a></td>
                     <td><a href="?page=assign-tas&delete_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Course</a></td>
                 </tr>
