@@ -165,11 +165,11 @@ Always visible and shows delete error if delete_view is set true -->
     display_error();
 
     $query = "SELECT * FROM users as u
-                JOIN student as st ON st.user_id = u.user_id
-                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-                JOIN course as c ON c.course_id = ucs.course_id
-                JOIN section as s ON s.section_id = ucs.section_id
-                ORDER BY u.user_id ASC";
+    JOIN student as st ON st.user_id = u.user_id
+    JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+    JOIN course as c ON c.course_id = ucs.course_id
+    JOIN section as s ON s.section_id = ucs.section_id
+    ORDER BY u.user_id ASC";
 
     $results = mysqli_query($conn, $query);
 
@@ -234,8 +234,8 @@ Always visible and shows delete error if delete_view is set true -->
                             <option value="" selected hidden>Choose a Student</option>
                             <?php
                             $query = "SELECT * FROM users as u
-                                        JOIN student as st ON st.user_id = u.user_id
-                                        WHERE role_id != 1";
+                            JOIN student as st ON st.user_id = u.user_id
+                            WHERE role_id != 1";
                             $users = mysqli_query($conn, $query);
                             foreach ($users as $user) {
                                 $user_id = $user['user_id'];
@@ -284,7 +284,7 @@ Always visible and shows delete error if delete_view is set true -->
                             <?php
 
                             $query = "SELECT * FROM section as s
-                                        JOIN course as c ON c.course_id = s.course_id
+                            JOIN course as c ON c.course_id = s.course_id
 										WHERE c.course_id = '$course_id_selected'";
 
                             $sections = mysqli_query($conn, $query);
@@ -364,7 +364,7 @@ Always visible and shows delete error if delete_view is set true -->
 
                             // Get limited section names based on course_id
                             $query = "SELECT * FROM section as s
-                                        JOIN course as c ON c.course_id = s.course_id
+                            JOIN course as c ON c.course_id = s.course_id
 										WHERE c.course_id = '$course_id'";
 
                             $sections = mysqli_query($conn, $query);

@@ -5,8 +5,8 @@
     display_error();
 
     $query = "SELECT * FROM files as f
-                JOIN users as u ON u.user_id = f.uploaded_by_uid 
-                ORDER BY file_id ASC";
+    JOIN users as u ON u.user_id = f.uploaded_by_uid 
+    ORDER BY file_id ASC";
     $results = mysqli_query($conn, $query);
 
     ?>

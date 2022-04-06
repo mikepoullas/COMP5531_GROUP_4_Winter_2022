@@ -76,8 +76,8 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM section as s
-            JOIN course as c ON c.course_id = s.course_id
-            ORDER BY section_id ASC";
+JOIN course as c ON c.course_id = s.course_id
+ORDER BY section_id ASC";
     $results = mysqli_query($conn, $query);
 
     ?>

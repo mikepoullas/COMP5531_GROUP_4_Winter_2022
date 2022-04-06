@@ -165,12 +165,12 @@ Always visible and shows delete error if delete_view is set true -->
     display_error();
 
     $query = "SELECT * FROM student_group as g
-                JOIN member_of_group as mg ON mg.group_id = g.group_id
-                JOIN student as st ON st.student_id = mg.student_id
-                JOIN users as u ON u.user_id = st.user_id
-                JOIN group_of_course as gc ON gc.group_id = g.group_id
-                JOIN course as c ON c.course_id = gc.course_id
-                ORDER BY g.group_id ASC";
+    JOIN member_of_group as mg ON mg.group_id = g.group_id
+    JOIN student as st ON st.student_id = mg.student_id
+    JOIN users as u ON u.user_id = st.user_id
+    JOIN group_of_course as gc ON gc.group_id = g.group_id
+    JOIN course as c ON c.course_id = gc.course_id
+    ORDER BY g.group_id ASC";
 
     $results = mysqli_query($conn, $query);
 
@@ -234,8 +234,8 @@ Always visible and shows delete error if delete_view is set true -->
                                 <option value="" selected hidden>Choose a Student</option>
                                 <?php
                                 $query = "SELECT * FROM users as u
-                                        JOIN student as st ON st.user_id = u.user_id
-                                        WHERE role_id != 1";
+                            JOIN student as st ON st.user_id = u.user_id
+                            WHERE role_id != 1";
                                 $users = mysqli_query($conn, $query);
                                 foreach ($users as $user) {
                                     $user_id = $user['user_id'];
@@ -284,7 +284,7 @@ Always visible and shows delete error if delete_view is set true -->
                                 <?php
 
                                 $query = "SELECT * FROM section as s
-                                        JOIN course as c ON c.course_id = s.course_id
+                            JOIN course as c ON c.course_id = s.course_id
 										WHERE c.course_id = '$course_id_selected'";
 
                                 $sections = mysqli_query($conn, $query);
@@ -364,7 +364,7 @@ Always visible and shows delete error if delete_view is set true -->
 
                                 // Get limited section names based on course_id
                                 $query = "SELECT * FROM section as s
-                                        JOIN course as c ON c.course_id = s.course_id
+                            JOIN course as c ON c.course_id = s.course_id
 										WHERE c.course_id = '$course_id'";
 
                                 $sections = mysqli_query($conn, $query);

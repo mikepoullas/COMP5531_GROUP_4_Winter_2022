@@ -44,7 +44,7 @@ if (isset($_POST['update_comment'])) {
 
     if (count($errors) == 0) {
         $update = "UPDATE comment set comment_content = '$content'
-                    WHERE comment_id ='$id'";
+        WHERE comment_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             header('location: ?page=group-comment&discussion_id=' . $discussion_id);
@@ -76,16 +76,16 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM discussion as d
-                JOIN users as u ON u.user_id = d.posted_by_uid
-                WHERE d.discussion_id = '$discussion_id'
-                ORDER BY discussion_id ASC";
+    JOIN users as u ON u.user_id = d.posted_by_uid
+    WHERE d.discussion_id = '$discussion_id'
+    ORDER BY discussion_id ASC";
     $discussions = mysqli_query($conn, $query);
 
     $query = "SELECT c.*, u.*, d.discussion_id FROM comment as c
-                JOIN discussion as d ON d.discussion_id = c.discussion_id
-                JOIN users as u ON u.user_id = c.posted_by_uid
-                WHERE c.discussion_id = '$discussion_id'
-                ORDER BY c.comment_id ASC";
+    JOIN discussion as d ON d.discussion_id = c.discussion_id
+    JOIN users as u ON u.user_id = c.posted_by_uid
+    WHERE c.discussion_id = '$discussion_id'
+    ORDER BY c.comment_id ASC";
     $comments = mysqli_query($conn, $query);
     ?>
 
@@ -130,8 +130,8 @@ if (isset($_GET['delete_id'])) {
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
             $query = "SELECT * FROM comment as c
-                WHERE c.comment_id = '$id'
-                ORDER BY c.comment_id ASC";
+    WHERE c.comment_id = '$id'
+    ORDER BY c.comment_id ASC";
             $comments = mysqli_query($conn, $query);
 
             foreach ($comments as $row) {

@@ -74,7 +74,7 @@ if (isset($_POST['update_discussion'])) {
     if (count($errors) == 0) {
 
         $update = "UPDATE discussion set discussion_title = '$title', discussion_content = '$content'
-                    WHERE discussion_id ='$id'";
+        WHERE discussion_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
@@ -105,13 +105,13 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM discussion as d
-                JOIN users as u ON u.user_id = d.posted_by_uid
-                LEFT JOIN student_group as g ON g.group_id = d.group_id
-                LEFT JOIN task as t ON t.task_id = d.task_id
-                LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
-                JOIN course as c ON c.course_id = gc.course_id OR c.course_id = t.course_id
-                WHERE g.group_id = '$group_id' OR t.task_id = '$task_id'
-                ORDER BY discussion_id ASC";
+    JOIN users as u ON u.user_id = d.posted_by_uid
+    LEFT JOIN student_group as g ON g.group_id = d.group_id
+    LEFT JOIN task as t ON t.task_id = d.task_id
+    LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
+    JOIN course as c ON c.course_id = gc.course_id OR c.course_id = t.course_id
+    WHERE g.group_id = '$group_id' OR t.task_id = '$task_id'
+    ORDER BY discussion_id ASC";
     $discussions = mysqli_query($conn, $query);
 
     if ($group_id != null) {
@@ -198,12 +198,12 @@ if (isset($_GET['delete_id'])) {
 
         $id = mysqli_real_escape_string($conn, $_GET['update_id']);
         $query = "SELECT d.*, u.username, g.group_name, c.course_name FROM discussion as d
-                        JOIN users as u ON u.user_id = d.posted_by_uid
-                        JOIN student_group as g ON g.group_id = d.group_id
-                        JOIN group_of_course as gc ON gc.group_id = g.group_id
-                        JOIN course as c ON c.course_id = gc.course_id
-                        WHERE d.discussion_id='$id'
-                        ORDER BY discussion_id ASC";
+            JOIN users as u ON u.user_id = d.posted_by_uid
+            JOIN student_group as g ON g.group_id = d.group_id
+            JOIN group_of_course as gc ON gc.group_id = g.group_id
+            JOIN course as c ON c.course_id = gc.course_id
+            WHERE d.discussion_id='$id'
+            ORDER BY discussion_id ASC";
         $results = mysqli_query($conn, $query);
 
         foreach ($results as $row) {

@@ -189,9 +189,9 @@ if (isset($_GET['delete_id'])) {
             <?php
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
             $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
-            JOIN users as u ON a.posted_by_uid = u.user_id
-            JOIN course as c ON a.course_id = c.course_id
-            WHERE a.announcement_id='$id'";
+JOIN users as u ON a.posted_by_uid = u.user_id
+JOIN course as c ON a.course_id = c.course_id
+WHERE a.announcement_id='$id'";
             $results = mysqli_query($conn, $query);
 
             foreach ($results as $row) {

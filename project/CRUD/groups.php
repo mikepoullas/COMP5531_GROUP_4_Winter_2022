@@ -17,7 +17,7 @@ if (isset($_POST['add_group'])) {
     }
 
     $check = "SELECT * FROM member_of_group as mg
-                WHERE mg.student_id = '$group_leader_sid'";
+    WHERE mg.student_id = '$group_leader_sid'";
     $result = mysqli_query($conn, $check);
 
     if (mysqli_num_rows($result) !== 0) {
@@ -130,7 +130,7 @@ if (isset($_GET['delete_id'])) {
                         echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Group</a></td>";
                     } ?>
                 </tr>
-                <?php } ?>
+            <?php } ?>
         </tbody>
     </table>
 

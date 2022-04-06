@@ -139,10 +139,10 @@ Always visible and shows delete error if delete_view is set true -->
 
 
     $query = "SELECT * FROM users as u
-                JOIN professor as p ON p.user_id = u.user_id
-                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-                JOIN course as c ON c.course_id = ucs.course_id
-                ORDER BY u.user_id ASC";
+    JOIN professor as p ON p.user_id = u.user_id
+    JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+    JOIN course as c ON c.course_id = ucs.course_id
+    ORDER BY u.user_id ASC";
     $results = mysqli_query($conn, $query);
 
     ?>
@@ -202,8 +202,8 @@ Always visible and shows delete error if delete_view is set true -->
                             <option value="" selected hidden>Choose a Professor</option>
                             <?php
                             $query = "SELECT * FROM users as u
-                                        JOIN professor as p ON p.user_id = u.user_id
-                                        WHERE role_id != 1";
+                            JOIN professor as p ON p.user_id = u.user_id
+                            WHERE role_id != 1";
                             $users = mysqli_query($conn, $query);
                             foreach ($users as $user) {
                                 $user_id = $user['user_id'];

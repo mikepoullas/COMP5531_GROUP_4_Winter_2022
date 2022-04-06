@@ -22,12 +22,12 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT g.*, u.first_name, u.last_name, s.solution_content, t.task_content, c.course_name FROM grades as g
-                JOIN student as st ON st.student_id = g.student_id
-                JOIN users as u ON u.user_id = st.user_id
-                JOIN solution as s ON s.solution_id = g.solution_id
-                JOIN task as t ON t.task_id = s.task_id
-                JOIN course as c ON c.course_id = t.course_id
-                ORDER BY g.grade_id ASC";
+    JOIN student as st ON st.student_id = g.student_id
+    JOIN users as u ON u.user_id = st.user_id
+    JOIN solution as s ON s.solution_id = g.solution_id
+    JOIN task as t ON t.task_id = s.task_id
+    JOIN course as c ON c.course_id = t.course_id
+    ORDER BY g.grade_id ASC";
     $grades = mysqli_query($conn, $query);
 
     ?>

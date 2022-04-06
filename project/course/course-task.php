@@ -73,13 +73,13 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     $query = "SELECT * FROM task as t
-                JOIN course as c ON c.course_id = t.course_id
-                JOIN files as f ON f.file_id = t.file_id
-                JOIN users as u ON u.user_id = f.uploaded_by_uid
-                JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-                JOIN users as us ON us.user_id = ucs.user_id
-                WHERE us.user_id = '$user_id' AND c.course_id = '$course_id'
-                ORDER BY t.task_type ASC";
+    JOIN course as c ON c.course_id = t.course_id
+    JOIN files as f ON f.file_id = t.file_id
+    JOIN users as u ON u.user_id = f.uploaded_by_uid
+    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+    JOIN users as us ON us.user_id = ucs.user_id
+    WHERE us.user_id = '$user_id' AND c.course_id = '$course_id'
+    ORDER BY t.task_type ASC";
     $results = mysqli_query($conn, $query);
 
     $course_name = mysqli_fetch_assoc($results)['course_name'];

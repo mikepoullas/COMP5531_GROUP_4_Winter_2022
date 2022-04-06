@@ -30,8 +30,12 @@ if (!isAdmin()) {
     $group_info = mysqli_query($conn, $query);
 
     $query = "SELECT * FROM announcement as a
-    JOIN users as u ON a.posted_by_uid = u.user_id
     JOIN course as c ON c.course_id = a.course_id
+    JOIN users as u ON u.user_id = a.posted_by_uid
+    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+    LEFT JOIN section as s ON s.section_id = ucs.section_id
+    JOIN users as us ON us.user_id = ucs.user_id
+    WHERE us.user_id = '$user_id'
     ORDER BY a.announcement_id ASC";
     $announcements = mysqli_query($conn, $query);
 }
@@ -181,9 +185,8 @@ if (!isAdmin()) {
                 <ul>
                     <li> <b><?= $row['announcement_title'] ?></b> </li>
                     <li> <?= $row['announcement_content'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b></li>
                     <li>&emsp;<?= $row['posted_on'] ?></li>
-                    <li>&emsp;<?= $row['course_name'] ?></li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?></li>
                 </ul><br>
             <?php } ?>
         </div>
