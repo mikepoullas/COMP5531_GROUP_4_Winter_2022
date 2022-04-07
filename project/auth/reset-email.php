@@ -56,6 +56,8 @@ if (isset($_POST['reset_email'])) {
         <h1>Reset Email</h1>
     </header>
 
+    <br>
+
     <main>
 
         <div class="form-container">
