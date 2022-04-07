@@ -13,13 +13,13 @@
         upload_file('files');
     }
     if (isset($_GET['download_file'])) {
-        download_file();
+        download_file($_GET['download_file']);
     }
     if (isset($_POST['update_file'])) {
-        update_file('files');
+        update_file('files', $_GET['update_file']);
     }
     if (isset($_GET['delete_file'])) {
-        delete_file();
+        delete_file($_GET['delete_file']);
     }
 
     ?>
@@ -114,6 +114,10 @@
             <div class="form-container">
                 <form class="form-body" action="" enctype="multipart/form-data" method="POST">
                     <h3>Update File</h3>
+                    <div class="form-input">
+                        <label>Select file</label>
+                        <span><?= $file_name ?></span>
+                    </div>
                     <div class="form-input">
                         <label>Select file</label>
                         <span><input type="file" name="file"> </span>
