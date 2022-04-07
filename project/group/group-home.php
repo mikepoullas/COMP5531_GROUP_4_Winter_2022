@@ -3,7 +3,7 @@
 $user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
-$query = "SELECT g.*, u.*, s.section_name, c.course_name FROM student_group as g
+$query = "SELECT * FROM student_group as g
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
@@ -36,7 +36,13 @@ $group = mysqli_query($conn, $query);
                         <th>Section</th>
                     <?php } ?>
                     <th>Course</th>
-                    <th colspan="2">Discussion</th>
+                    <?php if (isStudent()) { ?>
+                        <th colspan="2">Discussion</th>
+                        <th colspan="2">Solution</th>
+                    <?php } else { ?>
+                        <th>Discussion</th>
+                        <th>Solution</th>
+                    <?php } ?>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +52,7 @@ $group = mysqli_query($conn, $query);
                     $group_name = $row['group_name'];
                     $group_leader_sid = $row['group_leader_sid'];
                     $section_name = $row['section_name'];
+                    $course_id = $row['course_id'];
                     $course_name = $row['course_name'];
 
                     $query = "SELECT * FROM users as u
@@ -62,12 +69,18 @@ $group = mysqli_query($conn, $query);
                             <td><?= $section_name ?></td>
                         <?php } ?>
                         <td><?= $course_name ?></td>
-                        <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?> ">View</a></td>
-                        <td><a href="?page=group-discussion&group_id=<?= $group_id ?> ">Manage</a></td>
+
+                        <?php if (isStudent()) { ?>
+                            <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?> ">View</a></td>
+                            <td><a href="?page=group-discussion&group_id=<?= $group_id ?> ">Manage</a></td>
+                            <td><a href="?page=group-solution&course_id=<?= $course_id ?> ">Manage</a></td>
+                        <?php } else { ?>
+                            <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?> ">View</a></td>
+                            <td><a href="?page=group-solution&course_id=<?= $course_id ?> ">Manage</a></td>
+
+                        <?php } ?>
                     </tr>
-                <?php
-                }
-                ?>
+                <?php } ?>
             </tbody>
         </table>
     </div>

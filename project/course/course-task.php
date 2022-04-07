@@ -45,7 +45,7 @@ if (isset($_POST['upload_file'])) {
 
 //DOWNLOAD
 if (isset($_GET['download_file'])) {
-    download_file();
+    download_file($_GET['download_file']);
 }
 
 //UPDATE
@@ -79,8 +79,8 @@ if (isset($_POST['update_file'])) {
                 WHERE task_id='$task_id'";
 
         if (mysqli_query($conn, $update)) {
-            update_file('task');
             array_push($success, "Task update Successful");
+            update_file('task', $_GET['update_id']);
         } else {
             array_push($errors, "Error adding Task: " . mysqli_error($conn));
         }
@@ -92,7 +92,7 @@ if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM task WHERE task_id='$id'";
     if (mysqli_query($conn, $delete)) {
-        delete_file();
+        delete_file($_GET['delete_id']);
         array_push($success, "Delete successful");
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
@@ -107,7 +107,8 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT * FROM task as t
+    $query = "SELECT t.*, s.solution_content, c.*, f.*, u.* FROM task as t
+    LEFT JOIN solution as s ON s.task_id = t.task_id
     JOIN course as c ON c.course_id = t.course_id
     JOIN files as f ON f.file_id = t.file_id
     JOIN users as u ON u.user_id = f.uploaded_by_uid
@@ -125,14 +126,15 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <th>Type</th>
                 <th>Content</th>
+                <th>Type</th>
                 <th>Deadline</th>
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
                 <th>File Name</th>
+                <th>Solution</th>
                 <?php
-                if (!isStudent()) {
+                if (isProfessor()) {
                     echo '<th colspan="3">Action</th>';
                 } else {
                     echo '<th>Action</th>';
@@ -151,14 +153,21 @@ if (isset($_GET['delete_id'])) {
                 $uploaded_on = date_convert($row['uploaded_on']);
                 $file_id = $row['file_id'];
                 $file_name = $row['file_name'];
+                $solution_content = $row['solution_content'];
             ?>
                 <tr>
+                    <td><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></td>
                     <td><?= $task_type ?></td>
-                    <td><?= $task_content ?></td>
                     <td><?= $task_deadline ?></td>
                     <td><?= $uploaded_by_uid ?></td>
                     <td><?= $uploaded_on ?></td>
                     <td><?= $file_name ?></td>
+                    <?php if ($solution_content != NULL) {
+                        echo "<td><a href='?page=group-solution&course_id=$course_id'>$solution_content</a></td>";
+                    } else {
+                        echo "<td><a href='?page=group-solution&course_id=$course_id'>Upload</a></td>";
+                    }
+                    ?>
                     <?php
                     if (isProfessor()) {
                         echo "<td><a href='?page=course-task&course_id=$course_id&download_file=$file_id'>Download</a></td>";

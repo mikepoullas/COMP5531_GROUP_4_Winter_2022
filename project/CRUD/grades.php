@@ -31,7 +31,7 @@ if (isset($_GET['delete_id'])) {
     $grades = mysqli_query($conn, $query);
 
     ?>
-    <h2>grades</h2>
+    <h2>Grades</h2>
     <hr>
     <table>
         <thead>

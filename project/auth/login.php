@@ -78,10 +78,11 @@ if (isset($_POST['login_user'])) {
 <body>
 
     <header>
-        <h1>Login to CGA</h1>
+        <h1>Login</h1>
     </header>
 
     <main>
+
 
         <div class="form-container">
 
@@ -91,6 +92,7 @@ if (isset($_POST['login_user'])) {
                 display_success();
                 display_error();
                 ?>
+                <br>
 
                 <div class="form-input">
                     <label>Username</label>
