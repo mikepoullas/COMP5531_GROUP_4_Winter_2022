@@ -93,6 +93,7 @@ function download_file($id)
 
 // UPDATE FILE
 function update_file($table, $id)
+
 {
     global $conn, $errors, $success;
 
@@ -169,6 +170,7 @@ function delete_file($id)
         unlink($filepath);
 
         if (mysqli_query($conn, $delete)) {
+
             array_push($success, "Delete successful");
             header("location: {$_SERVER['HTTP_REFERER']}");
             exit();
