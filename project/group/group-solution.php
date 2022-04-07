@@ -118,7 +118,7 @@ if (isset($_GET['delete_id'])) {
     $course_name = mysqli_fetch_assoc($results)['course_name'];
 
     ?>
-    <h2><?= $course_name ?> solutions</h2>
+    <h2><?= $course_name ?> Solutions</h2>
     <hr>
     <table>
         <thead>
