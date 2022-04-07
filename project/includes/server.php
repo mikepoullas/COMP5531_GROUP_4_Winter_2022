@@ -151,9 +151,6 @@ function update_file($table, $id)
     }
 }
 
-
-
-
 // DELETE FILE
 function delete_file($id)
 {

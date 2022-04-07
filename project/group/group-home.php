@@ -3,7 +3,7 @@
 $user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
-$query = "SELECT * FROM student_group as g
+$query = "SELECT g.*, c.*, u.*, s.section_name FROM student_group as g
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
@@ -69,15 +69,13 @@ $group = mysqli_query($conn, $query);
                             <td><?= $section_name ?></td>
                         <?php } ?>
                         <td><?= $course_name ?></td>
-
                         <?php if (isStudent()) { ?>
-                            <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?> ">View</a></td>
-                            <td><a href="?page=group-discussion&group_id=<?= $group_id ?> ">Manage</a></td>
-                            <td><a href="?page=group-solution&course_id=<?= $course_id ?> ">Manage</a></td>
+                            <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?>">View</a></td>
+                            <td><a href="?page=group-discussion&group_id=<?= $group_id ?>">Manage</a></td>
+                            <td><a href="?page=group-solution&course_id=<?= $course_id ?>">Manage</a></td>
                         <?php } else { ?>
-                            <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?> ">View</a></td>
-                            <td><a href="?page=group-solution&course_id=<?= $course_id ?> ">Manage</a></td>
-
+                            <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?>">View</a></td>
+                            <td><a href="?page=group-solution&course_id=<?= $course_id ?>">Manage</a></td>
                         <?php } ?>
                     </tr>
                 <?php } ?>
