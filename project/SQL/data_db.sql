@@ -16,7 +16,6 @@
 4400000 - discussion
 5500000 - comment
 6600000 - files
-7700000 - grades
 
 */
 
@@ -171,14 +170,3 @@ INSERT INTO Comment (comment_content, posted_by_uid, posted_on, discussion_id) V
 ("No Comment 1", 10007, CURRENT_TIMESTAMP, 4400000),
 ("No Comment 2", 10008, CURRENT_TIMESTAMP, 4400001),
 ("No Comment 3", 10009, CURRENT_TIMESTAMP, 4400002);
-
--- Solution Table
-INSERT INTO Grades (grade, student_id, solution_id) VALUES
-(100, 20000, 90000),
-(90, 20000, 90001),
-(50, 20000, 90002),
-(40, 20000, 90003),
-(100, 20001, 90000),
-(90, 20001, 90001),
-(50, 20001, 90002),
-(60, 20001, 90003);

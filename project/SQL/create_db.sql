@@ -19,7 +19,6 @@ use cga;
 4400000 - discussion
 5500000 - comment
 6600000 - files
-7700000 - grades
 
 */
 
@@ -141,17 +140,6 @@ CREATE TABLE Solution
   FOREIGN KEY (file_id) REFERENCES Files(file_id)
 );
 ALTER TABLE Solution AUTO_INCREMENT = 90000;
-
-CREATE TABLE Grades
-(
-  grade_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  grade INT NOT NULL,
-  student_id INT NOT NULL,
-  solution_id INT NOT NULL,
-  FOREIGN KEY (student_id) REFERENCES Student(student_id),
-  FOREIGN KEY (solution_id) REFERENCES Solution(solution_id)
-);
-ALTER TABLE Grades AUTO_INCREMENT = 7700000;
 
 CREATE TABLE Announcement
 (
