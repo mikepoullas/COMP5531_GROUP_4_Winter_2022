@@ -148,7 +148,8 @@ CREATE TABLE Grades
   student_id INT NOT NULL,
   solution_id INT NOT NULL,
   FOREIGN KEY (student_id) REFERENCES Student(student_id),
-  FOREIGN KEY (solution_id) REFERENCES Solution(solution_id)
+  FOREIGN KEY (solution_id) REFERENCES Solution(solution_id),
+  UNIQUE (student_id, solution_id) 
 );
 ALTER TABLE Grades AUTO_INCREMENT = 7700000;
 
