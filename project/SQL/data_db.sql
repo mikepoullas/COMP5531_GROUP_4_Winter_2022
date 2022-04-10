@@ -16,6 +16,7 @@
 4400000 - discussion
 5500000 - comment
 6600000 - files
+7700000 - grades
 
 */
 
@@ -135,6 +136,17 @@ INSERT INTO Solution (solution_type, solution_content, task_id, file_id) VALUES
 ("Project", "Project DB Solve", 80001, 6600005),
 ("Assignment", "Assignment OS Solve", 80002, 6600006),
 ("Project", "Project OS Solve", 80003, 6600007);
+
+-- Grades Table
+INSERT INTO Grades (grade, student_id, solution_id) VALUES
+(100, 20000, 90000),
+(90, 20000, 90001),
+(50, 20000, 90002),
+(40, 20000, 90003),
+(100, 20001, 90000),
+(90, 20001, 90001),
+(50, 20001, 90002),
+(60, 20001, 90003);
 
 -- Course Anncoucement Table
 INSERT INTO Announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id) VALUES
