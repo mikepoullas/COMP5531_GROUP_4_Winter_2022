@@ -136,7 +136,7 @@ if (isset($_GET['delete_id'])) {
             $replys = mysqli_query($conn, $query);
 
             foreach ($replys as $row) {
-                $content = $row['content'];
+                $content = $row['reply_content'];
             }
         ?>
 
