@@ -21,12 +21,15 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT g.*, u.first_name, u.last_name, s.solution_content, t.task_content, c.course_name FROM grades as g
+    $query = "SELECT g.*, u.first_name, u.last_name, t.*, s.*, c.course_name FROM grades as g
     JOIN student as st ON st.student_id = g.student_id
     JOIN users as u ON u.user_id = st.user_id
     JOIN solution as s ON s.solution_id = g.solution_id
     JOIN task as t ON t.task_id = s.task_id
     JOIN course as c ON c.course_id = t.course_id
+    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+    JOIN users as us ON us.user_id = ucs.user_id
+    WHERE us.user_id = '$user_id'
     ORDER BY g.grade_id ASC";
     $grades = mysqli_query($conn, $query);
 
@@ -39,6 +42,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Grade ID</th>
                 <th>Grade</th>
                 <th>Student Name</th>
+                <th>Solution Type</th>
                 <th>Task Content</th>
                 <th>Solution Content</th>
                 <th>Course Name</th>
@@ -50,6 +54,7 @@ if (isset($_GET['delete_id'])) {
                 $id = $row['grade_id'];
                 $grade = $row['grade'];
                 $student_name = $row['first_name'] . " " . $row['last_name'];
+                $solution_type = $row['solution_type'];
                 $task_content = $row['task_content'];
                 $solution_content = $row['solution_content'];
                 $course_name = $row['course_name'];
@@ -58,6 +63,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $id ?></td>
                     <td><?= $grade ?></td>
                     <td><?= $student_name ?></td>
+                    <td><?= $solution_type ?></td>
                     <td><?= $task_content ?></td>
                     <td><?= $solution_content ?></td>
                     <td><?= $course_name ?></td>
