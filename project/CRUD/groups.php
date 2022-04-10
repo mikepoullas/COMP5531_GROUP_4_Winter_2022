@@ -3,8 +3,6 @@
 // ADD
 if (isset($_POST['add_group'])) {
 
-    pre_print($_POST);
-
     // receive all input values from the form
     $group_name = mysqli_real_escape_string($conn, $_POST['group_name']);
     $group_leader_sid = mysqli_real_escape_string($conn, $_POST['group_leader_sid']);
