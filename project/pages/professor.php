@@ -23,6 +23,7 @@
                 <ul class="menu-list">
                     <li><a href="?page=groups">Groups</a></li>
                     <li><a href="?page=announcements">Announcements</a></li>
+                    <li><a href="?page=grades">Grades</a></li>
                 </ul>
                 <br>
                 <h2>Assign</h2>

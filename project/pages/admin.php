@@ -25,6 +25,7 @@
                         <li><a href="?page=comments">Comments</a></li>
                         <li><a href="?page=task">Tasks</a></li>
                         <li><a href="?page=solution">Solutions</a></li>
+                        <li><a href="?page=grades">Grades</a></li>
                     </ul>
 
                     <h2>Assign</h2>
