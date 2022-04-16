@@ -4,4 +4,11 @@
 
 </body>
 
+<script>
+    setTimeout(() => {
+        const box = document.getElementById('notification');
+        box.style.display = 'none';
+    }, 2000);
+</script>
+
 </html>

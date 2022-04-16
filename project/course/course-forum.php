@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $course_id = $_GET['course_id'];
 
 // ADD
@@ -21,7 +21,7 @@ if (isset($_POST['add_forum'])) {
 
     if (count($errors) == 0) {
         $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$course_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");

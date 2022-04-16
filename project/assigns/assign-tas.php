@@ -26,29 +26,17 @@
 
 <?php
 
+$session_user_id = $_SESSION['user_id'];
+
 /*******************************************************
  * ADD SQL
  ********************************************************/
 
 if (isset($_POST['assign'])) {
 
-    //    if (empty($_POST['user_id'])) {
-    //        array_push($errors, "Please select a user");
-    //    } else {
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
-    //    }
-
-    //    if (empty($_POST['course_id'])) {
-    //        array_push($errors, "Please select a course");
-    //    } else {
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
-    //    }
-
-    //    if (empty($_POST['section_id'])) {
-    //        array_push($errors, "Please select a section");
-    //    } else {
     $section_id = mysqli_real_escape_string($conn, $_POST['section_id']);
-    //    }
 
     $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
     $check = mysqli_query($conn, $query);
@@ -65,9 +53,12 @@ if (isset($_POST['assign'])) {
 
     if (count($errors) == 0) {
 
-        $add = "INSERT INTO user_course_section (user_id, course_id, section_id) VALUES('$user_id', '$course_id', '$section_id')";
+        $add_ucs = "INSERT INTO user_course_section (user_id, course_id, section_id) VALUES('$user_id', '$course_id', '$section_id')";
 
-        if (mysqli_query($conn, $add)) {
+        $ta_id = mysqli_fetch_assoc(get_records_where('ta', 'user_id', $user_id))['ta_id'];
+        $add_ta = "INSERT INTO ta_of_section (ta_id, section_id) VALUES('$ta_id', '$section_id')";
+
+        if (mysqli_query($conn, $add_ucs) && mysqli_query($conn, $add_ta)) {
             array_push($success, "TA has been assigned successfully!");
         } else {
             array_push($errors, "Could not INSERT Error: " . mysqli_error($conn));
@@ -83,18 +74,11 @@ if (isset($_POST['update'])) {
 
     $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
 
-    //    if (empty($_POST['course_id'])) {
-    //        array_push($errors, "Please select a course");
-    //    } else {
     $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
-    //    }
+    $_GET['course_id'] = $course_id;
 
-    //    if (empty($_POST['section_id'])) {
-    //        array_push($errors, "Please select a section");
-    //    } else {
     $section_id = mysqli_real_escape_string($conn, $_POST['section_id']);
     $_GET['section_id'] = $section_id;
-    //    }
 
     $query = "SELECT * FROM user_course_section WHERE user_id = '$user_id'";
     $check = mysqli_query($conn, $query);
@@ -113,10 +97,13 @@ if (isset($_POST['update'])) {
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE user_course_section set section_id = '$section_id' WHERE user_id ='$user_id' AND course_id = '$course_id'";
+        $update_ucs = "UPDATE user_course_section SET section_id = '$section_id' WHERE user_id ='$user_id' AND course_id = '$course_id'";
 
-        if (mysqli_query($conn, $update)) {
-            array_push($success, "Updated Successfully.");
+        $ta_id = mysqli_fetch_assoc(get_records_where('ta', 'user_id', $user_id))['ta_id'];
+        $update_ta = "UPDATE ta_of_section SET section_id = '$section_id' WHERE ta_id = '$ta_id'";
+
+        if (mysqli_query($conn, $update_ucs) && mysqli_query($conn, $update_ta)) {
+            array_push($success, "Updated Successfully");
         } else {
             array_push($errors, "Could not UPDATE error: " . mysqli_error($conn));
         }
@@ -133,9 +120,12 @@ if (isset($_GET['delete_view'])) {
     $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
     $section_id = mysqli_real_escape_string($conn, $_GET['section_id']);
 
-    $delete = "DELETE FROM user_course_section WHERE user_id='$user_id' AND course_id='$course_id' AND section_id='$section_id'";
+    $delete_ucs = "DELETE FROM user_course_section WHERE user_id='$user_id' AND course_id='$course_id' AND section_id='$section_id'";
 
-    if (mysqli_query($conn, $delete)) {
+    $ta_id = mysqli_fetch_assoc(get_records_where('ta', 'user_id', $user_id))['ta_id'];
+    $delete_ta = "DELETE FROM ta_of_section WHERE ta_id = '$ta_id' AND section_id = '$section_id'";
+
+    if (mysqli_query($conn, $delete_ucs) && mysqli_query($conn, $delete_ta)) {
         array_push($success, "Delete successful.");
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
@@ -147,6 +137,7 @@ if (isset($_POST["course_id"])) {
     $user_id_selected = $_POST["user_id"];
     $course_id_selected = $_POST["course_id"];
 }
+
 ?>
 
 <!-- Table Section
@@ -159,12 +150,27 @@ Always visible and shows delete error if delete_view is set true -->
     display_success();
     display_error();
 
-    $query = "SELECT * FROM users as u
-					JOIN ta as t ON t.user_id = u.user_id
-					JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-					JOIN course as c ON c.course_id = ucs.course_id
-					JOIN section as s ON s.section_id = ucs.section_id
-					ORDER BY u.user_id ASC";
+    if (isAdmin()) {
+        $query = "SELECT * FROM users as u
+        JOIN ta as t ON t.user_id = u.user_id
+        JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+        JOIN course as c ON c.course_id = ucs.course_id
+        JOIN section as s ON s.section_id = ucs.section_id
+        ORDER BY u.user_id ASC";
+    }
+
+    if (isProfessor()) {
+        $query = "SELECT u.*, t.*, c.*, s.* FROM users as u
+        JOIN ta as t ON t.user_id = u.user_id
+        JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+        JOIN course as c ON c.course_id = ucs.course_id
+        JOIN section as s ON s.section_id = ucs.section_id
+        JOIN prof_of_course as pc ON pc.course_id = c.course_id
+        JOIN professor as p ON p.professor_id = pc.professor_id
+        WHERE p.user_id = '$session_user_id'
+        ORDER BY u.user_id ASC";
+    }
+
     $results = mysqli_query($conn, $query);
 
     ?>
@@ -207,7 +213,7 @@ Always visible and shows delete error if delete_view is set true -->
         </tbody>
     </table>
 
-    <?php if (isAdmin()) { ?>
+    <?php if (isAdmin() || isProfessor()) { ?>
         <a href="?page=assign-tas&add_view=true">
             <button>Add New</button>
         </a>
@@ -222,32 +228,7 @@ Always visible and shows delete error if delete_view is set true -->
             <form class="form-body" action="" method="POST" onSubmit="return validateTACourseSection()">
 
                 <div class="form-input">
-                    <p>TA: </p>
-                    <div class="scroll-list">
-                        <select name="user_id" id="user_id">
-                            <option value="" selected hidden>Choose a TA</option>
-                            <?php
-                            $query = "SELECT * FROM users as u
-                            JOIN ta as t ON t.user_id = u.user_id
-                            WHERE role_id != 1";
-                            $users = mysqli_query($conn, $query);
-                            foreach ($users as $user) {
-                                $user_id = $user['user_id'];
-                                $first_name = $user['first_name'];
-                                $last_name = $user['last_name'];
-                                if ($user_id_selected == $user_id) {
-                                    echo "<option value='$user_id' selected>$first_name $last_name</option>";
-                                } else {
-                                    echo "<option value='$user_id'>$first_name $last_name</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-input">
-                    <p>Courses: </p>
+                    <p>Courses</p>
                     <div class="scroll-list">
                         <select name="course_id" id="course_id" onchange="this.form.submit()">>
                             <option value="" selected hidden>Choose a Course</option>
@@ -269,20 +250,44 @@ Always visible and shows delete error if delete_view is set true -->
                 </div>
 
                 <div class="form-input">
-                    <p>Sections: </p>
+                    <p>Sections</p>
                     <div class="scroll-list">
                         <select name="section_id" id="section_id">>
                             <option value="" selected hidden>Choose a Section</option>
                             <?php
                             $query = "SELECT * FROM section as s
                             JOIN course as c ON c.course_id = s.course_id
-										WHERE c.course_id = '$course_id_selected'";
+							WHERE c.course_id = '$course_id_selected'";
                             $sections = mysqli_query($conn, $query);
                             foreach ($sections as $row) {
                                 $section_id = $row['section_id'];
                                 $section_name = $row['section_name'];
                                 $course_name = $row['course_name'];
                                 echo "<option value='$section_id'>$section_name ($course_name)</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-input">
+                    <p>TA</p>
+                    <div class="scroll-list">
+                        <select name="user_id" id="user_id">
+                            <option value="" selected hidden>Choose a TA</option>
+                            <?php
+                            $query = "SELECT * FROM users as u
+                            JOIN ta as t ON t.user_id = u.user_id";
+                            $users = mysqli_query($conn, $query);
+                            foreach ($users as $user) {
+                                $user_id = $user['user_id'];
+                                $first_name = $user['first_name'];
+                                $last_name = $user['last_name'];
+                                if ($user_id_selected == $user_id) {
+                                    echo "<option value='$user_id' selected>$first_name $last_name</option>";
+                                } else {
+                                    echo "<option value='$user_id'>$first_name $last_name</option>";
+                                }
                             }
                             ?>
                         </select>
@@ -323,18 +328,19 @@ Always visible and shows delete error if delete_view is set true -->
             $course_name = $row['course_name'];
             $update_section_name = $row['section_name'];
         }
+
         ?>
 
         <div class="form-container">
             <form class="form-body" action="" method="POST">
 
                 <div class="form-input">
-                    <label>TA: </label>
+                    <label>TA</label>
                     <span><b><?= $ta_name ?></b></span>
                 </div>
 
                 <div class="form-input">
-                    <p>Course: </p>
+                    <p>Course</p>
                     <div class="scroll-list">
                         <select name="course_id" id="course_id" disabled>
                             <?php
@@ -345,7 +351,7 @@ Always visible and shows delete error if delete_view is set true -->
                 </div>
 
                 <div class="form-input">
-                    <p>Course Sections:</p>
+                    <p>Course Sections</p>
                     <div class="scroll-list">
                         <select name="section_id" id="section_id">
                             <option value="" selected hidden>Choose a section:</option>
@@ -354,7 +360,7 @@ Always visible and shows delete error if delete_view is set true -->
                             // Get limited section names based on course_id
                             $query = "SELECT * FROM section as s
                             JOIN course as c ON c.course_id = s.course_id
-										WHERE c.course_id = '$course_id'";
+							WHERE c.course_id = '$course_id'";
 
                             $sections = mysqli_query($conn, $query);
                             foreach ($sections as $row) {

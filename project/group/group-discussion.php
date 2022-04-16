@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 if (isset($_GET['group_id'])) {
     $group_id = $_GET['group_id'];
@@ -33,11 +33,11 @@ if (isset($_POST['add_discussion'])) {
     if (count($errors) == 0) {
         if ($group_id != null) {
             $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, group_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$group_id')";
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$group_id')";
         }
         if ($task_id != null) {
             $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, task_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$task_id')";
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$task_id')";
         }
 
         if (mysqli_query($conn, $add)) {

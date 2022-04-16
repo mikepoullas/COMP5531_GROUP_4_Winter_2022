@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $forum_id = $_GET['forum_id'];
 
 // ADD
@@ -17,7 +17,7 @@ if (isset($_POST['add_reply'])) {
 
     if (count($errors) == 0) {
         $add = "INSERT INTO reply (reply_content, posted_by_uid, posted_on, forum_id)
-                VALUES ('$content', '$user_id', NOW(), '$forum_id')";
+                VALUES ('$content', '$session_user_id', NOW(), '$forum_id')";
 
         if (mysqli_query($conn, $add)) {
             header('location: ?page=course-reply&forum_id=' . $forum_id);
@@ -114,7 +114,7 @@ if (isset($_GET['delete_id'])) {
             <ul>
                 <li><?= $reply_content ?></li>
                 <li>&emsp;by <b><?= $reply_posted_by ?></b> | <?= $reply_posted_on ?></li>
-                <?php if ($user_id == $row['posted_by_uid']) { ?>
+                <?php if ($session_user_id == $row['posted_by_uid']) { ?>
                     <li>
                         &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $forum_id ?>&update_id=<?= $reply_id ?>">Update</a>
                         |
@@ -136,7 +136,7 @@ if (isset($_GET['delete_id'])) {
             $replys = mysqli_query($conn, $query);
 
             foreach ($replys as $row) {
-                $content = $row['content'];
+                $content = $row['reply_content'];
             }
         ?>
 

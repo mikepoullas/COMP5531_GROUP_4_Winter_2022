@@ -97,6 +97,12 @@ INSERT INTO Student_Group (group_name, group_leader_sid) VALUES
 ("Group_2", 20001),
 ("Group_3", 20002);
 
+-- Assign Groups to Course
+INSERT INTO Group_of_Course (group_id, course_id) VALUES
+(70000, 50000),
+(70001, 50001),
+(70002, 50002);
+
 -- Assign Student to Group  
 INSERT INTO Member_of_Group (student_id, group_id) VALUES
 (20000, 70000),
@@ -106,11 +112,20 @@ INSERT INTO Member_of_Group (student_id, group_id) VALUES
 (20001, 70002),
 (20002, 70002);
 
--- Assign Groups to Course
-INSERT INTO Group_of_Course (group_id, course_id) VALUES
-(70000, 50000),
-(70001, 50001),
-(70002, 50002);
+-- Assign TA to Section  
+INSERT INTO TA_of_Section (ta_id, section_id) VALUES
+(30000, 60000),
+(30000, 60001),
+(30001, 60002),
+(30001, 60003),
+(30002, 60004),
+(30002, 60005);
+
+-- Assign Prof to Course  
+INSERT INTO Prof_of_Course (professor_id, course_id) VALUES
+(40000, 50000),
+(40001, 50001),
+(40002, 50002);
 
 -- Files Table
 INSERT INTO Files (file_name, file_content, file_type, file_size, uploaded_by_uid, uploaded_on) VALUES
@@ -136,6 +151,17 @@ INSERT INTO Solution (solution_type, solution_content, task_id, file_id) VALUES
 ("Project", "Project DB Solve", 80001, 6600005),
 ("Assignment", "Assignment OS Solve", 80002, 6600006),
 ("Project", "Project OS Solve", 80003, 6600007);
+
+-- Grades Table
+INSERT INTO Grades (grade, student_id, solution_id) VALUES
+(100, 20000, 90000),
+(90, 20000, 90001),
+(50, 20000, 90002),
+(40, 20000, 90003),
+(100, 20001, 90000),
+(90, 20001, 90001),
+(50, 20001, 90002),
+(60, 20001, 90003);
 
 -- Course Anncoucement Table
 INSERT INTO Announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id) VALUES
@@ -171,14 +197,3 @@ INSERT INTO Comment (comment_content, posted_by_uid, posted_on, discussion_id) V
 ("No Comment 1", 10007, CURRENT_TIMESTAMP, 4400000),
 ("No Comment 2", 10008, CURRENT_TIMESTAMP, 4400001),
 ("No Comment 3", 10009, CURRENT_TIMESTAMP, 4400002);
-
--- Solution Table
-INSERT INTO Grades (grade, student_id, solution_id) VALUES
-(100, 20000, 90000),
-(90, 20000, 90001),
-(50, 20000, 90002),
-(40, 20000, 90003),
-(100, 20001, 90000),
-(90, 20001, 90001),
-(50, 20001, 90002),
-(60, 20001, 90003);

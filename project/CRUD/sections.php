@@ -130,9 +130,10 @@ ORDER BY section_id ASC";
                         <label>Section Name</label>
                         <span><input type="text" name="section_name"></span>
                     </div>
+
                     <div class="form-input">
-                        <label for="course">Course Name</label>
-                        <span>
+                        <p>Course Name</p>
+                        <div class="scroll-list">
                             <select name="course_id">
                                 <option value="" selected hidden>Choose a Course</option>
                                 <?php
@@ -144,7 +145,7 @@ ORDER BY section_id ASC";
                                 }
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_section" value="Add">
@@ -178,8 +179,8 @@ ORDER BY section_id ASC";
                         <span><input type="text" name="section_name" value='<?= $section_name ?>'></span>
                     </div>
                     <div class="form-input">
-                        <label for="course">Course Name</label>
-                        <span>
+                        <p>Course Name</p>
+                        <div class="scroll-list">
                             <select name="course_id">
                                 <?php
                                 $courses = get_table_array('course');
@@ -194,7 +195,7 @@ ORDER BY section_id ASC";
                                 }
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_section" value="Update">

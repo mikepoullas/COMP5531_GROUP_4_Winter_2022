@@ -8,7 +8,7 @@ function display_error()
 {
     global $errors;
     if (count($errors) > 0) {
-        echo '<div class="error">';
+        echo '<div class="error" id="notification" onclick="this.remove()">';
         foreach ($errors as $error) {
             echo $error . '<br>';
         }
@@ -21,7 +21,7 @@ function display_success()
 {
     global $success;
     if (count($success) > 0) {
-        echo '<div class="success">';
+        echo '<div class="success" id="notification" onclick="this.remove()">';
         foreach ($success as $success) {
             echo $success . '<br>';
         }
@@ -88,7 +88,7 @@ function isLoggedIn()
     }
 }
 
-function pre_print($var)
+function prep($var)
 {
     echo '<pre>';
     print_r($var);

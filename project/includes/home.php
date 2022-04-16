@@ -4,7 +4,7 @@ unset($_REQUEST);
 
 $username = $_SESSION['username'];
 $role_name = $_SESSION['role_name'];
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
 if (!isAdmin()) {
@@ -13,7 +13,7 @@ if (!isAdmin()) {
     JOIN user_course_section as ucs ON ucs.user_id = u.user_id
     JOIN course as c ON c.course_id = ucs.course_id
     LEFT JOIN section as s ON s.section_id = ucs.section_id
-    WHERE u.user_id = '$user_id'
+    WHERE u.user_id = '$session_user_id'
     ORDER BY u.user_id ASC";
     $course_info = mysqli_query($conn, $query);
 
@@ -25,7 +25,7 @@ if (!isAdmin()) {
     JOIN course as c ON c.course_id = gc.course_id
     JOIN section as s ON s.course_id = c.course_id
     JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND ucs.user_id = u.user_id
-    WHERE u.user_id = $user_id
+    WHERE u.user_id = $session_user_id
     ORDER BY g.group_id ASC";
     $group_info = mysqli_query($conn, $query);
 
@@ -35,7 +35,7 @@ if (!isAdmin()) {
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
     LEFT JOIN section as s ON s.section_id = ucs.section_id
     JOIN users as us ON us.user_id = ucs.user_id
-    WHERE us.user_id = '$user_id'
+    WHERE us.user_id = '$session_user_id'
     ORDER BY a.announcement_id ASC";
     $announcements = mysqli_query($conn, $query);
 }
@@ -68,7 +68,6 @@ if (!isAdmin()) {
             echo '<li>Discussions:  <b> ' . mysqli_num_rows(get_table_array('discussion')) . '</b> </li>';
             echo '<li>Comments: <b> ' . mysqli_num_rows(get_table_array('comment')) . '</b> </li>';
             echo '<li>Files: <b> ' . mysqli_num_rows(get_table_array('files')) . '</b> </li>';
-            echo '<li>Grades: <b> ' . mysqli_num_rows(get_table_array('grades')) . '</b> </li>';
             echo "</ul>";
             ?>
             <hr>
@@ -92,7 +91,6 @@ if (!isAdmin()) {
                 4400000 - discussion<br>
                 5500000 - comment<br>
                 6600000 - files<br>
-                7700000 - grades<br>
             </p>
         </div>
     <?php } ?>
