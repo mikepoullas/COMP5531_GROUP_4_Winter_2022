@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 if (isset($_GET['course_id'])) {
     $course_id = $_GET['course_id'];
@@ -114,7 +114,7 @@ if (isset($_GET['delete_id'])) {
     JOIN users as u ON u.user_id = f.uploaded_by_uid
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
     JOIN users as us ON us.user_id = ucs.user_id
-    WHERE us.user_id = '$user_id' AND c.course_id = '$course_id'
+    WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
     ORDER BY t.task_id ASC";
     $results = mysqli_query($conn, $query);
 

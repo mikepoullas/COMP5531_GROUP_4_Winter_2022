@@ -1,5 +1,7 @@
 <?php
 
+$session_user_id = $_SESSION['user_id'];
+
 // ADD
 if (isset($_POST['add_group'])) {
 
@@ -33,11 +35,14 @@ if (isset($_POST['add_group'])) {
         $add_group = "INSERT INTO student_group (group_name, group_leader_sid) VALUES('$group_name', '$group_leader_sid')";
 
         if (mysqli_query($conn, $add_group)) {
-            array_push($success, "Group added Successful");
+
             $group_id = $conn->insert_id;
+
+            $add_member_of_group = "INSERT INTO member_of_group (student_id, group_id) VALUES('$group_leader_sid', '$group_id')";
             $add_group_of_course = "INSERT INTO group_of_course (group_id, course_id) VALUES('$group_id', '$course_id')";
-            if (mysqli_query($conn, $add_group_of_course)) {
-                array_push($success, "Group added to Course Successful");
+
+            if (mysqli_query($conn, $add_member_of_group) && mysqli_query($conn, $add_group_of_course)) {
+                array_push($success, "Group added Successfully");
             } else {
                 array_push($errors, "Group not added to course");
             }
@@ -50,12 +55,12 @@ if (isset($_POST['add_group'])) {
 // UPDATE
 if (isset($_POST['update_group'])) {
 
-    $id = mysqli_real_escape_string($conn, $_GET['update_id']);
+    $group_id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
     // receive all input values from the form
     $group_name = mysqli_real_escape_string($conn, $_POST['group_name']);
     $group_leader_sid = mysqli_real_escape_string($conn, $_POST['group_leader_sid']);
-    $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
+    $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -70,8 +75,8 @@ if (isset($_POST['update_group'])) {
     }
 
     if (count($errors) == 0) {
-        $update_group = "UPDATE student_group set group_name = '$group_name', group_leader_sid = '$group_leader_sid' WHERE group_id ='$id'";
-        $update_group_of_course = "UPDATE group_of_course set course_id = '$course_id' WHERE group_id ='$id'";
+        $update_group = "UPDATE student_group set group_name = '$group_name', group_leader_sid = '$group_leader_sid' WHERE group_id ='$group_id'";
+        $update_group_of_course = "UPDATE group_of_course set course_id = '$course_id' WHERE group_id ='$group_id'";
 
         if (mysqli_query($conn, $update_group) && mysqli_query($conn, $update_group_of_course)) {
             array_push($success, "Update Successful");
@@ -84,12 +89,12 @@ if (isset($_POST['update_group'])) {
 
 // DELETE
 if (isset($_GET['delete_id'])) {
-    $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
+    $group_id = mysqli_real_escape_string($conn, $_GET['delete_id']);
 
-    $delete_group_of_course = "DELETE FROM group_of_course WHERE group_id='$id'";
-    $delete_group = "DELETE FROM student_group WHERE group_id='$id'";
+    $delete_group = "DELETE FROM student_group WHERE group_id='$group_id'";
+    $delete_group_of_course = "DELETE FROM group_of_course WHERE group_id='$group_id'";
 
-    if (mysqli_query($conn, $delete_group_of_course) && mysqli_query($conn, $delete_group)) {
+    if (mysqli_query($conn, $delete_group) && mysqli_query($conn, $delete_group_of_course)) {
         array_push($success, "Delete successful");
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
@@ -104,12 +109,25 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT g.*, s.*, u.*, c.* FROM student_group as g
-    JOIN student as s ON g.group_leader_sid = s.student_id
-    JOIN users as u ON s.user_id = u.user_id
-    LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
-    LEFT JOIN course as c ON c.course_id = gc.course_id
-    ORDER BY g.group_id ASC";
+    if (isAdmin()) {
+        $query = "SELECT g.*, s.*, u.*, c.* FROM student_group as g
+        JOIN student as s ON g.group_leader_sid = s.student_id
+        JOIN users as u ON s.user_id = u.user_id
+        LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
+        LEFT JOIN course as c ON c.course_id = gc.course_id
+        ORDER BY g.group_id ASC";
+    } else {
+        $query = "SELECT g.*, s.*, u.*, c.* FROM student_group as g
+        JOIN student as s ON g.group_leader_sid = s.student_id
+        JOIN users as u ON s.user_id = u.user_id
+        JOIN group_of_course as gc ON gc.group_id = g.group_id
+        JOIN course as c ON c.course_id = gc.course_id
+        JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+        JOIN users as us ON us.user_id = ucs.user_id
+        WHERE us.user_id = $session_user_id
+        ORDER BY g.group_id ASC";
+    }
+
     $results = mysqli_query($conn, $query);
 
     ?>
@@ -123,7 +141,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Group Leader SID</th>
                 <th>Group Leader Name</th>
                 <th>Course Name</th>
-                <?php !isStudent() ? print '<th colspan="2">Action</th>' : ''; ?>
+                <?php !isStudent() ? print '<th colspan="3">Action</th>' : ''; ?>
 
             </tr>
         </thead>
@@ -131,23 +149,25 @@ if (isset($_GET['delete_id'])) {
             <?php
 
             foreach ($results as $groups) {
-                $id = $groups['group_id'];
+                $group_id = $groups['group_id'];
                 $group_name = $groups['group_name'];
                 $group_leader_sid = $groups['group_leader_sid'];
                 $group_leader_name = $groups['first_name'] . " " . $groups['last_name'];
+                $course_id = $groups['course_id'];
                 $course_name = $groups['course_name'];
             ?>
                 <tr>
                     <?php if (isAdmin()) {
-                        echo '<td>' . $id . '</td>';
+                        echo '<td>' . $group_id . '</td>';
                     } ?>
                     <td><?= $group_name ?></td>
                     <td><?= $group_leader_sid ?></td>
                     <td><?= $group_leader_name ?></td>
                     <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
-                        echo '<td><a href="?page=groups&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo '<td><a href="?page=groups&update_view=true&update_id=' . $group_id . '&course_id=' . $course_id . '">Update</a></td>';
+                        echo '<td><a href="?page=assign-group&group_id=' . $group_id . '&course_id=' . $course_id . '">Manage</a></td>';
+                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $group_id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php } ?>
@@ -172,12 +192,22 @@ if (isset($_GET['delete_id'])) {
                     </div>
 
                     <div class="form-input">
-                        <label for="course_id">Course</label>
-                        <span>
+                        <p>Course</p>
+                        <div class="scroll-list">
                             <select name="course_id">
                                 <option value="" selected hidden>Choose Course</option>
                                 <?php
-                                $courses = get_table_array('course');
+                                if (isProfessor()) {
+                                    $query = "SELECT c.* FROM course as c
+                                    JOIN prof_of_course as pc ON pc.course_id = c.course_id
+                                    JOIN professor as p ON p.professor_id = pc.professor_id
+                                    WHERE p.user_id = '$session_user_id'";
+                                    $courses = mysqli_query($conn, $query);
+                                }
+                                if (isAdmin()) {
+                                    $courses = get_table_array('course');
+                                }
+
                                 foreach ($courses as $row) {
                                     $course_id = $row['course_id'];
                                     $course_name = $row['course_name'];
@@ -185,17 +215,21 @@ if (isset($_GET['delete_id'])) {
                                 }
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
 
                     <div class="form-input">
-                        <label for="group_leader_sid">Group Leader</label>
-                        <span>
+                        <p>Group Leader</p>
+                        <div class="scroll-list">
                             <select name="group_leader_sid">
                                 <option value="" selected hidden>Choose Student</option>
                                 <?php
                                 $query = "SELECT * FROM student as st
-                                            JOIN users as u ON st.user_id = u.user_id";
+                                JOIN users as u ON st.user_id = u.user_id
+                                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+                                JOIN course as c ON c.course_id = ucs.course_id
+                                WHERE c.course_id = '$course_id'
+                                ORDER BY st.student_id ASC;";
                                 $groups = mysqli_query($conn, $query);
                                 foreach ($groups as $row) {
                                     $student_id = $row['student_id'];
@@ -204,7 +238,7 @@ if (isset($_GET['delete_id'])) {
                                 }
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
 
                     <div class="form-submit">
@@ -218,15 +252,22 @@ if (isset($_GET['delete_id'])) {
         <?php if (isset($_GET['update_view'])) { ?>
 
             <?php
-            $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-            $query = "SELECT * FROM student_group WHERE group_id='$id'";
+            $group_id = mysqli_real_escape_string($conn, $_GET['update_id']);
+
+            $query = "SELECT * FROM student_group as g
+            JOIN group_of_course as gc ON gc.group_id = g.group_id
+            JOIN course as c ON c.course_id = gc.course_id
+            WHERE g.group_id='$group_id'";
             $results = mysqli_query($conn, $query);
 
             foreach ($results as $row) {
-                $id = $row['group_id'];
+                $group_id = $row['group_id'];
                 $group_name = $row['group_name'];
                 $group_leader_sid = $row['group_leader_sid'];
+                $course_id = $row['course_id'];
+                $course_name = $row['course_name'];
             }
+
             ?>
 
             <hr>
@@ -241,25 +282,19 @@ if (isset($_GET['delete_id'])) {
                     </div>
 
                     <div class="form-input">
-                        <label for="course_id">Course</label>
-                        <span>
-                            <select name="course_id">
-                                <option value="" selected hidden>Choose Course</option>
+                        <p>Course</p>
+                        <div class="scroll-list">
+                            <select name="course_id" id="course_id" disabled>
                                 <?php
-                                $courses = get_table_array('course');
-                                foreach ($courses as $row) {
-                                    $course_id = $row['course_id'];
-                                    $course_name = $row['course_name'];
-                                    echo "<option name=course_id value='$course_id'>$course_name</option>";
-                                }
+                                echo "<option value='$course_id' selected>$course_name</option>";
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
 
                     <div class="form-input">
-                        <label for="group_leader_sid">Group Leader</label>
-                        <span>
+                        <p>Group Leader</p>
+                        <div class="scroll-list">
                             <select name="group_leader_sid">
                                 <option value="" selected hidden>Choose Student</option>
                                 <?php
@@ -269,11 +304,15 @@ if (isset($_GET['delete_id'])) {
                                 foreach ($groups as $row) {
                                     $student_id = $row['student_id'];
                                     $student_name = $row['first_name'] . " " . $row['last_name'];
-                                    echo "<option name=group_leader_sid value='$student_id'>$student_name</option>";
+                                    if ($group_leader_sid == $student_id) {
+                                        echo "<option name=group_leader_sid value='$student_id' selected>$student_name</option>";
+                                    } else {
+                                        echo "<option name=group_leader_sid value='$student_id'>$student_name</option>";
+                                    }
                                 }
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
 
                     <div class="form-submit">

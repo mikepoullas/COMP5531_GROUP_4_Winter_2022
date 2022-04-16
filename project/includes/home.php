@@ -4,7 +4,7 @@ unset($_REQUEST);
 
 $username = $_SESSION['username'];
 $role_name = $_SESSION['role_name'];
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
 if (!isAdmin()) {
@@ -13,7 +13,7 @@ if (!isAdmin()) {
     JOIN user_course_section as ucs ON ucs.user_id = u.user_id
     JOIN course as c ON c.course_id = ucs.course_id
     LEFT JOIN section as s ON s.section_id = ucs.section_id
-    WHERE u.user_id = '$user_id'
+    WHERE u.user_id = '$session_user_id'
     ORDER BY u.user_id ASC";
     $course_info = mysqli_query($conn, $query);
 
@@ -25,7 +25,7 @@ if (!isAdmin()) {
     JOIN course as c ON c.course_id = gc.course_id
     JOIN section as s ON s.course_id = c.course_id
     JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND ucs.user_id = u.user_id
-    WHERE u.user_id = $user_id
+    WHERE u.user_id = $session_user_id
     ORDER BY g.group_id ASC";
     $group_info = mysqli_query($conn, $query);
 
@@ -35,7 +35,7 @@ if (!isAdmin()) {
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
     LEFT JOIN section as s ON s.section_id = ucs.section_id
     JOIN users as us ON us.user_id = ucs.user_id
-    WHERE us.user_id = '$user_id'
+    WHERE us.user_id = '$session_user_id'
     ORDER BY a.announcement_id ASC";
     $announcements = mysqli_query($conn, $query);
 }

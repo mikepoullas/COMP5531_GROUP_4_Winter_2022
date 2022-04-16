@@ -1,7 +1,5 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
-
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);

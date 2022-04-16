@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 // ADD
 if (isset($_POST['add_announcement'])) {
@@ -24,7 +24,7 @@ if (isset($_POST['add_announcement'])) {
 
     if (count($errors) == 0) {
         $add = "INSERT INTO announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id)
-            VALUES('$title', '$content', '$user_id', NOW(),'$course_id')";
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$course_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
@@ -83,10 +83,21 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
-    JOIN users as u ON a.posted_by_uid = u.user_id
-    JOIN course as c ON c.course_id = a.course_id
-    ORDER BY announcement_id ASC";
+    if (isAdmin()) {
+        $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
+        JOIN users as u ON a.posted_by_uid = u.user_id
+        JOIN course as c ON c.course_id = a.course_id
+        ORDER BY announcement_id ASC";
+    } else {
+        $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
+        JOIN users as u ON a.posted_by_uid = u.user_id
+        JOIN course as c ON c.course_id = a.course_id
+        JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+        JOIN users as us ON us.user_id = ucs.user_id
+        WHERE us.user_id = $session_user_id
+        ORDER BY announcement_id ASC";
+    }
+
     $announcements = mysqli_query($conn, $query);
 
     ?>
@@ -159,12 +170,22 @@ if (isset($_GET['delete_id'])) {
                     </div>
 
                     <div class="form-input">
-                        <label for="course_id">For Course</label>
-                        <span>
+                        <p>Course</p>
+                        <div class="scroll-list">
                             <select name="course_id">
-                                <option value="" selected hidden>Choose a Course</option>
+                                <option value="" selected hidden>Choose Course</option>
                                 <?php
-                                $courses = get_table_array('course');
+                                if (isProfessor()) {
+                                    $query = "SELECT c.* FROM course as c
+                                    JOIN prof_of_course as pc ON pc.course_id = c.course_id
+                                    JOIN professor as p ON p.professor_id = pc.professor_id
+                                    WHERE p.user_id = '$session_user_id'";
+                                    $courses = mysqli_query($conn, $query);
+                                }
+                                if (isAdmin()) {
+                                    $courses = get_table_array('course');
+                                }
+
                                 foreach ($courses as $row) {
                                     $course_id = $row['course_id'];
                                     $course_name = $row['course_name'];
@@ -172,7 +193,7 @@ if (isset($_GET['delete_id'])) {
                                 }
                                 ?>
                             </select>
-                        </span>
+                        </div>
                     </div>
 
                     <div class="form-submit">
@@ -189,9 +210,9 @@ if (isset($_GET['delete_id'])) {
             <?php
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
             $query = "SELECT a.*, u.username, c.course_name FROM announcement as a
-JOIN users as u ON a.posted_by_uid = u.user_id
-JOIN course as c ON a.course_id = c.course_id
-WHERE a.announcement_id='$id'";
+            JOIN users as u ON a.posted_by_uid = u.user_id
+            JOIN course as c ON a.course_id = c.course_id
+            WHERE a.announcement_id='$id'";
             $results = mysqli_query($conn, $query);
 
             foreach ($results as $row) {
@@ -210,7 +231,7 @@ WHERE a.announcement_id='$id'";
 
                     <div class="form-input">
                         <label>Course Name</label>
-                        <span><?= $course_name ?></span>
+                        <span><b><?= $course_name ?></b></span>
                     </div>
 
                     <div class="form-input">

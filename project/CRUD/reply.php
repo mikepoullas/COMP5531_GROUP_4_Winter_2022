@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 // DELETE
 if (isset($_GET['delete_id'])) {

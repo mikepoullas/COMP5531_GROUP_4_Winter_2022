@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $discussion_id = $_GET['discussion_id'];
 
 // ADD
@@ -17,7 +17,7 @@ if (isset($_POST['add_comment'])) {
 
     if (count($errors) == 0) {
         $add = "INSERT INTO comment (comment_content, posted_by_uid, posted_on, discussion_id)
-                VALUES ('$content', '$user_id', NOW(), '$discussion_id')";
+                VALUES ('$content', '$session_user_id', NOW(), '$discussion_id')";
 
         if (mysqli_query($conn, $add)) {
             header('location: ?page=group-comment&discussion_id=' . $discussion_id);
@@ -113,7 +113,7 @@ if (isset($_GET['delete_id'])) {
             <ul>
                 <li><?= $comment_content ?></li>
                 <li>&emsp;by <b><?= $comment_posted_by ?></b> | <?= $comment_posted_on ?></li>
-                <?php if ($user_id == $row['posted_by_uid']) { ?>
+                <?php if ($session_user_id == $row['posted_by_uid']) { ?>
                     <li>
                         &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $discussion_id ?>&update_id=<?= $comment_id ?>">Update</a>
                         |

@@ -5,7 +5,7 @@ session_start();
 require_once('../configs/config.php');
 require_once('../helper/functions.php');
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 $password_old = $password_new = $password_confirm = "";
 
@@ -33,7 +33,7 @@ if (isset($_POST['reset_password'])) {
     }
 
     //using custom function :)
-    $password_db = mysqli_fetch_assoc(get_records_where('users', 'user_id', $user_id))['password'];
+    $password_db = mysqli_fetch_assoc(get_records_where('users', 'user_id', $session_user_id))['password'];
 
     // Check if new and confirm password match
     if ($password_new !== $password_confirm) {
@@ -46,7 +46,7 @@ if (isset($_POST['reset_password'])) {
     }
 
     if (count($errors) == 0) {
-        $query = "UPDATE users SET password='$password_new', first_login = 0 WHERE user_id='$user_id'";
+        $query = "UPDATE users SET password='$password_new', first_login = 0 WHERE user_id='$session_user_id'";
         if (mysqli_query($conn, $query)) {
             array_push($success, "Password reset successful");
         } else {

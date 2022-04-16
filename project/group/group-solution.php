@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 if (isset($_GET['course_id'])) {
     $course_id = $_GET['course_id'];
@@ -152,7 +152,7 @@ if (isset($_POST['add_grade'])) {
     LEFT JOIN solution as s ON s.task_id = t.task_id
 	LEFT JOIN files as f ON f.file_id = s.file_id
     LEFT JOIN users as u ON u.user_id = f.uploaded_by_uid
-    WHERE us.user_id = '$user_id' AND c.course_id = '$course_id'
+    WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
     ORDER BY t.task_id ASC";
     $results = mysqli_query($conn, $query);
 

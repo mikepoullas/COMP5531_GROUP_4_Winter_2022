@@ -97,6 +97,12 @@ INSERT INTO Student_Group (group_name, group_leader_sid) VALUES
 ("Group_2", 20001),
 ("Group_3", 20002);
 
+-- Assign Groups to Course
+INSERT INTO Group_of_Course (group_id, course_id) VALUES
+(70000, 50000),
+(70001, 50001),
+(70002, 50002);
+
 -- Assign Student to Group  
 INSERT INTO Member_of_Group (student_id, group_id) VALUES
 (20000, 70000),
@@ -106,11 +112,20 @@ INSERT INTO Member_of_Group (student_id, group_id) VALUES
 (20001, 70002),
 (20002, 70002);
 
--- Assign Groups to Course
-INSERT INTO Group_of_Course (group_id, course_id) VALUES
-(70000, 50000),
-(70001, 50001),
-(70002, 50002);
+-- Assign TA to Section  
+INSERT INTO TA_of_Section (ta_id, section_id) VALUES
+(30000, 60000),
+(30000, 60001),
+(30001, 60002),
+(30001, 60003),
+(30002, 60004),
+(30002, 60005);
+
+-- Assign Prof to Course  
+INSERT INTO Prof_of_Course (professor_id, course_id) VALUES
+(40000, 50000),
+(40001, 50001),
+(40002, 50002);
 
 -- Files Table
 INSERT INTO Files (file_name, file_content, file_type, file_size, uploaded_by_uid, uploaded_on) VALUES

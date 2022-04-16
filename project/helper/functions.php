@@ -88,7 +88,7 @@ function isLoggedIn()
     }
 }
 
-function check($var)
+function prep($var)
 {
     echo '<pre>';
     print_r($var);
@@ -145,6 +145,3 @@ function get_page($dir, $filename, $default = false)
         }
     }
 }
-
-?>
-

@@ -1,20 +1,20 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
 if (isProfessor()) {
     $query = "SELECT * FROM course as c
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
     JOIN users as u ON u.user_id = ucs.user_id
-    WHERE u.user_id = $user_id
+    WHERE u.user_id = $session_user_id
     ORDER BY u.user_id ASC";
 } else {
     $query = "SELECT * FROM course as c
     JOIN section as s ON s.course_id = c.course_id
     JOIN user_course_section as ucs ON ucs.section_id = s.section_id
     JOIN users as u ON u.user_id = ucs.user_id
-    WHERE u.user_id = $user_id
+    WHERE u.user_id = $session_user_id
     ORDER BY u.user_id ASC;";
 }
 $course_info = mysqli_query($conn, $query);
@@ -121,7 +121,7 @@ $course_info = mysqli_query($conn, $query);
         LEFT JOIN section as s ON s.section_id = ucs.section_id
         JOIN users as u ON u.user_id = f.posted_by_uid
         JOIN users as us ON us.user_id = ucs.user_id
-        WHERE us.user_id = '$user_id'
+        WHERE us.user_id = '$session_user_id'
         ORDER BY f.forum_id ASC LIMIT 10";
         $forum_all = mysqli_query($conn, $query);
 

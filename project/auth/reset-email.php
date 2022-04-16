@@ -5,7 +5,7 @@ session_start();
 require_once('../configs/config.php');
 require_once('../helper/functions.php');
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 $email_new = "";
 

@@ -1,11 +1,11 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 
 // UPLOAD FILE
 function upload_file($table)
 {
-    global $conn, $user_id, $errors, $success;
+    global $conn, $session_user_id, $errors, $success;
 
     // name of the uploaded file with extension
     $file_name = $_FILES['file']['name'];
@@ -46,7 +46,7 @@ function upload_file($table)
         // move the uploaded (temporary) file to the specified destination
         elseif (move_uploaded_file($file, $destination)) {
             $query = "INSERT INTO files (file_name, file_content, file_type, file_size, uploaded_by_uid, uploaded_on)
-                                VALUES('$file_name', '$content', '$extension', $size, $user_id, NOW())";
+                                VALUES('$file_name', '$content', '$extension', $size, $session_user_id, NOW())";
             if (mysqli_query($conn, $query)) {
                 array_push($success, "File uploaded successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");

@@ -1,6 +1,6 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
 $query = "SELECT g.*, c.*, u.*, s.section_name FROM student_group as g
@@ -9,7 +9,7 @@ JOIN course as c ON c.course_id = gc.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
 LEFT JOIN section as s ON s.section_id = ucs.section_id
 JOIN users as u ON u.user_id = ucs. user_id 
-WHERE u.user_id = '$user_id'
+WHERE u.user_id = '$session_user_id'
 ORDER BY g.group_id ASC";
 $group = mysqli_query($conn, $query);
 
@@ -139,7 +139,7 @@ $group = mysqli_query($conn, $query);
         JOIN course as c ON c.course_id = gc.course_id
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
         JOIN users as us ON us.user_id = ucs.user_id
-        WHERE us.user_id = '$user_id'
+        WHERE us.user_id = '$session_user_id'
         ORDER BY d.discussion_id ASC LIMIT 10";
         $discussion_all = mysqli_query($conn, $query);
 
