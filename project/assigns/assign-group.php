@@ -147,7 +147,7 @@ Always visible and shows delete error if delete_view is set true -->
         $group_id = $_GET['group_id'];
 
         if (isAdmin()) {
-            $query = "SELECT g.*, c.*, st.*, u.* FROM student_group as g
+            $query = "SELECT g.*, c.*, st.*, u.* FROM student_groups as g
             JOIN member_of_group as mg ON mg.group_id = g.group_id
             JOIN student as st ON st.student_id = mg.student_id
             JOIN users as u ON u.user_id = st.user_id
@@ -157,7 +157,7 @@ Always visible and shows delete error if delete_view is set true -->
             ORDER BY g.group_id ASC";
         }
         if (isProfessor()) {
-            $query = "SELECT g.*, c.*, st.*, u.* FROM student_group as g
+            $query = "SELECT g.*, c.*, st.*, u.* FROM student_groups as g
             JOIN member_of_group as mg ON mg.group_id = g.group_id
             JOIN student as st ON st.student_id = mg.student_id
             JOIN users as u ON u.user_id = st.user_id
@@ -170,7 +170,7 @@ Always visible and shows delete error if delete_view is set true -->
         }
     } else {
         if (isAdmin()) {
-            $query = "SELECT g.*, c.*, st.*, u.* FROM student_group as g
+            $query = "SELECT g.*, c.*, st.*, u.* FROM student_groups as g
             JOIN member_of_group as mg ON mg.group_id = g.group_id
             JOIN student as st ON st.student_id = mg.student_id
             JOIN users as u ON u.user_id = st.user_id
@@ -179,7 +179,7 @@ Always visible and shows delete error if delete_view is set true -->
             ORDER BY g.group_id ASC";
         }
         if (isProfessor()) {
-            $query = "SELECT g.*, c.*, st.*, u.* FROM student_group as g
+            $query = "SELECT g.*, c.*, st.*, u.* FROM student_groups as g
             JOIN member_of_group as mg ON mg.group_id = g.group_id
             JOIN student as st ON st.student_id = mg.student_id
             JOIN users as u ON u.user_id = st.user_id
@@ -232,11 +232,19 @@ Always visible and shows delete error if delete_view is set true -->
         </tbody>
     </table>
 
-    <?php if (isAdmin() || isProfessor()) { ?>
+    <?php if (isAdmin()) { ?>
+        <a href="?page=assign-group&add_view=true">
+            <button>Add New</button>
+        </a>
+    <?php } ?>
+
+    <?php if (isProfessor()) { ?>
         <a href="?page=assign-group&add_view=true&group_id=<?= $group_id ?>">
             <button>Add New</button>
         </a>
     <?php } ?>
+
+
 
     <!-- Add group
     Visible if add_view is set to true -->
@@ -252,10 +260,15 @@ Always visible and shows delete error if delete_view is set true -->
                         <select name="course_id" id="course_id" onchange="this.form.submit()">
                             <option value="" selected hidden>Choose a Course</option>
                             <?php
-                            $query = "SELECT * FROM course as c
-                            JOIN prof_of_course as pc ON pc.course_id = c.course_id
-                            JOIN professor as p ON p.professor_id = pc.professor_id
-                            WHERE p.user_id = '$session_user_id'";
+                            if (isAdmin()) {
+                                $query = "SELECT * FROM course";
+                            }
+                            if (isProfessor()) {
+                                $query = "SELECT * FROM course as c
+                                JOIN prof_of_course as pc ON pc.course_id = c.course_id
+                                JOIN professor as p ON p.professor_id = pc.professor_id
+                                WHERE p.user_id = '$session_user_id'";
+                            }
                             $courses = mysqli_query($conn, $query);
                             foreach ($courses as $row) {
                                 $course_id = $row['course_id'];
@@ -282,10 +295,10 @@ Always visible and shows delete error if delete_view is set true -->
 
                             if (isset($_GET['group_id'])) {
                                 $group_id = $_GET['group_id'];
-                                $group_name = mysqli_fetch_assoc(get_records_where("student_group", "group_id", $group_id))['group_name'];
+                                $group_name = mysqli_fetch_assoc(get_records_where("student_groups", "group_id", $group_id))['group_name'];
                                 echo "<option value='$group_id'>$group_name ($course_name)</option>";
                             } else {
-                                $query = "SELECT * FROM student_group as g
+                                $query = "SELECT * FROM student_groups as g
                                             JOIN group_of_course as gc ON gc.group_id = g.group_id
                                             JOIN course as c ON c.course_id = gc.course_id
                                             WHERE c.course_id = '$course_id_selected'";
@@ -354,7 +367,7 @@ Always visible and shows delete error if delete_view is set true -->
         JOIN user_course_section  as ucs ON ucs.user_id = u.user_id
         JOIN course as c ON c.course_id = ucs.course_id
         JOIN group_of_course as gc ON gc.course_id = c.course_id
-        JOIN student_group as g ON g.group_id = gc.group_id
+        JOIN student_groups as g ON g.group_id = gc.group_id
         WHERE u.user_id='$user_id' AND g.group_id = '$group_id'";
 
         $results = mysqli_query($conn, $query);
@@ -395,7 +408,7 @@ Always visible and shows delete error if delete_view is set true -->
                             <?php
 
                             // Get limited group names based on course_id
-                            $query = "SELECT * FROM student_group as g
+                            $query = "SELECT * FROM student_groups as g
                                         JOIN group_of_course as gc ON gc.group_id = g.group_id
                                         JOIN course as c ON c.course_id = gc.course_id
 										WHERE c.course_id = '$course_id'";

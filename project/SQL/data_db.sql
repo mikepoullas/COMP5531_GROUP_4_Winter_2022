@@ -92,7 +92,7 @@ INSERT INTO User_Course_Section (user_id, course_id, section_id) VALUES
 (10009, 50002, 60004);
 
 -- Student Groups Table
-INSERT INTO Student_Group (group_name, group_leader_sid) VALUES
+INSERT INTO Student_Groups (group_name, group_leader_sid) VALUES
 ("Group_1", 20000),
 ("Group_2", 20001),
 ("Group_3", 20002);

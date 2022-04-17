@@ -73,7 +73,7 @@ if (isset($_POST['update_discussion'])) {
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE discussion set discussion_title = '$title', discussion_content = '$content'
+        $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content'
         WHERE discussion_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
@@ -106,7 +106,7 @@ if (isset($_GET['delete_id'])) {
 
     $query = "SELECT * FROM discussion as d
     JOIN users as u ON u.user_id = d.posted_by_uid
-    LEFT JOIN student_group as g ON g.group_id = d.group_id
+    LEFT JOIN student_groups as g ON g.group_id = d.group_id
     LEFT JOIN task as t ON t.task_id = d.task_id
     LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
     JOIN course as c ON c.course_id = gc.course_id OR c.course_id = t.course_id
@@ -144,6 +144,7 @@ if (isset($_GET['delete_id'])) {
                 $title = $row['discussion_title'];
                 $content = $row['discussion_content'];
                 $posted_by = $row['username'];
+                $posted_by_uid = $row['posted_by_uid'];
                 $posted_on = date_convert($row['posted_on']);
                 $group_id = $row['group_id'];
                 $course_name = $row['course_name'];
@@ -154,8 +155,10 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=group-discussion&update_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&update_id=<?= $discussion_id ?>">Update</a></td>
-                    <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&delete_id=<?= $discussion_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <?php if ($posted_by_uid == $session_user_id) { ?>
+                        <td><a href="?page=group-discussion&update_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&update_id=<?= $discussion_id ?>">Update</a></td>
+                        <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&delete_id=<?= $discussion_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <?php } ?>
                 </tr>
             <?php
             }
@@ -199,7 +202,7 @@ if (isset($_GET['delete_id'])) {
         $id = mysqli_real_escape_string($conn, $_GET['update_id']);
         $query = "SELECT d.*, u.username, g.group_name, c.course_name FROM discussion as d
             JOIN users as u ON u.user_id = d.posted_by_uid
-            JOIN student_group as g ON g.group_id = d.group_id
+            JOIN student_groups as g ON g.group_id = d.group_id
             JOIN group_of_course as gc ON gc.group_id = g.group_id
             JOIN course as c ON c.course_id = gc.course_id
             WHERE d.discussion_id='$id'

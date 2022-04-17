@@ -7,6 +7,7 @@ if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM solution WHERE solution_id='$id'";
     if (mysqli_query($conn, $delete)) {
+        delete_file($_GET['file_id']);
         array_push($success, "Delete successful");
     } else {
         array_push($errors, "Error deleting " . mysqli_error($conn));
@@ -52,6 +53,7 @@ if (isset($_GET['delete_id'])) {
                 $uploaded_by = $row['username'];
                 $uploaded_on = date_convert($row['uploaded_on']);
                 $course_name = $row['course_name'];
+                $file_id = $row['file_id'];
             ?>
                 <tr>
                     <td><?= $id ?></td>
@@ -60,7 +62,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $uploaded_by ?></td>
                     <td><?= $uploaded_on ?></td>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=solution&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Solution</a></td>
+                    <td><a href="?page=solution&delete_view=true&delete_id=<?= $id ?>&file_id=<?= $file_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Solution</a></td>
                 </tr>
             <?php } ?>
         </tbody>

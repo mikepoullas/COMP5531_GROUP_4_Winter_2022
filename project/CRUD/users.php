@@ -164,7 +164,7 @@ if (isset($_POST['update_user'])) {
     //    $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
 
     if (count($errors) == 0) {
-        $update = "UPDATE users set first_name = '$first_name', last_name = '$last_name', 
+        $update = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', 
                     dob = '$dob', email = '$email' WHERE user_id ='$user_id'";
 
         if (mysqli_query($conn, $update)) {

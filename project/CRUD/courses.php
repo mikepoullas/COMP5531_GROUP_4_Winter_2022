@@ -46,7 +46,7 @@ if (isset($_POST['update_course'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE course set course_name = '$course_name', course_number = '$course_number' WHERE course_id ='$id'";
+        $update = "UPDATE course SET course_name = '$course_name', course_number = '$course_number' WHERE course_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
@@ -125,11 +125,6 @@ if (isset($_GET['delete_id'])) {
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
 
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
-
                     <h3>Add Course</h3>
 
                     <div class="form-input">
@@ -165,10 +160,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Update Course</h3>
 

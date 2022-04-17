@@ -21,7 +21,7 @@ if (isset($_GET['delete_id'])) {
 
     $query = "SELECT c.*, d.*, u.*, cr.course_name, g.group_name FROM comment as c
     JOIN discussion as d ON d.discussion_id = c.discussion_id
-    JOIN student_group as g ON g.group_id = d.group_id
+    JOIN student_groups as g ON g.group_id = d.group_id
     JOIN group_of_course as gc ON gc.group_id = g.group_id
     JOIN course as cr ON cr.course_id = gc.course_id
     JOIN users as u ON u.user_id = c.posted_by_uid

@@ -46,7 +46,7 @@ if (isset($_POST['update_section'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE section set section_name = '$section_name', course_id = '$course_id' WHERE section_id ='$id'";
+        $update = "UPDATE section SET section_name = '$section_name', course_id = '$course_id' WHERE section_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");

@@ -92,7 +92,7 @@ if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM task WHERE task_id='$id'";
     if (mysqli_query($conn, $delete)) {
-        delete_file($_GET['delete_id']);
+        delete_file($_GET['delete_file']);
         array_push($success, "Delete successful");
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
@@ -107,18 +107,35 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT t.*, s.solution_content, c.*, f.*, u.* FROM task as t
-    LEFT JOIN solution as s ON s.task_id = t.task_id
-    JOIN course as c ON c.course_id = t.course_id
-    JOIN files as f ON f.file_id = t.file_id
-    JOIN users as u ON u.user_id = f.uploaded_by_uid
-    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-    JOIN users as us ON us.user_id = ucs.user_id
-    WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
-    ORDER BY t.task_id ASC";
+    if (isStudent()) {
+        $query = "SELECT t.*, s.solution_content, c.*, f.*, u.*, gc.group_id FROM task as t
+        LEFT JOIN solution as s ON s.task_id = t.task_id
+        JOIN course as c ON c.course_id = t.course_id
+        JOIN files as f ON f.file_id = t.file_id
+        JOIN users as u ON u.user_id = f.uploaded_by_uid
+        JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+		JOIN group_of_course as gc ON gc.course_id = c.course_id
+        JOIN users as us ON us.user_id = ucs.user_id
+        WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
+        ORDER BY t.task_id ASC";
+    } else {
+        $query = "SELECT t.*, s.solution_content, c.*, f.*, u.* FROM task as t
+        LEFT JOIN solution as s ON s.task_id = t.task_id
+        JOIN course as c ON c.course_id = t.course_id
+        JOIN files as f ON f.file_id = t.file_id
+        JOIN users as u ON u.user_id = f.uploaded_by_uid
+        JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+        JOIN users as us ON us.user_id = ucs.user_id
+        WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
+        ORDER BY t.task_id ASC";
+    }
     $results = mysqli_query($conn, $query);
 
-    $course_name = mysqli_fetch_assoc($results)['course_name'];
+    if (mysqli_num_rows($results) > 0) {
+        $course_name = mysqli_fetch_assoc($results)['course_name'];
+    } else {
+        $course_name = "No";
+    }
 
     ?>
     <h2><?= $course_name ?> Tasks</h2>
@@ -154,6 +171,9 @@ if (isset($_GET['delete_id'])) {
                 $file_id = $row['file_id'];
                 $file_name = $row['file_name'];
                 $solution_content = $row['solution_content'];
+                if (isStudent()) {
+                    $group_id = $row['group_id'];
+                }
             ?>
                 <tr>
                     <td><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></td>
@@ -162,13 +182,18 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $uploaded_by_uid ?></td>
                     <td><?= $uploaded_on ?></td>
                     <td><?= $file_name ?></td>
-                    <?php if ($solution_content != NULL) {
+                    <?php
+
+                    if ($solution_content != NULL) {
                         echo "<td><a href='?page=group-solution&course_id=$course_id'>$solution_content</a></td>";
                     } else {
-                        echo "<td><a href='?page=group-solution&course_id=$course_id'>Upload</a></td>";
+                        if (isStudent()) {
+                            echo "<td><a href='?page=group-solution&course_id=$course_id&group_id=$group_id'>Upload</a></td>";
+                        } else {
+                            echo "<td><a href='?page=group-solution&course_id=$course_id'>View</a></td>";
+                        }
                     }
-                    ?>
-                    <?php
+
                     if (isProfessor()) {
                         echo "<td><a href='?page=course-task&course_id=$course_id&download_file=$file_id'>Download</a></td>";
                         echo "<td><a href='?page=course-task&course_id=$course_id&update_view=true&update_id=$task_id&update_file=$file_id'>Update</a></td>";
@@ -176,6 +201,7 @@ if (isset($_GET['delete_id'])) {
                     } else {
                         echo "<td><a href='?page=course-tas&course_id=$course_id&download_file=$file_id'>Download</a></td>";
                     }
+
                     ?>
                 </tr>
             <?php } ?>
@@ -236,8 +262,6 @@ if (isset($_GET['delete_id'])) {
             $query = "SELECT * FROM task WHERE task_id='$task_id'";
 
             $results = mysqli_query($conn, $query);
-
-
 
             foreach ($results as $row) {
                 $task_type = $row['task_type'];

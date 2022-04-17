@@ -17,7 +17,7 @@ if (!isAdmin()) {
     ORDER BY u.user_id ASC";
     $course_info = mysqli_query($conn, $query);
 
-    $query = "SELECT g.*, st.*, u.*, s.section_name, c.course_name FROM student_group as g
+    $query = "SELECT g.*, st.*, u.*, s.section_name, c.course_name FROM student_groups as g
     JOIN member_of_group as mg ON mg.group_id = g.group_id
     JOIN student as st ON st.student_id = mg.student_id
     JOIN users as u ON u.user_id = st.user_id
@@ -29,7 +29,7 @@ if (!isAdmin()) {
     ORDER BY g.group_id ASC";
     $group_info = mysqli_query($conn, $query);
 
-    $query = "SELECT * FROM announcement as a
+    $query = "SELECT a.*, u.*, c.course_name, s.section_name FROM announcement as a
     JOIN course as c ON c.course_id = a.course_id
     JOIN users as u ON u.user_id = a.posted_by_uid
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
@@ -51,14 +51,14 @@ if (!isAdmin()) {
             <br>
             <?php
             echo "<ul>";
-            echo '<li>Roles:<b> ' . mysqli_num_rows(get_table_array('roles')) . '</b> </li>';
+            echo '<li>Roles: <b> ' . mysqli_num_rows(get_table_array('roles')) . '</b> </li>';
             echo '<li>Users:  <b> ' . mysqli_num_rows(get_table_array('users')) . '</b> </li>';
             echo '<li>Students: <b> ' . mysqli_num_rows(get_table_array('student')) . '</b> </li>';
             echo '<li>TAs: <b> ' . mysqli_num_rows(get_table_array('ta')) . '</b> </li>';
             echo '<li>Professors: <b> ' . mysqli_num_rows(get_table_array('professor')) . '</b> </li>';
             echo '<li>Courses: <b> ' . mysqli_num_rows(get_table_array('course')) . '</b> </li>';
             echo '<li>Sections: <b> ' . mysqli_num_rows(get_table_array('section')) . '</b> </li>';
-            echo '<li>Groups: <b> ' . mysqli_num_rows(get_table_array('student_group')) . '</b> </li>';
+            echo '<li>Groups: <b> ' . mysqli_num_rows(get_table_array('student_groups')) . '</b> </li>';
             echo '<li>Task: <b> ' . mysqli_num_rows(get_table_array('task')) . '</b> </li>';
             echo '<li>Solution: <b> ' . mysqli_num_rows(get_table_array('solution')) . '</b> </li>';
             echo '<br>';
@@ -68,6 +68,7 @@ if (!isAdmin()) {
             echo '<li>Discussions:  <b> ' . mysqli_num_rows(get_table_array('discussion')) . '</b> </li>';
             echo '<li>Comments: <b> ' . mysqli_num_rows(get_table_array('comment')) . '</b> </li>';
             echo '<li>Files: <b> ' . mysqli_num_rows(get_table_array('files')) . '</b> </li>';
+            echo '<li>Grades: <b> ' . mysqli_num_rows(get_table_array('grades')) . '</b> </li>';
             echo "</ul>";
             ?>
             <hr>
@@ -91,6 +92,7 @@ if (!isAdmin()) {
                 4400000 - discussion<br>
                 5500000 - comment<br>
                 6600000 - files<br>
+                7700000 - grades<br>
             </p>
         </div>
     <?php } ?>
@@ -186,7 +188,11 @@ if (!isAdmin()) {
                     <li> <b><?= $row['announcement_title'] ?></b> </li>
                     <li> <?= $row['announcement_content'] ?></li>
                     <li>&emsp;<?= $row['posted_on'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?></li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?>
+                        <?php if (!isProfessor()) { ?>
+                            <td><?= $section_name ?></td>
+                        <?php } ?>
+                    </li>
                 </ul><br>
             <?php } ?>
         </div>

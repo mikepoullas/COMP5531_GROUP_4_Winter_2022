@@ -43,7 +43,7 @@ if (isset($_POST['update_reply'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE reply set reply_content = '$content'
+        $update = "UPDATE reply SET reply_content = '$content'
         WHERE reply_id ='$id'";
 
         if (mysqli_query($conn, $update)) {

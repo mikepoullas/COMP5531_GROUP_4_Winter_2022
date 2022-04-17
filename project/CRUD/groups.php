@@ -32,7 +32,7 @@ if (isset($_POST['add_group'])) {
 
 
     if (count($errors) == 0) {
-        $add_group = "INSERT INTO student_group (group_name, group_leader_sid) VALUES('$group_name', '$group_leader_sid')";
+        $add_group = "INSERT INTO student_groups (group_name, group_leader_sid) VALUES('$group_name', '$group_leader_sid')";
 
         if (mysqli_query($conn, $add_group)) {
 
@@ -75,8 +75,8 @@ if (isset($_POST['update_group'])) {
     }
 
     if (count($errors) == 0) {
-        $update_group = "UPDATE student_group set group_name = '$group_name', group_leader_sid = '$group_leader_sid' WHERE group_id ='$group_id'";
-        $update_group_of_course = "UPDATE group_of_course set course_id = '$course_id' WHERE group_id ='$group_id'";
+        $update_group = "UPDATE student_groups SET group_name = '$group_name', group_leader_sid = '$group_leader_sid' WHERE group_id ='$group_id'";
+        $update_group_of_course = "UPDATE group_of_course SET course_id = '$course_id' WHERE group_id ='$group_id'";
 
         if (mysqli_query($conn, $update_group) && mysqli_query($conn, $update_group_of_course)) {
             array_push($success, "Update Successful");
@@ -91,7 +91,7 @@ if (isset($_POST['update_group'])) {
 if (isset($_GET['delete_id'])) {
     $group_id = mysqli_real_escape_string($conn, $_GET['delete_id']);
 
-    $delete_group = "DELETE FROM student_group WHERE group_id='$group_id'";
+    $delete_group = "DELETE FROM student_groups WHERE group_id='$group_id'";
     $delete_group_of_course = "DELETE FROM group_of_course WHERE group_id='$group_id'";
 
     if (mysqli_query($conn, $delete_group) && mysqli_query($conn, $delete_group_of_course)) {
@@ -110,14 +110,14 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     if (isAdmin()) {
-        $query = "SELECT g.*, s.*, u.*, c.* FROM student_group as g
+        $query = "SELECT g.*, s.*, u.*, c.* FROM student_groups as g
         JOIN student as s ON g.group_leader_sid = s.student_id
         JOIN users as u ON s.user_id = u.user_id
         LEFT JOIN group_of_course as gc ON gc.group_id = g.group_id
         LEFT JOIN course as c ON c.course_id = gc.course_id
         ORDER BY g.group_id ASC";
     } else {
-        $query = "SELECT g.*, s.*, u.*, c.* FROM student_group as g
+        $query = "SELECT g.*, s.*, u.*, c.* FROM student_groups as g
         JOIN student as s ON g.group_leader_sid = s.student_id
         JOIN users as u ON s.user_id = u.user_id
         JOIN group_of_course as gc ON gc.group_id = g.group_id
@@ -229,7 +229,7 @@ if (isset($_GET['delete_id'])) {
                                 JOIN user_course_section as ucs ON ucs.user_id = u.user_id
                                 JOIN course as c ON c.course_id = ucs.course_id
                                 WHERE c.course_id = '$course_id'
-                                ORDER BY st.student_id ASC;";
+                                ORDER BY st.student_id ASC";
                                 $groups = mysqli_query($conn, $query);
                                 foreach ($groups as $row) {
                                     $student_id = $row['student_id'];
@@ -254,7 +254,7 @@ if (isset($_GET['delete_id'])) {
             <?php
             $group_id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-            $query = "SELECT * FROM student_group as g
+            $query = "SELECT * FROM student_groups as g
             JOIN group_of_course as gc ON gc.group_id = g.group_id
             JOIN course as c ON c.course_id = gc.course_id
             WHERE g.group_id='$group_id'";
@@ -299,7 +299,11 @@ if (isset($_GET['delete_id'])) {
                                 <option value="" selected hidden>Choose Student</option>
                                 <?php
                                 $query = "SELECT * FROM student as st
-                                            JOIN users as u ON st.user_id = u.user_id";
+                                JOIN users as u ON st.user_id = u.user_id
+                                JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+                                JOIN course as c ON c.course_id = ucs.course_id
+                                WHERE c.course_id = '$course_id'
+                                ORDER BY st.student_id ASC";
                                 $groups = mysqli_query($conn, $query);
                                 foreach ($groups as $row) {
                                     $student_id = $row['student_id'];

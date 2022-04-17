@@ -3,7 +3,7 @@
 $session_user_id = $_SESSION['user_id'];
 
 // UPLOAD FILE
-function upload_file($table)
+function upload_file($table_name)
 {
     global $conn, $session_user_id, $errors, $success;
 
@@ -14,7 +14,7 @@ function upload_file($table)
     $name = pathinfo($_FILES['file']['name'], PATHINFO_FILENAME);
 
     // unique file description based on username
-    $content = $table . "_" . $name;
+    $content = $table_name . "_" . $name;
     // date('d_m_Y', time())
 
     // destination of the file on the server
@@ -51,7 +51,7 @@ function upload_file($table)
                 array_push($success, "File uploaded successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");
                 return $conn->insert_id;
-                exit();
+                // exit();
             }
         } else {
             array_push($errors, "Failed to upload file" . mysqli_error($conn));
@@ -84,7 +84,7 @@ function download_file($id)
         ob_clean();
         flush();
         readfile($filepath);
-        exit();
+        // exit();
     }
 }
 
@@ -143,7 +143,7 @@ function update_file($table, $id)
             if (mysqli_query($conn, $query)) {
                 array_push($success, "File updated successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");
-                exit();
+                // exit();
             }
         } else {
             array_push($errors, "Failed to update file " . mysqli_error($conn));
@@ -163,12 +163,11 @@ function delete_file($id)
         $file_name = mysqli_fetch_assoc($result)['file_name'];
         $filepath = '../files/' . $file_name;
 
-        unlink($filepath);
-
         if (mysqli_query($conn, $delete)) {
+            unlink($filepath);
             array_push($success, "Delete successful");
             header("location: {$_SERVER['HTTP_REFERER']}");
-            exit();
+            // exit();
         }
     } else {
         array_push($errors, "Delete error " . mysqli_error($conn));
