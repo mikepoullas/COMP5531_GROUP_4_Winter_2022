@@ -125,11 +125,6 @@ if (isset($_GET['delete_id'])) {
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
 
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
-
                     <h3>Add Course</h3>
 
                     <div class="form-input">
@@ -165,10 +160,6 @@ if (isset($_GET['delete_id'])) {
             <hr>
             <div class="form-container">
                 <form class="form-body" action="" method="POST">
-                    <?php
-                    // display_success();
-                    // display_error();
-                    ?>
 
                     <h3>Update Course</h3>
 

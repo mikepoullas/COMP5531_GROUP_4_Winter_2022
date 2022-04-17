@@ -29,7 +29,7 @@ if (!isAdmin()) {
     ORDER BY g.group_id ASC";
     $group_info = mysqli_query($conn, $query);
 
-    $query = "SELECT * FROM announcement as a
+    $query = "SELECT a.*, u.*, c.course_name, s.section_name FROM announcement as a
     JOIN course as c ON c.course_id = a.course_id
     JOIN users as u ON u.user_id = a.posted_by_uid
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
@@ -188,7 +188,11 @@ if (!isAdmin()) {
                     <li> <b><?= $row['announcement_title'] ?></b> </li>
                     <li> <?= $row['announcement_content'] ?></li>
                     <li>&emsp;<?= $row['posted_on'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?></li>
+                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?>
+                        <?php if (!isProfessor()) { ?>
+                            <td><?= $section_name ?></td>
+                        <?php } ?>
+                    </li>
                 </ul><br>
             <?php } ?>
         </div>
