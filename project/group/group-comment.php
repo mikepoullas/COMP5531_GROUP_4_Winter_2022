@@ -43,7 +43,7 @@ if (isset($_POST['update_comment'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE comment set comment_content = '$content'
+        $update = "UPDATE comment SET comment_content = '$content'
         WHERE comment_id ='$id'";
 
         if (mysqli_query($conn, $update)) {

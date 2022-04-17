@@ -24,7 +24,7 @@ if (isset($_POST['recover_password'])) {
             $to = $email;
             $subject = "Your Recovered Password";
             $message = "User info recovered\n\nusername: '$username' \npassword: '$password'";
-            $headers = "From: shafiqimtiaz@hotmail.com";
+            $headers = "From: XXXX";
 
             if (mail($to, $subject, $message, $headers)) {
                 array_push($success, "Recovery mail sent, check email");

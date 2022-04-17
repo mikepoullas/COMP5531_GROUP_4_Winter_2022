@@ -46,7 +46,7 @@ if (isset($_POST['update_role'])) {
     }
 
     if (count($errors) == 0) {
-        $update = "UPDATE roles set role_name = '$role_name', role_description = '$role_description' WHERE role_id ='$id'";
+        $update = "UPDATE roles SET role_name = '$role_name', role_description = '$role_description' WHERE role_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");

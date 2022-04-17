@@ -3,7 +3,7 @@
 $session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
-$query = "SELECT g.*, c.*, u.*, s.section_name FROM student_group as g
+$query = "SELECT g.*, c.*, u.*, s.section_name FROM student_groups as g
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
@@ -72,10 +72,10 @@ $group = mysqli_query($conn, $query);
                         <?php if (isStudent()) { ?>
                             <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?>">View</a></td>
                             <td><a href="?page=group-discussion&group_id=<?= $group_id ?>">Manage</a></td>
-                            <td><a href="?page=group-solution&course_id=<?= $course_id ?>">Manage</a></td>
+                            <td><a href="?page=group-solution&course_id=<?= $course_id ?>&group_id=<?= $group_id ?>">Manage</a></td>
                         <?php } else { ?>
                             <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?>">View</a></td>
-                            <td><a href="?page=group-solution&course_id=<?= $course_id ?>">Manage</a></td>
+                            <td><a href="?page=group-solution&course_id=<?= $course_id ?>&group_id=<?= $group_id ?>">Manage</a></td>
                         <?php } ?>
                     </tr>
                 <?php } ?>
@@ -92,7 +92,7 @@ $group = mysqli_query($conn, $query);
         $group_id = $_GET['group_id'];
 
         $query = "SELECT * FROM discussion as d
-        JOIN student_group as g ON g.group_id = d.group_id
+        JOIN student_groups as g ON g.group_id = d.group_id
         JOIN group_of_course as gc ON gc.group_id = g.group_id
         JOIN course as c ON c.course_id = gc.course_id
         JOIN users as u ON u.user_id = d.posted_by_uid
@@ -133,7 +133,7 @@ $group = mysqli_query($conn, $query);
 
         <?php
         $query = "SELECT d.*, u.*, c.course_name, g.group_name FROM discussion as d
-        JOIN student_group as g ON g.group_id = d.group_id
+        JOIN student_groups as g ON g.group_id = d.group_id
         JOIN users as u ON u.user_id = d.posted_by_uid
         JOIN group_of_course as gc ON gc.group_id = g.group_id
         JOIN course as c ON c.course_id = gc.course_id

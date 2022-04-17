@@ -1,26 +1,42 @@
 <div class="content-body">
     <?php
 
-    display_success();
-    display_error();
+    if (isset($_POST['upload_file'])) {
+        if (upload_file('files')) {
+            array_push($success, "File added Successful");
+        } else {
+            array_push($errors, "Error adding file: " . mysqli_error($conn));
+        }
+    }
+    if (isset($_GET['download_file'])) {
+        if (download_file($_GET['download_file'])) {
+            array_push($success, "File download Successful");
+        } else {
+            array_push($errors, "Error downloading file: " . mysqli_error($conn));
+        }
+    }
+    if (isset($_POST['update_file'])) {
+        if (update_file('files', $_GET['update_file'])) {
+            array_push($success, "File update Successful");
+        } else {
+            array_push($errors, "Error update file: " . mysqli_error($conn));
+        }
+    }
+    if (isset($_GET['delete_file'])) {
+        if (delete_file($_GET['delete_file'])) {
+            array_push($success, "File delete Successful");
+        } else {
+            array_push($errors, "Error deleting file: " . mysqli_error($conn));
+        }
+    }
 
     $query = "SELECT * FROM files as f
     JOIN users as u ON u.user_id = f.uploaded_by_uid 
     ORDER BY file_id ASC";
     $results = mysqli_query($conn, $query);
 
-    if (isset($_POST['upload_file'])) {
-        upload_file('files');
-    }
-    if (isset($_GET['download_file'])) {
-        download_file($_GET['download_file']);
-    }
-    if (isset($_POST['update_file'])) {
-        update_file('files', $_GET['update_file']);
-    }
-    if (isset($_GET['delete_file'])) {
-        delete_file($_GET['delete_file']);
-    }
+    display_success();
+    display_error();
 
     ?>
     <h2>Files</h2>

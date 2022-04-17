@@ -19,6 +19,7 @@ use cga;
 4400000 - discussion
 5500000 - comment
 6600000 - files
+7700000 - grades
 
 */
 
@@ -94,13 +95,13 @@ CREATE TABLE Section
 ALTER TABLE Section AUTO_INCREMENT = 60000;
 
 
-CREATE TABLE Student_Group
+CREATE TABLE Student_Groups
 (
   group_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   group_name VARCHAR(30) NOT NULL,
   group_leader_sid INT NOT NULL
 );
-ALTER TABLE Student_Group AUTO_INCREMENT = 70000;
+ALTER TABLE Student_Groups AUTO_INCREMENT = 70000;
 
 
 CREATE TABLE Files
@@ -202,7 +203,7 @@ CREATE TABLE Discussion
   group_id INT,
   task_id INT,
   file_id INT,
-  FOREIGN KEY (group_id) REFERENCES Student_Group(group_id),
+  FOREIGN KEY (group_id) REFERENCES Student_Groups(group_id),
   FOREIGN KEY (task_id) REFERENCES Task(task_id),
   FOREIGN KEY (file_id) REFERENCES Files(file_id)
 );
@@ -227,7 +228,7 @@ CREATE TABLE Member_of_Group
   student_id INT NOT NULL,
   group_id INT NOT NULL,
   FOREIGN KEY (student_id) REFERENCES Student(student_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (group_id) REFERENCES Student_Group(group_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (group_id) REFERENCES Student_Groups(group_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE TA_of_Section
@@ -250,7 +251,7 @@ CREATE TABLE Group_of_Course
 (
   group_id INT NOT NULL,
   course_id INT NOT NULL,
-  FOREIGN KEY (group_id) REFERENCES Student_Group(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (group_id) REFERENCES Student_Groups(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

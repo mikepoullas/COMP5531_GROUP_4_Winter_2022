@@ -1,6 +1,35 @@
 <?php
 
-$user_id = $_SESSION['user_id'];
+$session_user_id = $_SESSION['user_id'];
+
+// UPDATE
+if (isset($_POST['update_course'])) {
+
+    $id = mysqli_real_escape_string($conn, $_GET['update_id']);
+
+    // receive all input values from the form
+    $course_name = mysqli_real_escape_string($conn, $_POST['course_name']);
+    $course_number = mysqli_real_escape_string($conn, $_POST['course_number']);
+
+    // form validation: ensure that the form is correctly filled ...
+    // by adding (array_push()) corresponding error unto $errors array
+    if (empty($course_name)) {
+        array_push($errors, "Course Name is required");
+    }
+    if (empty($course_number)) {
+        array_push($errors, "Course Number is required");
+    }
+
+    if (count($errors) == 0) {
+        $update = "UPDATE course SET course_name = '$course_name', course_number = '$course_number' WHERE course_id ='$id'";
+
+        if (mysqli_query($conn, $update)) {
+            array_push($success, "Update Successful");
+        } else {
+            array_push($errors, "Error updating course: ", mysqli_error($conn));
+        }
+    }
+}
 
 // DELETE
 if (isset($_GET['delete_id'])) {
@@ -39,7 +68,7 @@ if (isset($_GET['delete_id'])) {
         JOIN course as c ON c.course_id = t.course_id
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
         JOIN users as us ON us.user_id = ucs.user_id
-        WHERE us.user_id = '$user_id'
+        WHERE us.user_id = '$session_user_id'
         ORDER BY g.grade_id ASC";
     }
 

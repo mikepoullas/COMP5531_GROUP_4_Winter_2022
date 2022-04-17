@@ -54,7 +54,7 @@ if (isset($_POST['update_announcement'])) {
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE announcement set announcement_title = '$title', announcement_content = '$content' WHERE announcement_id ='$id'";
+        $update = "UPDATE announcement SET announcement_title = '$title', announcement_content = '$content' WHERE announcement_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");

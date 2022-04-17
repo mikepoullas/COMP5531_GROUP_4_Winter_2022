@@ -5,6 +5,9 @@ $session_user_id = $_SESSION['user_id'];
 if (isset($_GET['course_id'])) {
     $course_id = $_GET['course_id'];
 }
+if (isset($_GET['group_id'])) {
+    $session_group_id = $_GET['group_id'];
+}
 
 // ADD
 if (isset($_POST['upload_file'])) {
@@ -32,7 +35,7 @@ if (isset($_POST['upload_file'])) {
                 VALUES('$solution_type', '$solution_content', '$task_id', '$file_id')";
 
         if (mysqli_query($conn, $add)) {
-            array_push($success, "solution added Successful");
+            array_push($success, "Solution added Successful");
         } else {
             array_push($errors, "Error adding solution: " . mysqli_error($conn));
         }
@@ -82,19 +85,14 @@ if (isset($_POST['update_file'])) {
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
-
-    $file_id = $_GET['delete_file'];
-
     $delete = "DELETE FROM solution WHERE solution_id='$id'";
     if (mysqli_query($conn, $delete)) {
-        delete_file($file_id);
+        delete_file($_GET['delete_file']);
         array_push($success, "Delete successful");
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
     }
 }
-
-
 
 // ADD GRADE
 if (isset($_POST['add_grade'])) {
@@ -113,7 +111,7 @@ if (isset($_POST['add_grade'])) {
         array_push($errors, "Invalid grade");
     }
 
-    $query = "SELECT * FROM student_group as g
+    $query = "SELECT * FROM student_groups as g
                 JOIN member_of_group as mg ON mg.group_id = g.group_id
                     JOIN student as st ON st.student_id = mg.student_id
                     WHERE g.group_id = '$group_id'";
@@ -146,7 +144,7 @@ if (isset($_POST['add_grade'])) {
     $query = "SELECT t.*, c.*, f.*, s.solution_id, s.solution_type, s.solution_content, u.*, g.* FROM task as t
     JOIN course as c ON c.course_id = t.course_id
     JOIN group_of_course as gc ON gc.course_id = c.course_id
-    JOIN student_group as g ON g.group_id = gc.group_id
+    JOIN student_groups as g ON g.group_id = gc.group_id
 	JOIN user_course_section as ucs ON ucs.course_id = c.course_id
 	JOIN users as us ON us.user_id = ucs.user_id
     LEFT JOIN solution as s ON s.task_id = t.task_id
@@ -156,7 +154,12 @@ if (isset($_POST['add_grade'])) {
     ORDER BY t.task_id ASC";
     $results = mysqli_query($conn, $query);
 
-    $course_name = mysqli_fetch_assoc($results)['course_name'];
+    if (mysqli_num_rows($results) > 0) {
+        $course_name = mysqli_fetch_assoc($results)['course_name'];
+    } else {
+        $course_name = "No";
+    }
+
 
     ?>
     <h2><?= $course_name ?> Solutions</h2>
@@ -187,23 +190,25 @@ if (isset($_POST['add_grade'])) {
             foreach ($results as $row) {
 
                 $task_id = $row['task_id'];
-
                 $task_content = $row['task_content'];
+                $task_deadline = $row['task_deadline'];
+                $today = date('Y-m-d', time());
 
                 $solution_type = $row['solution_type'];
                 $solution_id = $row['solution_id'];
                 $solution_content = $row['solution_content'];
 
                 $uploaded_by_uid = $row['uploaded_by_uid'];
-
                 $uploaded_by = $row['username'];
                 if ($row['uploaded_on'] !== NULL) {
                     $uploaded_on = date_convert($row['uploaded_on']);
                     $group_id = $row['group_id'];
                     $group_name = $row['group_name'];
                 } else {
-                    $uploaded_on = $group_id = $group_name = '';
+                    $uploaded_on = $group_id = $group_name = "";
                 }
+                $group_leader_sid = $row['group_leader_sid'];
+
                 $file_id = $row['file_id'];
                 $file_name = $row['file_name'];
                 $course_id = $row['course_id'];
@@ -216,14 +221,28 @@ if (isset($_POST['add_grade'])) {
                     <td><?= $uploaded_by ?></td>
                     <td><?= $uploaded_on ?></td>
                     <td><?= $file_name ?></td>
+
                     <?php
                     if (isStudent()) {
-                        if ($file_id == NULL && $solution_id == NULL) {
-                            echo "<td><a href='?page=group-solution&course_id=$course_id&task_id=$task_id&upload_view=true'>Upload</a></td>";
+                        $session_student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $session_user_id))['student_id'];
+                        if (isGroupLeader($session_student_id, $session_group_id)) {
+                            if ($file_id == NULL && $solution_id == NULL) {
+                                if ($task_deadline >= $today) {
+                                    echo "<td><a href='?page=group-solution&course_id=$course_id&task_id=$task_id&group_id=$session_group_id&upload_view=true'>Upload</a></td>";
+                                } else {
+                                    echo "<td><b style='color:red;'>Deadline passed</b></td>";
+                                }
+                            } else {
+                                echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
+                                echo "<td><a href='?page=group-solution&course_id=$course_id&update_id=$solution_id&update_file=$file_id&update_view=true'>Update</a></td>";
+                                echo "<td><a href='?page=group-solution&course_id=$course_id&delete_id=$solution_id&delete_file=$file_id' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                            }
                         } else {
-                            echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
-                            echo "<td><a href='?page=group-solution&course_id=$course_id&update_id=$solution_id&update_file=$file_id&update_view=true'>Update</a></td>";
-                            echo "<td><a href='?page=group-solution&course_id=$course_id&delete_id=$solution_id&delete_file=$file_id' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                            if ($file_id == NULL && $solution_id == NULL) {
+                                echo "<td>No Solution</td>";
+                            } else {
+                                echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
+                            }
                         }
                     } elseif ($file_id !== NULL) {
                         echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
@@ -353,7 +372,7 @@ if (isset($_POST['add_grade'])) {
             <?php
 
             $group_id = $_GET['group_id'];
-            $group_name = mysqli_fetch_assoc(get_records_where('student_group', 'group_id', $group_id))['group_name'];
+            $group_name = mysqli_fetch_assoc(get_records_where('student_groups', 'group_id', $group_id))['group_name'];
 
             $solution_id = $_GET['solution_id'];
             $solution_content = mysqli_fetch_assoc(get_records_where('solution', 'solution_id', $solution_id))['solution_content'];

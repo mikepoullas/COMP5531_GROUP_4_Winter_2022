@@ -47,6 +47,17 @@ function get_records_where($table, $key, $value)
     return $result;
 }
 
+function isGroupLeader($student_id, $group_id)
+{
+    global $conn;
+    $query = "SELECT * FROM student_groups WHERE group_leader_sid='$student_id' AND group_id='$group_id'";
+    $result = mysqli_query($conn, $query);
+    if (mysqli_num_rows($result) > 0) {
+        return true;
+    }
+    return false;
+}
+
 function isAdmin()
 {
     if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1) {

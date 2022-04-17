@@ -56,7 +56,7 @@ if (isset($_POST['update_forum'])) {
 
     if (count($errors) == 0) {
 
-        $update = "UPDATE forum set forum_title = '$title', forum_content = '$content'
+        $update = "UPDATE forum SET forum_title = '$title', forum_content = '$content'
         WHERE forum_id ='$id'";
 
         if (mysqli_query($conn, $update)) {
@@ -116,6 +116,7 @@ if (isset($_GET['delete_id'])) {
                 $title = $row['forum_title'];
                 $content = $row['forum_content'];
                 $posted_by = $row['username'];
+                $posted_by_uid = $row['posted_by_uid'];
                 $posted_on = date_convert($row['posted_on']);
             ?>
                 <tr>
@@ -123,8 +124,10 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $content ?></td>
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>
-                    <td><a href="?page=course-forum&update_view=true&course_id=<?= $course_id ?>&update_id=<?= $forum_id ?>">Update</a></td>
-                    <td><a href="?page=course-forum&delete_view=true&course_id=<?= $course_id ?>&delete_id=<?= $forum_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <?php if ($posted_by_uid == $session_user_id) { ?>
+                        <td><a href="?page=course-forum&update_view=true&course_id=<?= $course_id ?>&update_id=<?= $forum_id ?>">Update</a></td>
+                        <td><a href="?page=course-forum&delete_view=true&course_id=<?= $course_id ?>&delete_id=<?= $forum_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <?php } ?>
                 </tr>
             <?php
             }
