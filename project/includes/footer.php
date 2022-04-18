@@ -8,7 +8,7 @@
     setTimeout(() => {
         const box = document.getElementById('notification');
         box.style.display = 'none';
-    }, 2000);
+    }, 5000);
 </script>
 
 </html>

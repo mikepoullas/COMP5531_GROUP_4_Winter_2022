@@ -85,7 +85,14 @@ $course_info = mysqli_query($conn, $query);
 
         $forum = mysqli_query($conn, $query);
 
-        $course_name = mysqli_fetch_assoc($forum)['course_name'];
+        //$course_name = mysqli_fetch_assoc($forum)['course_name'];
+		
+		if (mysqli_num_rows($forum) > 0) {
+			$course_name = mysqli_fetch_assoc($forum)['course_name'];
+		} else {
+			$course_name = "No";
+		}
+		
         ?>
         <div class="forum-content">
             <h3><?= $course_name ?> Forum</h3>
