@@ -103,24 +103,28 @@ if (isset($_GET['delete_id'])) {
     <div class="comment-content">
 
         <?php
-        foreach ($comments as $row) {
-            $comment_id = $row['comment_id'];
-            $comment_content = $row['comment_content'];
-            $comment_posted_by = $row['first_name'] . " " . $row['last_name'];
-            $comment_posted_on = date_convert($row['posted_on']);
-            $discussion_id = $row['discussion_id'];
+        if (mysqli_num_rows($comments) > 0) {
+            foreach ($comments as $row) {
+                $comment_id = $row['comment_id'];
+                $comment_content = $row['comment_content'];
+                $comment_posted_by = $row['first_name'] . " " . $row['last_name'];
+                $comment_posted_on = date_convert($row['posted_on']);
+                $discussion_id = $row['discussion_id'];
         ?>
-            <ul>
-                <li><?= $comment_content ?></li>
-                <li>&emsp;by <b><?= $comment_posted_by ?></b> | <?= $comment_posted_on ?></li>
-                <?php if ($session_user_id == $row['posted_by_uid']) { ?>
-                    <li>
-                        &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $discussion_id ?>&update_id=<?= $comment_id ?>">Update</a>
-                        |
-                        <a href="?page=group-comment&delete_view=true&discussion_id=<?= $discussion_id ?>&delete_id=<?= $comment_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
-                    </li>
-                <?php } ?>
-            </ul><br>
+                <ul>
+                    <li><?= $comment_content ?></li>
+                    <li>&emsp;by <b><?= $comment_posted_by ?></b> | <?= $comment_posted_on ?></li>
+                    <?php if ($session_user_id == $row['posted_by_uid']) { ?>
+                        <li>
+                            &emsp;<a href="?page=group-comment&update_view=true&discussion_id=<?= $discussion_id ?>&update_id=<?= $comment_id ?>">Update</a>
+                            |
+                            <a href="?page=group-comment&delete_view=true&discussion_id=<?= $discussion_id ?>&delete_id=<?= $comment_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                        </li>
+                    <?php } ?>
+                </ul><br>
+            <?php } ?>
+        <?php } else { ?>
+            <p>No Comments</p>
         <?php } ?>
 
         <hr>
@@ -130,12 +134,12 @@ if (isset($_GET['delete_id'])) {
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
             $query = "SELECT * FROM comment as c
-    WHERE c.comment_id = '$id'
-    ORDER BY c.comment_id ASC";
+            WHERE c.comment_id = '$id'
+            ORDER BY c.comment_id ASC";
             $comments = mysqli_query($conn, $query);
 
             foreach ($comments as $row) {
-                $content = $row['content'];
+                $content = $row['comment_content'];
             }
         ?>
 

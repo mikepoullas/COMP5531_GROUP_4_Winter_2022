@@ -86,7 +86,7 @@ if (isset($_POST['add_user'])) {
     $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $email = strtolower(mysqli_real_escape_string($conn, $_POST['email']));
     // $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password_new = mysqli_real_escape_string($conn, $_POST['password_new']);
     $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
@@ -94,7 +94,6 @@ if (isset($_POST['add_user'])) {
 
     //make a unique username
     $username = strtolower($first_name[0] . "_" . $last_name . "_" . "$role_id");
-    // rand(1, 99));
 
     // first check the database to make sure 
     // a user does not already exist with the same username and/or email

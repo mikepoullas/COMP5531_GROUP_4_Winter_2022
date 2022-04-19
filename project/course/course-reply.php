@@ -103,25 +103,28 @@ if (isset($_GET['delete_id'])) {
     <div class="reply-content">
 
         <?php
-        foreach ($replys as $row) {
-            $reply_id = $row['reply_id'];
-            $reply_content = $row['reply_content'];
-            $reply_posted_by = $row['first_name'] . " " . $row['last_name'];
-            $reply_posted_on = date_convert($row['posted_on']);
-            $forum_id = $row['forum_id'];
-
+        if (mysqli_num_rows($replys) > 0) {
+            foreach ($replys as $row) {
+                $reply_id = $row['reply_id'];
+                $reply_content = $row['reply_content'];
+                $reply_posted_by = $row['first_name'] . " " . $row['last_name'];
+                $reply_posted_on = date_convert($row['posted_on']);
+                $forum_id = $row['forum_id'];
         ?>
-            <ul>
-                <li><?= $reply_content ?></li>
-                <li>&emsp;by <b><?= $reply_posted_by ?></b> | <?= $reply_posted_on ?></li>
-                <?php if ($session_user_id == $row['posted_by_uid']) { ?>
-                    <li>
-                        &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $forum_id ?>&update_id=<?= $reply_id ?>">Update</a>
-                        |
-                        <a href="?page=course-reply&delete_view=true&forum_id=<?= $forum_id ?>&delete_id=<?= $reply_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
-                    </li>
-                <?php } ?>
-            </ul><br>
+                <ul>
+                    <li><?= $reply_content ?></li>
+                    <li>&emsp;by <b><?= $reply_posted_by ?></b> | <?= $reply_posted_on ?></li>
+                    <?php if ($session_user_id == $row['posted_by_uid']) { ?>
+                        <li>
+                            &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $forum_id ?>&update_id=<?= $reply_id ?>">Update</a>
+                            |
+                            <a href="?page=course-reply&delete_view=true&forum_id=<?= $forum_id ?>&delete_id=<?= $reply_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                        </li>
+                    <?php } ?>
+                </ul><br>
+            <?php } ?>
+        <?php } else { ?>
+            <p>No Comments</p>
         <?php } ?>
 
         <hr>

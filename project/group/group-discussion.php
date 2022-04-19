@@ -114,11 +114,15 @@ if (isset($_GET['delete_id'])) {
     ORDER BY discussion_id ASC";
     $discussions = mysqli_query($conn, $query);
 
-    if ($group_id != null) {
-        $discussion_heading = mysqli_fetch_assoc($discussions)['group_name'];
-    }
-    if ($task_id != null) {
-        $discussion_heading = mysqli_fetch_assoc($discussions)['task_content'];
+    if (mysqli_num_rows($discussions) > 0) {
+        if ($group_id != null) {
+            $discussion_heading = mysqli_fetch_assoc($discussions)['group_name'];
+        }
+        if ($task_id != null) {
+            $discussion_heading = mysqli_fetch_assoc($discussions)['task_content'];
+        }
+    } else {
+        $discussion_heading = "No";
     }
 
     ?>

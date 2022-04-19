@@ -93,12 +93,12 @@ if (isset($_GET['delete_id'])) {
     WHERE c.course_id = $course_id
     ORDER BY f.forum_id ASC";
     $forum = mysqli_query($conn, $query);
-	
-	if (mysqli_num_rows($forum) > 0) {
-			$course_name = mysqli_fetch_assoc($forum)['course_name'];
-	} else {
-		$course_name = "No";
-	}
+
+    if (mysqli_num_rows($forum) > 0) {
+        $course_name = mysqli_fetch_assoc($forum)['course_name'];
+    } else {
+        $course_name = "No";
+    }
 
     ?>
 
@@ -154,13 +154,13 @@ if (isset($_GET['delete_id'])) {
 
                 <div class="form-input">
                     <label>Title</label>
-                    <span><input type="text" name="title"></span>
+                    <span><input type="text" name="forum_title"></span>
                 </div>
 
                 <div class="form-input">
                     <label>Content</label>
                     <br>
-                    <textarea name="content"></textarea>
+                    <textarea name="forum_content"></textarea>
                 </div>
 
                 <div class="form-submit">
@@ -199,13 +199,13 @@ if (isset($_GET['delete_id'])) {
 
                 <div class="form-input">
                     <label>Title</label>
-                    <span><input type="text" name="title" value='<?= $title ?>'></span>
+                    <span><input type="text" name="forum_title" value='<?= $title ?>'></span>
                 </div>
 
                 <div class="form-input">
                     <label>Content</label>
                     <br>
-                    <textarea name="content"><?= $content ?></textarea>
+                    <textarea name="forum_content"><?= $content ?></textarea>
                 </div>
 
                 <div class="form-submit">

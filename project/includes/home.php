@@ -183,18 +183,31 @@ if (!isAdmin()) {
     <?php if (!isAdmin()) { ?>
         <div class="announcement-content">
             <h3>Announcements</h3><br>
-            <?php foreach ($announcements as $row) { ?>
-                <ul>
-                    <li> <b><?= $row['announcement_title'] ?></b> </li>
-                    <li> <?= $row['announcement_content'] ?></li>
-                    <li>&emsp;<?= $row['posted_on'] ?></li>
-                    <li>&emsp;by <b><?= $row['first_name'] . " " . $row['last_name'] ?></b> | <?= $row['course_name'] ?>
-                        <?php if (!isProfessor()) { ?>
-                            <td><?= $section_name ?></td>
-                        <?php } ?>
-                    </li>
-                </ul><br>
+            <?php
+            if (mysqli_num_rows($announcements) > 0) {
+                foreach ($announcements as $row) {
+                    $announcement_title = $row['announcement_title'];
+                    $announcement_content = $row['announcement_content'];
+                    $posted_on = $row['posted_on'];
+                    $posted_by = $row['first_name'] . " " . $row['last_name'];
+                    $course_name = $row['course_name'];
+                    $section_name = $row['section_name'];
+
+            ?>
+                    <ul>
+                        <li> <b><?= $announcement_title ?></b> </li>
+                        <li> <?= $announcement_content ?></li>
+                        <li>&emsp;<?= $posted_on ?></li>
+                        <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?>
+                            <?php if (!isProfessor()) echo " | " . $section_name; ?>
+                        </li>
+                    </ul><br>
+                <?php } ?>
+
+            <?php } else { ?>
+                <p>No Announcements</p>
             <?php } ?>
+
         </div>
     <?php } ?>
 

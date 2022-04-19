@@ -85,14 +85,12 @@ $course_info = mysqli_query($conn, $query);
 
         $forum = mysqli_query($conn, $query);
 
-        //$course_name = mysqli_fetch_assoc($forum)['course_name'];
-		
-		if (mysqli_num_rows($forum) > 0) {
-			$course_name = mysqli_fetch_assoc($forum)['course_name'];
-		} else {
-			$course_name = "No";
-		}
-		
+        if (mysqli_num_rows($forum) > 0) {
+            $course_name = mysqli_fetch_assoc($forum)['course_name'];
+        } else {
+            $course_name = "No";
+        }
+
         ?>
         <div class="forum-content">
             <h3><?= $course_name ?> Forum</h3>
@@ -139,26 +137,31 @@ $course_info = mysqli_query($conn, $query);
             <div class="forum-content">
                 <br>
                 <?php
-                foreach ($forum_all as $row) {
-                    $forum_id = $row['forum_id'];
-                    $forum_title = $row['forum_title'];
-                    $forum_content = $row['forum_content'];
-                    $posted_by = $row['first_name'] . " " . $row['last_name'];
-                    $posted_on = date_convert($row['posted_on']);
-                    $course_name = $row['course_name'];
-                    $section_name = $row['section_name'];
+                if (mysqli_num_rows($forum_all) > 0) {
+                    foreach ($forum_all as $row) {
+                        $forum_id = $row['forum_id'];
+                        $forum_title = $row['forum_title'];
+                        $forum_content = $row['forum_content'];
+                        $posted_by = $row['first_name'] . " " . $row['last_name'];
+                        $posted_on = date_convert($row['posted_on']);
+                        $course_name = $row['course_name'];
+                        $section_name = $row['section_name'];
                 ?>
-                    <ul>
-                        <li>
-                            <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
-                        </li>
-                        <li><?= $forum_content ?></li>
-                        <li>&emsp;<?= $posted_on ?></li>
-                        <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?> | <?= $section_name ?></li>
-                    </ul><br>
+                        <ul>
+                            <li>
+                                <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
+                            </li>
+                            <li><?= $forum_content ?></li>
+                            <li>&emsp;<?= $posted_on ?></li>
+                            <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?>
+                                <?php if (!isProfessor()) echo " | " . $section_name; ?>
+                            </li>
+                        </ul><br>
+                    <?php } ?>
+                <?php } else { ?>
+                    <p>No forums</p>
                 <?php } ?>
             </div>
-
         <?php } ?>
 
         </div>
