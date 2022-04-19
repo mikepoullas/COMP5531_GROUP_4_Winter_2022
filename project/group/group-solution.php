@@ -212,7 +212,7 @@ if (isset($_POST['add_grade'])) {
                 $file_id = $row['file_id'];
                 $file_name = $row['file_name'];
                 $course_id = $row['course_id'];
-            ?>
+				?>
                 <tr>
                     <td><b><a href='?page=course-task&course_id=<?= $course_id ?>'><?= $task_content ?></a></b></td>
                     <td><?= $group_name ?></td>
@@ -234,7 +234,7 @@ if (isset($_POST['add_grade'])) {
                                 }
                             } else {
                                 echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
-                                echo "<td><a href='?page=group-solution&course_id=$course_id&update_id=$solution_id&update_file=$file_id&update_view=true'>Update</a></td>";
+                                echo "<td><a href='?page=group-solution&course_id=$course_id&update_id=$solution_id&update_file=$file_id&update_view=true&group_id=$group_id'>Update</a></td>";
                                 echo "<td><a href='?page=group-solution&course_id=$course_id&delete_id=$solution_id&delete_file=$file_id' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                             }
                         } else {

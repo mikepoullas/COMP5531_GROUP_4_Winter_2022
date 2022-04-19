@@ -93,10 +93,16 @@ if (isset($_GET['delete_id'])) {
     WHERE c.course_id = $course_id
     ORDER BY f.forum_id ASC";
     $forum = mysqli_query($conn, $query);
+	
+	if (mysqli_num_rows($forum) > 0) {
+			$course_name = mysqli_fetch_assoc($forum)['course_name'];
+	} else {
+		$course_name = "No";
+	}
 
     ?>
 
-    <h2><?= mysqli_fetch_assoc($forum)['course_name'] ?> Forum</h2>
+    <h2><?= $course_name ?> Forum</h2>
     <hr>
     <table>
         <thead>

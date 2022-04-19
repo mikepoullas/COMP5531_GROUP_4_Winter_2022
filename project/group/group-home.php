@@ -143,7 +143,14 @@ $group = mysqli_query($conn, $query);
         ORDER BY d.discussion_id ASC LIMIT 10";
         $discussion_all = mysqli_query($conn, $query);
 
-        $group_name = mysqli_fetch_assoc($discussion_all)['group_name'];
+        //$group_name = mysqli_fetch_assoc($discussion_all)['group_name'];
+		
+		if (mysqli_num_rows($discussion_all) > 0) {
+			$group_name = mysqli_fetch_assoc($discussion_all)['group_name'];
+		} else {
+			$group_name = "No";
+		}		
+		
         ?>
 
         <div class="discussion-content">
