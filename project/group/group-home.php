@@ -7,7 +7,7 @@ $query = "SELECT g.*, c.*, u.*, s.section_name FROM student_groups as g
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-LEFT JOIN section as s ON s.section_id = ucs.section_id
+INNER JOIN section as s ON s.section_id = ucs.section_id
 JOIN users as u ON u.user_id = ucs.user_id
 WHERE u.user_id = '$session_user_id'
 ORDER BY g.group_id ASC";
@@ -146,8 +146,6 @@ $group = mysqli_query($conn, $query);
         WHERE us.user_id = '$session_user_id'
         ORDER BY d.discussion_id ASC LIMIT 10";
         $discussion_all = mysqli_query($conn, $query);
-
-        //$group_name = mysqli_fetch_assoc($discussion_all)['group_name'];
 
         if (mysqli_num_rows($discussion_all) > 0) {
             $group_name = mysqli_fetch_assoc($discussion_all)['group_name'];

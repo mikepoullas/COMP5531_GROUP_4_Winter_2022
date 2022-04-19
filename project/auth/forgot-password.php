@@ -14,12 +14,11 @@ if (isset($_POST['recover_password'])) {
     }
 
     if (count($errors) == 0) {
-
-        $username = mysqli_fetch_assoc(get_records_where('users', 'email', $email))['username'];
-        $password = mysqli_fetch_assoc(get_records_where('users', 'email', $email))['password'];
-
         //DOESNOT WORK - need to setup local mail server
         if (mysqli_num_rows(get_records_where('users', 'email', $email)) == 1) {
+
+            $username = mysqli_fetch_assoc(get_records_where('users', 'email', $email))['username'];
+            $password = mysqli_fetch_assoc(get_records_where('users', 'email', $email))['password'];
 
             $to = $email;
             $subject = "Your Recovered Password";
@@ -66,6 +65,8 @@ if (isset($_POST['recover_password'])) {
                 display_success();
                 display_error();
                 ?>
+
+                <br>
 
                 <div class="form-input">
                     <label>Email</label>

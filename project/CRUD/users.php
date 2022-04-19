@@ -87,7 +87,6 @@ if (isset($_POST['add_user'])) {
     $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
     $email = strtolower(mysqli_real_escape_string($conn, $_POST['email']));
-    // $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password_new = mysqli_real_escape_string($conn, $_POST['password_new']);
     $password_confirm = mysqli_real_escape_string($conn, $_POST['password_confirm']);
     $role_id = mysqli_real_escape_string($conn, $_POST['role_id']);
