@@ -19,7 +19,7 @@ $role_id = $_SESSION['role_id'];
             <h3>Admin Help</h3>
             <br>
             <ul>
-                <li>Admin HELP !!</li>
+                <li></li>
             </ul>
         </div>
     <?php } ?>

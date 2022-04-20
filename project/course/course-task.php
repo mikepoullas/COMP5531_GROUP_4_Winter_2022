@@ -142,8 +142,7 @@ if (isset($_GET['delete_id'])) {
     display_error();
 
     if (isStudent()) {
-        $query = "SELECT t.*, s.solution_content, c.*, f.*, u.*, gc.group_id FROM task as t
-        LEFT JOIN solution as s ON s.task_id = t.task_id
+        $query = "SELECT t.*, c.*, f.*, u.*, gc.group_id FROM task as t
         JOIN course as c ON c.course_id = t.course_id
         JOIN files as f ON f.file_id = t.file_id
         JOIN users as u ON u.user_id = f.uploaded_by_uid
@@ -155,8 +154,7 @@ if (isset($_GET['delete_id'])) {
         WHERE us.user_id = '$session_user_id' AND c.course_id = '$session_course_id' AND st.user_id = '$session_user_id'
         ORDER BY t.task_id ASC";
     } else {
-        $query = "SELECT t.*, s.solution_content, c.*, f.*, u.* FROM task as t
-        LEFT JOIN solution as s ON s.task_id = t.task_id
+        $query = "SELECT t.*, c.*, f.*, u.* FROM task as t
         JOIN course as c ON c.course_id = t.course_id
         JOIN files as f ON f.file_id = t.file_id
         JOIN users as u ON u.user_id = f.uploaded_by_uid
@@ -206,10 +204,10 @@ if (isset($_GET['delete_id'])) {
                 $uploaded_on = date_convert($row['uploaded_on']);
                 $file_id = $row['file_id'];
                 $file_name = $row['file_name'];
-                $solution_content = $row['solution_content'];
                 if (isStudent()) {
                     $group_id = $row['group_id'];
                 }
+                $today = date('Y-m-d', time());
             ?>
                 <tr>
                     <td><a href='?page=group-discussion&task_id=<?= $task_id ?>'><b><?= $task_content ?></b></a></td>
@@ -220,19 +218,33 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $file_name ?></td>
                     <?php
 
-                    if ($solution_content != NULL) {
-                        if (isStudent()) {
-                            echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>$solution_content</a></td>";
+                    if (isStudent()) {
+                        $session_student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $session_user_id))['student_id'];
+                        if (isGroupLeader($session_student_id, $group_id)) {
+                            if ($task_deadline >= $today) {
+
+                                $query = "SELECT * FROM solution WHERE task_id='$task_id' AND group_id='$group_id'";
+                                $check_solution = mysqli_query($conn, $query);
+
+                                if (mysqli_num_rows($check_solution) > 0) {
+                                    echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>View</a></td>";
+                                } else {
+                                    echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id&task_id=$task_id&upload_view=true'>Upload</a></td>";
+                                }
+                            } else {
+                                echo "<td><b style='color:red;'>Deadline passed</b></td>";
+                            }
                         } else {
-                            echo "<td><a href='?page=group-solution&course_id=$session_course_id'>$solution_content</a></td>";
+                            if ($file_id == NULL) {
+                                echo "<td>No Solution</td>";
+                            } else {
+                                echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
+                            }
                         }
                     } else {
-                        if (isStudent()) {
-                            echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>Upload</a></td>";
-                        } else {
-                            echo "<td><a href='?page=group-solution&course_id=$session_course_id'>View</a></td>";
-                        }
+                        echo "<td><a href='?page=group-solution&course_id=$session_course_id'>View</a></td>";
                     }
+
                     if (isProfessor()) {
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&update_view=true&update_id=$task_id&update_file=$file_id'>Update</a></td>";
