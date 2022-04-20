@@ -3,10 +3,10 @@
 
         var task_type, task_content, task_deadline, file;
 
-		task_type = document.getElementById("task_type").value;
+        task_type = document.getElementById("task_type").value;
         task_content = document.getElementById("task_content").value;
         task_deadline = document.getElementById("task_deadline").value;
-		file = document.getElementById("file").value;
+        file = document.getElementById("file").value;
 
         if (task_type == '') {
             alert("Please select a task type.");
@@ -23,18 +23,17 @@
         } else if (file == '') {
             alert("Please select a file name.");
             document.getElementById("file").focus();
-            return false;			
+            return false;
         } else
             return true;
     }
-
 </script>
 <?php
 
 $session_user_id = $_SESSION['user_id'];
 
 if (isset($_GET['course_id'])) {
-    $course_id = $_GET['course_id'];
+    $session_course_id = $_GET['course_id'];
 }
 
 // ADD
@@ -109,14 +108,17 @@ if (isset($_POST['update_file'])) {
         $update = "UPDATE task SET task_type='$task_type', task_content='$task_content', task_deadline='$task_deadline'
                 WHERE task_id='$task_id'";
 
+        $file_id = $_GET['update_file'];
+
         if (mysqli_query($conn, $update)) {
             array_push($success, "Task update Successful");
-            update_file('task', $_GET['update_id']);
+            update_file('task', $file_id);
         } else {
             array_push($errors, "Error adding Task: " . mysqli_error($conn));
         }
     }
 }
+
 
 // DELETE
 if (isset($_GET['delete_id'])) {
@@ -124,6 +126,7 @@ if (isset($_GET['delete_id'])) {
     $delete = "DELETE FROM task WHERE task_id='$id'";
     if (mysqli_query($conn, $delete)) {
         delete_file($_GET['delete_file']);
+        header("location: ?page=course-task&course_id=$session_course_id");
         array_push($success, "Delete successful");
     } else {
         array_push($errors, "Delete error: " . mysqli_error($conn));
@@ -146,8 +149,10 @@ if (isset($_GET['delete_id'])) {
         JOIN users as u ON u.user_id = f.uploaded_by_uid
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
 		JOIN group_of_course as gc ON gc.course_id = c.course_id
+        JOIN member_of_group as mg ON mg.group_id = gc.group_id
+        JOIN student as st ON st.student_id = mg.student_id
         JOIN users as us ON us.user_id = ucs.user_id
-        WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
+        WHERE us.user_id = '$session_user_id' AND c.course_id = '$session_course_id' AND st.user_id = '$session_user_id'
         ORDER BY t.task_id ASC";
     } else {
         $query = "SELECT t.*, s.solution_content, c.*, f.*, u.* FROM task as t
@@ -157,7 +162,7 @@ if (isset($_GET['delete_id'])) {
         JOIN users as u ON u.user_id = f.uploaded_by_uid
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
         JOIN users as us ON us.user_id = ucs.user_id
-        WHERE us.user_id = '$session_user_id' AND c.course_id = '$course_id'
+        WHERE us.user_id = '$session_user_id' AND c.course_id = '$session_course_id'
         ORDER BY t.task_id ASC";
     }
     $results = mysqli_query($conn, $query);
@@ -216,21 +221,24 @@ if (isset($_GET['delete_id'])) {
                     <?php
 
                     if ($solution_content != NULL) {
-                        echo "<td><a href='?page=group-solution&course_id=$course_id'>$solution_content</a></td>";
+                        if (isStudent()) {
+                            echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>$solution_content</a></td>";
+                        } else {
+                            echo "<td><a href='?page=group-solution&course_id=$session_course_id'>$solution_content</a></td>";
+                        }
                     } else {
                         if (isStudent()) {
-                            echo "<td><a href='?page=group-solution&course_id=$course_id&group_id=$group_id'>Upload</a></td>";
+                            echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>Upload</a></td>";
                         } else {
-                            echo "<td><a href='?page=group-solution&course_id=$course_id'>View</a></td>";
+                            echo "<td><a href='?page=group-solution&course_id=$session_course_id'>View</a></td>";
                         }
                     }
-
                     if (isProfessor()) {
-                        echo "<td><a href='?page=course-task&course_id=$course_id&download_file=$file_id'>Download</a></td>";
-                        echo "<td><a href='?page=course-task&course_id=$course_id&update_view=true&update_id=$task_id&update_file=$file_id'>Update</a></td>";
-                        echo "<td><a href='?page=course-task&course_id=$course_id&delete_id=$task_id&delete_file=$file_id' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
+                        echo "<td><a href='?page=course-task&course_id=$session_course_id&update_view=true&update_id=$task_id&update_file=$file_id'>Update</a></td>";
+                        echo "<td><a href='?page=course-task&course_id=$session_course_id&delete_id=$task_id&delete_file=$file_id' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } else {
-                        echo "<td><a href='?page=course-tas&course_id=$course_id&download_file=$file_id'>Download</a></td>";
+                        echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
                     }
 
                     ?>
@@ -240,8 +248,8 @@ if (isset($_GET['delete_id'])) {
     </table>
 
     <?php if (isProfessor()) { ?>
-        <a href="?page=course-task&course_id=<?= $course_id ?>&upload_view=true">
-            <button>Upload File</button>
+        <a href="?page=course-task&course_id=<?= $session_course_id ?>&upload_view=true">
+            <button>Upload Task</button>
         </a>
 
         <?php if (isset($_GET['upload_view'])) { ?>

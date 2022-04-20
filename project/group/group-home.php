@@ -3,14 +3,28 @@
 $session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
-$query = "SELECT g.*, c.*, u.*, s.section_name FROM student_groups as g
-JOIN group_of_course as gc ON gc.group_id = g.group_id
-JOIN course as c ON c.course_id = gc.course_id
-JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-LEFT JOIN section as s ON s.section_id = ucs.section_id
-JOIN users as u ON u.user_id = ucs.user_id
-WHERE u.user_id = '$session_user_id'
-ORDER BY g.group_id ASC";
+if (isStudent()) {
+    $query = "SELECT g.*, st.*, u.*, s.section_name, c.* FROM student_groups as g
+    JOIN member_of_group as mg ON mg.group_id = g.group_id
+    JOIN student as st ON st.student_id = mg.student_id
+    JOIN users as u ON u.user_id = st.user_id
+    JOIN group_of_course as gc ON gc.group_id = g.group_id
+    JOIN course as c ON c.course_id = gc.course_id
+    JOIN section as s ON s.course_id = c.course_id
+    JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND ucs.user_id = u.user_id
+    WHERE u.user_id = '$session_user_id'
+    ORDER BY g.group_id ASC";
+} else {
+    $query = "SELECT g.*, u.*, s.section_name, c.* FROM student_groups as g
+    JOIN group_of_course as gc ON gc.group_id = g.group_id
+    JOIN course as c ON c.course_id = gc.course_id
+    JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+    LEFT JOIN section as s ON s.section_id = ucs.section_id
+    JOIN users as u ON u.user_id = ucs.user_id
+    WHERE u.user_id = '$session_user_id'
+    ORDER BY g.group_id ASC";
+}
+
 $group = mysqli_query($conn, $query);
 
 ?>
@@ -51,7 +65,13 @@ $group = mysqli_query($conn, $query);
                     $group_id = $row['group_id'];
                     $group_name = $row['group_name'];
                     $group_leader_sid = $row['group_leader_sid'];
-                    $section_name = $row['section_name'];
+                    if (!isProfessor()) {
+                        if ($row['section_name'] == null) {
+                            $section_name = "All";
+                        } else {
+                            $section_name = $row['section_name'];
+                        }
+                    }
                     $course_id = $row['course_id'];
                     $course_name = $row['course_name'];
 

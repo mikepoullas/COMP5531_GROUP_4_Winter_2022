@@ -17,7 +17,6 @@
         } else
             return true;
     }
-
 </script>
 
 <?php
@@ -79,7 +78,6 @@ if (isset($_POST['update_discussion'])) {
     // receive all input values from the form
     $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
     $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
-    // $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -89,9 +87,6 @@ if (isset($_POST['update_discussion'])) {
     if (empty($content)) {
         array_push($errors, "Content is required");
     }
-    // if (empty($group_id)) {
-    //     array_push($errors, "Group is required");
-    // }
 
     if (count($errors) == 0) {
 
@@ -184,6 +179,8 @@ if (isset($_GET['delete_id'])) {
                     <?php if ($posted_by_uid == $session_user_id) { ?>
                         <td><a href="?page=group-discussion&update_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&update_id=<?= $discussion_id ?>">Update</a></td>
                         <td><a href="?page=group-discussion&delete_view=true&group_id=<?= $group_id ?>&task_id=<?= $task_id ?>&delete_id=<?= $discussion_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <?php } else { ?>
+                        <td></td>
                     <?php } ?>
                 </tr>
             <?php
@@ -211,7 +208,7 @@ if (isset($_GET['delete_id'])) {
                 <div class="form-input">
                     <label>Content </label>
                     <br>
-                    <textarea name="discussion_content" id="discussion_content" ></textarea>
+                    <textarea name="discussion_content" id="discussion_content"></textarea>
                 </div>
 
                 <div class="form-submit">

@@ -7,7 +7,7 @@
         course_id = document.getElementById("course_id").value;
         group_id = document.getElementById("group_id").value;
 
-		if (course_id == '') {
+        if (course_id == '') {
             alert("Please select a course from the list.");
             document.getElementById("course_id").focus();
             return false;
@@ -15,7 +15,7 @@
             alert("Please select a group from the list. ");
             document.getElementById("group_id").focus();
             return false;
-		} else if (student_id == '') {
+        } else if (student_id == '') {
             alert("Please select a student from the list.");
             document.getElementById("user_id").focus();
             return false;
@@ -29,9 +29,9 @@
 
 $session_user_id = $_SESSION['user_id'];
 
-if (isset($_GET['course_id'])) {
-    $course_id = $_GET['course_id'];
-}
+// if (isset($_GET['course_id'])) {
+//     $course_id = $_GET['course_id'];
+// }
 
 /*******************************************************
  * ADD SQL
@@ -40,22 +40,24 @@ if (isset($_GET['course_id'])) {
 if (isset($_POST['assign'])) {
 
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+    $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
+
     $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
     $_GET['group_id'] = $group_id;
 
     $student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $user_id))['student_id'];
 
-    $query = "SELECT * FROM member_of_group as mg WHERE mg.student_id = '$student_id'";
+    $query = "SELECT * FROM member_of_group as mg
+    JOIN group_of_course as gc ON mg.group_id = gc.group_id
+    WHERE mg.student_id = '$student_id' AND gc.course_id = '$course_id'";
     $check = mysqli_query($conn, $query);
-
-
 
     foreach ($check as $row) {
         $check_group_id = $row['group_id'];
         if ($check_group_id == $group_id) {
             array_push($errors, "This student is already assigned to this group.");
         } elseif (mysqli_num_rows($check) > 0) {
-            array_push($errors, "This student is already assigned to a group.");
+            array_push($errors, "This student is already assigned to another course group.");
         }
     }
 
@@ -65,7 +67,6 @@ if (isset($_POST['assign'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Student has been assigned to course successfully");
-            header("location: {$_SERVER['HTTP_REFERER']}");
         } else {
             array_push($errors, "Could not INSERT error: " . mysqli_error($conn));
         }
@@ -79,12 +80,16 @@ if (isset($_POST['assign'])) {
 if (isset($_POST['update'])) {
 
     $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
+    $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
+
     $group_id = mysqli_real_escape_string($conn, $_POST['group_id']);
     $_GET['group_id'] = $group_id;
 
     $student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $user_id))['student_id'];
 
-    $query = "SELECT * FROM member_of_group as mg WHERE mg.student_id = '$student_id'";
+    $query = "SELECT * FROM member_of_group as mg
+    JOIN group_of_course as gc ON mg.group_id = gc.group_id
+    WHERE mg.student_id = '$student_id' AND gc.course_id = '$course_id'";
     $check = mysqli_query($conn, $query);
 
     foreach ($check as $row) {
@@ -97,10 +102,32 @@ if (isset($_POST['update'])) {
     if (count($errors) == 0) {
 
         $update = "UPDATE member_of_group SET group_id = '$group_id' WHERE student_id ='$student_id'";
-
         if (mysqli_query($conn, $update)) {
             array_push($success, "Updated Successfully.");
-            header("location: {$_SERVER['HTTP_REFERER']}");
+
+            // if update is done on group leader, make last member group leader
+            if (isGroupLeader($student_id, $check_group_id)) {
+                $check = "SELECT * FROM member_of_group as mg WHERE mg.group_id = '$check_group_id'";
+
+                if (mysqli_num_rows(mysqli_query($conn, $check)) == 1) {
+                    $last_member_sid = mysqli_fetch_assoc(get_records_where('member_of_group', 'group_id', $check_group_id))['student_id'];
+                    $make_last_member_group_leader = "UPDATE student_groups SET group_leader_sid = '$last_member_sid' WHERE group_id = '$check_group_id'";
+                    if (mysqli_query($conn,  $make_last_member_group_leader)) {
+                        array_push($success, "Last member is now Group Leader.");
+                    } else {
+                        array_push($errors, "Could not UPDATE Group Leader: " . mysqli_error($conn));
+                    }
+                } else {
+                    $query = "SELECT * FROM member_of_group as mg WHERE mg.group_id = '$check_group_id' LIMIT 1";
+                    $first_member_sid = mysqli_fetch_assoc(mysqli_query($conn, $query))['student_id'];
+                    $make_first_member_group_leader = "UPDATE student_groups SET group_leader_sid = '$first_member_sid' WHERE group_id = '$check_group_id'";
+                    if (mysqli_query($conn,  $make_first_member_group_leader)) {
+                        array_push($success, "First member is now Group Leader.");
+                    } else {
+                        array_push($errors, "Could not UPDATE Group Leader: " . mysqli_error($conn));
+                    }
+                }
+            }
         } else {
             array_push($errors, "Could not UPDATE error: " . mysqli_error($conn));
         }
@@ -118,13 +145,17 @@ if (isset($_GET['delete_view'])) {
 
     $student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $user_id))['student_id'];
 
-    $delete = "DELETE FROM member_of_group WHERE student_id='$student_id' AND group_id='$group_id'";
+    if (isGroupLeader($student_id, $group_id)) {
+        array_push($errors, "You cannot delete this student as they are the group leader.");
+    }
 
-    if (mysqli_query($conn, $delete)) {
-        array_push($success, "Delete successful");
-        header("location: {$_SERVER['HTTP_REFERER']}");
-    } else {
-        array_push($errors, "Could not DELETE error: " . mysqli_error($conn));
+    if (count($errors) == 0) {
+        $delete = "DELETE FROM member_of_group WHERE student_id='$student_id' AND group_id='$group_id'";
+        if (mysqli_query($conn, $delete)) {
+            array_push($success, "Delete successful");
+        } else {
+            array_push($errors, "Could not DELETE: " . mysqli_error($conn));
+        }
     }
 }
 
@@ -181,18 +212,6 @@ Always visible and shows delete error if delete_view is set true -->
             JOIN course as c ON c.course_id = gc.course_id
             ORDER BY g.group_id ASC";
         }
-        if (isProfessor()) {
-            $query = "SELECT g.*, c.*, st.*, u.* FROM student_groups as g
-            JOIN member_of_group as mg ON mg.group_id = g.group_id
-            JOIN student as st ON st.student_id = mg.student_id
-            JOIN users as u ON u.user_id = st.user_id
-            JOIN group_of_course as gc ON gc.group_id = g.group_id
-            JOIN course as c ON c.course_id = gc.course_id
-            JOIN prof_of_course as pc ON pc.course_id = c.course_id
-            JOIN professor as p ON p.professor_id = pc.professor_id
-            WHERE p.user_id = '$session_user_id'
-            ORDER BY g.group_id ASC";
-        }
     }
 
     $results = mysqli_query($conn, $query);
@@ -220,18 +239,21 @@ Always visible and shows delete error if delete_view is set true -->
                 $student_name = $row['first_name'] . " " . $row['last_name'];
                 $course_id = $row['course_id'];
                 $course_name = $row['course_name'];
+                $student_id = $row['student_id'];
             ?>
                 <tr>
                     <td><?= $group_id ?></td>
                     <td><?= $group_name ?></td>
-                    <td><?= $student_name ?></td>
+                    <?php if (isGroupLeader($student_id, $group_id)) { ?>
+                        <td><u><?= $student_name ?></u></td>
+                    <?php } else { ?>
+                        <td><?= $student_name ?></td>
+                    <?php } ?>
                     <td><?= $course_name ?></td>
-                    <td><a href="?page=assign-group&update_view=true&user_id=<?= $user_id ?>&group_id=<?= $group_id ?>">Change Group</a></td>
+                    <td><a href="?page=assign-group&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&group_id=<?= $group_id ?>">Change Group</a></td>
                     <td><a href="?page=assign-group&delete_view=true&user_id=<?= $user_id ?>&group_id=<?= $group_id ?>" onclick="return confirm('Are you sure you want to delete?')">Remove Member</a></td>
                 </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
         </tbody>
     </table>
 
@@ -246,8 +268,6 @@ Always visible and shows delete error if delete_view is set true -->
             <button>Add New</button>
         </a>
     <?php } ?>
-
-
 
     <!-- Add group
     Visible if add_view is set to true -->

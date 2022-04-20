@@ -34,7 +34,7 @@ $session_user_id = $_SESSION['user_id'];
  * ADD SQL
  ********************************************************/
 
-if (isset($_POST['assign'])) {
+if (isset($_POST['add'])) {
 
 
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
@@ -302,7 +302,7 @@ Always visible and shows delete error if delete_view is set true -->
                 </div>
 
                 <div class="form-submit">
-                    <input type="submit" name="assign" value="Assign">
+                    <input type="submit" name="add" value="Add">
                 </div>
             </form>
         </div>
@@ -367,7 +367,7 @@ Always visible and shows delete error if delete_view is set true -->
                             // Get limited section names based on course_id
                             $query = "SELECT * FROM section as s
                             JOIN course as c ON c.course_id = s.course_id
-										WHERE c.course_id = '$course_id'";
+								WHERE c.course_id = '$course_id'";
 
                             $sections = mysqli_query($conn, $query);
                             foreach ($sections as $row) {

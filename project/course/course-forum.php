@@ -154,6 +154,8 @@ if (isset($_GET['delete_id'])) {
                     <?php if ($posted_by_uid == $session_user_id) { ?>
                         <td><a href="?page=course-forum&update_view=true&course_id=<?= $course_id ?>&update_id=<?= $forum_id ?>">Update</a></td>
                         <td><a href="?page=course-forum&delete_view=true&course_id=<?= $course_id ?>&delete_id=<?= $forum_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <?php } else { ?>
+                        <td></td>
                     <?php } ?>
                 </tr>
             <?php

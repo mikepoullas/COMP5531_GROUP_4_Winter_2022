@@ -25,7 +25,7 @@
  * ADD SQL
  ********************************************************/
 
-if (isset($_POST['assign'])) {
+if (isset($_POST['add'])) {
 
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     $_GET['user_id'] = $user_id;
@@ -194,7 +194,7 @@ Always visible and shows delete error if delete_view is set true -->
                 </div>
 
                 <div class="form-submit">
-                    <input type="submit" name="assign" id="Submit" value="Assign">
+                    <input type="submit" name="add" id="Submit" value="Add">
                 </div>
             </form>
         </div>
