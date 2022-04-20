@@ -1,3 +1,34 @@
+<script>
+    function validateTask() {
+
+        var task_type, task_content, task_deadline, file;
+
+		task_type = document.getElementById("task_type").value;
+        task_content = document.getElementById("task_content").value;
+        task_deadline = document.getElementById("task_deadline").value;
+		file = document.getElementById("file").value;
+
+        if (task_type == '') {
+            alert("Please select a task type.");
+            document.getElementById("task_type").focus();
+            return false;
+        } else if (task_content == '') {
+            alert("Please enter a description title.");
+            document.getElementById("task_content").focus();
+            return false;
+        } else if (task_deadline == '') {
+            alert("Please enter a deadline date.");
+            document.getElementById("task_deadline").focus();
+            return false;
+        } else if (file == '') {
+            alert("Please select a file name.");
+            document.getElementById("file").focus();
+            return false;			
+        } else
+            return true;
+    }
+
+</script>
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -216,14 +247,14 @@ if (isset($_GET['delete_id'])) {
         <?php if (isset($_GET['upload_view'])) { ?>
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onsubmit="return validateTask()">
 
                     <h3>Upload task</h3>
 
                     <div class="form-input">
                         <label for="task_type">Upload type</label>
                         <span>
-                            <select name="task_type">
+                            <select name="task_type" id="task_type">
                                 <option value="" selected hidden>Choose a type</option>
                                 <option value="Assignment">Assignment</option>
                                 <option value="Project">Project</option>
@@ -233,17 +264,17 @@ if (isset($_GET['delete_id'])) {
 
                     <div class="form-input">
                         <label>Description</label>
-                        <span><input type="text" name="task_content"></span>
+                        <span><input type="text" name="task_content" id="task_content"></span>
                     </div>
 
                     <div class="form-input">
                         <label>Deadline</label>
-                        <span><input type="date" name="task_deadline"></span>
+                        <span><input type="date" name="task_deadline" id="task_deadline"></span>
                     </div>
 
                     <div class="form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file"> </span>
+                        <span><input type="file" name="file" id="file"> </span>
                     </div>
 
                     <div class="form-submit">
@@ -275,14 +306,14 @@ if (isset($_GET['delete_id'])) {
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onsubmit="return validateTask()">
 
                     <h3>Update File</h3>
 
                     <div class="form-input">
                         <label for="task_type">Task type</label>
                         <span>
-                            <select name="task_type">
+                            <select name="task_type" id="task_type">
                                 <option value="" selected hidden>Choose a type</option>
                                 <?php
                                 $query = "SELECT DISTINCT task_type FROM task";
@@ -302,17 +333,17 @@ if (isset($_GET['delete_id'])) {
 
                     <div class="form-input">
                         <label>Description</label>
-                        <span><input type="text" name="task_content" value="<?= $task_content ?>"></span>
+                        <span><input type="text" name="task_content" id="task_content" value="<?= $task_content ?>"></span>
                     </div>
 
                     <div class="form-input">
                         <label>Deadline</label>
-                        <span><input type="date" name="task_deadline" value="<?= $task_deadline ?>"></span>
+                        <span><input type="date" name="task_deadline" id="task_deadline" value="<?= $task_deadline ?>"></span>
                     </div>
 
                     <div class=" form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file"> </span>
+                        <span><input type="file" name="file" id="file"> </span>
                     </div>
 
                     <div class="form-submit">

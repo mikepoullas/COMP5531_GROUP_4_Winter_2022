@@ -1,3 +1,39 @@
+<script>
+    function valdiateSolution() {
+
+        var solution_content, file;
+
+        solution_content = document.getElementById("solution_content").value;
+        file = document.getElementById("file").value;
+
+        if (solution_content == '') {
+            alert("Please enter a solution content.");
+            document.getElementById("solution_content").focus();
+            return false;
+        } else if (file == '') {
+            alert("Please enter file.");
+            document.getElementById("file").focus();
+            return false;
+        } else
+            return true;
+    }
+
+    function validateGrade() {
+
+        var grade;
+
+        grade = document.getElementById("grade").value;
+
+        if (grade == '') {
+            alert("Please enter a grade.");
+            document.getElementById("grade").focus();
+            return false;
+        } else
+            return true;
+    }
+
+
+</script>
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -276,7 +312,7 @@ if (isset($_POST['add_grade'])) {
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onsubmit="return valdiateSolution()">>
 
                     <h3>Upload solution</h3>
 
@@ -296,12 +332,12 @@ if (isset($_POST['add_grade'])) {
 
                     <div class="form-input">
                         <label>Description</label>
-                        <span><input type="text" name="solution_content"></span>
+                        <span><input type="text" name="solution_content" id="solution_content"></span>
                     </div>
 
                     <div class="form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file"></span>
+                        <span><input type="file" name="file" id="file"></span>
                     </div>
 
                     <div class="form-submit">
@@ -330,7 +366,7 @@ if (isset($_POST['add_grade'])) {
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onsubmit="return valdiateSolution()">
 
                     <h3>Update File</h3>
 
@@ -345,13 +381,13 @@ if (isset($_POST['add_grade'])) {
 
                     <div class="form-input">
                         <label>Description</label>
-                        <span><input type="text" name="solution_content" value="<?= $solution_content ?>"></span>
+                        <span><input type="text" name="solution_content" id="solution_content" value="<?= $solution_content ?>"></span>
                     </div>
 
 
                     <div class=" form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file"> </span>
+                        <span><input type="file" name="file" id="file"> </span>
                     </div>
 
                     <div class="form-submit">
@@ -381,7 +417,7 @@ if (isset($_POST['add_grade'])) {
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onsubmit="return validateGrade()">
 
                     <h3>Grade solution</h3>
 
@@ -397,7 +433,7 @@ if (isset($_POST['add_grade'])) {
 
                     <div class="form-input">
                         <label>Grade</label>
-                        <span><input type="number" name="grade"></span>
+                        <span><input type="number" name="grade" id="grade"></span>
                     </div>
 
                     <div class="form-submit">
