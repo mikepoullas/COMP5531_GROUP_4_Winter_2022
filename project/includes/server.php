@@ -51,7 +51,7 @@ function upload_file($table_name)
                 array_push($success, "File uploaded successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");
                 return $conn->insert_id;
-                // exit();
+                exit();
             }
         } else {
             array_push($errors, "Failed to upload file" . mysqli_error($conn));
@@ -84,7 +84,7 @@ function download_file($id)
         ob_clean();
         flush();
         readfile($filepath);
-        // exit();
+        exit();
     }
 }
 
@@ -143,7 +143,7 @@ function update_file($table, $id)
             if (mysqli_query($conn, $query)) {
                 array_push($success, "File updated successfully");
                 header("location: {$_SERVER['HTTP_REFERER']}");
-                // exit();
+                exit();
             }
         } else {
             array_push($errors, "Failed to update file " . mysqli_error($conn));
@@ -167,7 +167,7 @@ function delete_file($id)
             unlink($filepath);
             array_push($success, "Delete successful");
             header("location: {$_SERVER['HTTP_REFERER']}");
-            // exit();
+            exit();
         }
     } else {
         array_push($errors, "Delete error " . mysqli_error($conn));

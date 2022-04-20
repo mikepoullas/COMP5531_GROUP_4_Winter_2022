@@ -162,7 +162,7 @@ CREATE TABLE Announcement
   posted_by_uid INT NOT NULL,
   posted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
   course_id INT NOT NULL,
-  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+  FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE Announcement AUTO_INCREMENT = 1100000;
 
@@ -175,8 +175,8 @@ CREATE TABLE Forum
   posted_on DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   course_id INT NOT NULL,
   file_id INT,
-  FOREIGN KEY (course_id) REFERENCES Course(course_id),
-  FOREIGN KEY (file_id) REFERENCES Files(file_id)
+  FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (file_id) REFERENCES Files(file_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE Forum AUTO_INCREMENT = 2200000;
 
@@ -203,9 +203,9 @@ CREATE TABLE Discussion
   group_id INT,
   task_id INT,
   file_id INT,
-  FOREIGN KEY (group_id) REFERENCES Student_Groups(group_id),
-  FOREIGN KEY (task_id) REFERENCES Task(task_id),
-  FOREIGN KEY (file_id) REFERENCES Files(file_id)
+  FOREIGN KEY (group_id) REFERENCES Student_Groups(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (task_id) REFERENCES Task(task_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (file_id) REFERENCES Files(file_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE Discussion AUTO_INCREMENT = 4400000;
 

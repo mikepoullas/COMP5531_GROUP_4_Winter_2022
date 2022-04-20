@@ -22,12 +22,21 @@ if (isset($_POST['add_group'])) {
         array_push($errors, "Group Leader SID is required");
     }
 
-    $check = "SELECT * FROM student as st
+    $query = "SELECT * FROM student as st
     WHERE st.student_id = '$group_leader_sid'";
-    $result = mysqli_query($conn, $check);
+    $check = mysqli_query($conn, $query);
 
-    if (mysqli_num_rows($result) == 0) {
+    if (mysqli_num_rows($check) == 0) {
         array_push($errors, "Group Leader SID is not in the database");
+    }
+
+    $query = "SELECT * FROM member_of_group as mg
+    JOIN group_of_course as gc ON mg.group_id = gc.group_id
+    WHERE mg.student_id = '$group_leader_sid' AND gc.course_id = '$course_id'";
+    $check = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($check) == 1) {
+        array_push($errors, "Group Leader is already in a course group");
     }
 
 

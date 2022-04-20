@@ -35,31 +35,28 @@ INSERT INTO Users (first_name, last_name, dob, email, username, password, create
 ("Fan", "Zou","1980-01-01", "fan@zou.com", "f_zou_3", "12345", CURRENT_TIMESTAMP, 1, 3),
 ("Charmi", "Shah","1980-01-01", "charmi@shah.com", "s_shah_3", "12345", CURRENT_TIMESTAMP, 1, 3),
 ("John", "Doe","1990-01-01", "john@doe.com", "j_doe_4", "12345", CURRENT_TIMESTAMP,1, 4),
-("Mary", "Jane","1990-04-12", "mary@jane.com", "m_jane_4", "12345", CURRENT_TIMESTAMP,1, 4),
-("Tony", "Stark","1980-04-12", "tony@stark.com", "t_stark_4", "12345", CURRENT_TIMESTAMP,1, 4);
-
--- Professor Table
-INSERT INTO Professor (user_id) VALUES
-(10001),
-(10002),
-(10003);
-
--- TA Table
-INSERT INTO TA (user_id) VALUES
-(10004),
-(10005),
-(10006);
-
--- Student Table
-INSERT INTO Student (user_id) VALUES
-(10007),
-(10008),
-(10009);
+("Mary", "Jane","1990-01-01", "mary@jane.com", "m_jane_4", "12345", CURRENT_TIMESTAMP,1, 4),
+("Tony", "Stark","1980-01-01", "tony@stark.com", "t_stark_4", "12345", CURRENT_TIMESTAMP,1, 4),
+("Bruce", "Wayne","1990-01-01", "bruce@wayne.com", "b_wayne_4", "12345", CURRENT_TIMESTAMP,1, 4),
+("Peter", "Parker","1990-01-01", "peter@parker.com", "p_parker_4", "12345", CURRENT_TIMESTAMP,1, 4),
+("Clark", "Kent","1980-01-01", "clark@kent.com", "c_kent_4", "12345", CURRENT_TIMESTAMP,1, 4);
 
 INSERT INTO Course (course_name, course_number) VALUES
 ("Files and DB", 5531),
 ("Operating Systems", 5461),
 ("Tools and Techniques", 5541);
+
+-- Professor Table
+INSERT INTO Professor (user_id) VALUES
+(10001), (10002), (10003);
+-- TA Table
+INSERT INTO TA (user_id) VALUES
+(10004), (10005), (10006);
+-- Student Table
+INSERT INTO Student (user_id) VALUES
+(10007), (10008), (10009), (10010), (10011), (10012);
+
+---------------------------------------------------------------------------------
 
 -- Course Section Table
 INSERT INTO Section (section_name, course_id) VALUES

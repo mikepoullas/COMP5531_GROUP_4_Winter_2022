@@ -25,7 +25,7 @@ if (!isAdmin()) {
     JOIN course as c ON c.course_id = gc.course_id
     JOIN section as s ON s.course_id = c.course_id
     JOIN user_course_section as ucs ON ucs.section_id = s.section_id AND ucs.user_id = u.user_id
-    WHERE u.user_id = $session_user_id
+    WHERE u.user_id = '$session_user_id'
     ORDER BY g.group_id ASC";
     $group_info = mysqli_query($conn, $query);
 
@@ -116,7 +116,11 @@ if (!isAdmin()) {
                     foreach ($course_info as $row) {
                         $course_name = $row['course_name'];
                         $course_number = $row['course_number'];
-                        $section_name = $row['section_name'];
+                        if ($row['section_name'] == null) {
+                            $section_name = "All";
+                        } else {
+                            $section_name = $row['section_name'];
+                        }
                     ?>
                         <tr>
                             <td><?= $course_name ?></td>
