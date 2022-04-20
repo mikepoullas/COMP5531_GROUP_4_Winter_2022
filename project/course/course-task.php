@@ -63,7 +63,7 @@ if (isset($_POST['upload_file'])) {
 
         $file_id = upload_file('task');
         $add = "INSERT INTO task (task_type, task_content, task_deadline, course_id, file_id)
-                VALUES('$task_type', '$task_content', '$task_deadline', '$course_id', '$file_id')";
+                VALUES('$task_type', '$task_content', '$task_deadline', '$session_course_id', '$file_id')";
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Task added Successful");
