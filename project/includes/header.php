@@ -41,6 +41,7 @@ $role_id = $_SESSION['role_id'];
                     <li><a href="?page=home">Home</a></li>
                     <li><a href="../auth/reset-email.php">Reset Email</a></li>
                     <li><a href="../auth/reset-password.php">Reset Password</a></li>
+                    <li><a href="?page=help">Help</a></li>
                     <li><a href="../auth/logout.php">Logout</a></li>
                 </ul>
             </nav>
