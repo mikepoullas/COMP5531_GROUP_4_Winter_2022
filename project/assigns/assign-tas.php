@@ -279,7 +279,11 @@ Always visible and shows delete error if delete_view is set true -->
                     <td><?= $ta_id ?></td>
                     <td><?= $first_name . " " . $last_name ?></td>
                     <td><?= $course_name ?></td>
-                    <td><?= $section_name ?></td>
+                    <?php if ($section_name != NULL) { ?>
+                        <td><?= $section_name ?></td>
+                    <?php } else { ?>
+                        <td>All</td>
+                    <?php } ?>
                     <?php if ($section_id != null) { ?>
                         <td><a href="?page=assign-tas&update_view=true&user_id=<?= $user_id ?>&course_id=<?= $course_id ?>&section_id=<?= $section_id ?>">Change Section</a></td>
                     <?php } else { ?>
@@ -477,13 +481,22 @@ Always visible and shows delete error if delete_view is set true -->
 
         <?php
         $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
-        $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
 
-        $query = "SELECT * FROM users as u
-        JOIN ta as t ON t.user_id = u.user_id
-        JOIN user_course_section as ucs ON ucs.user_id = u.user_id
-        JOIN course as c ON c.course_id = ucs.course_id
-        WHERE u.user_id='$user_id' AND c.course_id = '$course_id'";
+        if (!isAdmin()) {
+            $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
+
+            $query = "SELECT * FROM users as u
+            JOIN ta as t ON t.user_id = u.user_id
+            JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+            JOIN course as c ON c.course_id = ucs.course_id
+            WHERE u.user_id='$user_id' AND c.course_id = '$course_id'";
+        } else {
+            $query = "SELECT * FROM users as u
+            JOIN ta as t ON t.user_id = u.user_id
+            JOIN user_course_section as ucs ON ucs.user_id = u.user_id
+            JOIN course as c ON c.course_id = ucs.course_id
+            WHERE u.user_id='$user_id'";
+        }
 
         $results = mysqli_query($conn, $query);
 

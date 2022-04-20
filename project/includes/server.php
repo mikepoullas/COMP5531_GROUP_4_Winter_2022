@@ -37,7 +37,7 @@ function upload_file($table_name)
         array_push($errors, "Please upload a file !!");
     } elseif (!in_array($extension, ['zip', 'pdf', 'docx', 'txt'])) {
         array_push($errors, "You file extension must be zip / pdf / docx / txt");
-    } elseif ($_FILES['file']['size'] > 1000000) { // file shouldn't be larger than 1Megabyte
+    } elseif ($_FILES['file']['size'] > 5000000) { // file shouldn't be larger than 5 Megabyte
         array_push($errors, "File too large!");
     } elseif (count($errors) == 0) {
         if (file_exists($destination)) {

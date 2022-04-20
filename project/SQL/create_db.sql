@@ -136,8 +136,10 @@ CREATE TABLE Solution
   solution_type VARCHAR(30) NOT NULL,
   solution_content VARCHAR(255) NOT NULL UNIQUE,
   task_id INT NOT NULL,
+  group_id INT NOT NULL,
   file_id INT NOT NULL,
   FOREIGN KEY (task_id) REFERENCES Task(task_id),
+  FOREIGN KEY (group_id) REFERENCES Student_Groups(group_id),
   FOREIGN KEY (file_id) REFERENCES Files(file_id)
 );
 ALTER TABLE Solution AUTO_INCREMENT = 90000;
