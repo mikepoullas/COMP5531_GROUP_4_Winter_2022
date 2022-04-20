@@ -7,7 +7,7 @@ $query = "SELECT g.*, c.*, u.*, s.section_name FROM student_groups as g
 JOIN group_of_course as gc ON gc.group_id = g.group_id
 JOIN course as c ON c.course_id = gc.course_id
 JOIN user_course_section as ucs ON ucs.course_id = c.course_id
-INNER JOIN section as s ON s.section_id = ucs.section_id
+LEFT JOIN section as s ON s.section_id = ucs.section_id
 JOIN users as u ON u.user_id = ucs.user_id
 WHERE u.user_id = '$session_user_id'
 ORDER BY g.group_id ASC";

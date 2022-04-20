@@ -49,10 +49,14 @@ if (isset($_POST['assign'])) {
     $query = "SELECT * FROM member_of_group as mg WHERE mg.student_id = '$student_id'";
     $check = mysqli_query($conn, $query);
 
+
+
     foreach ($check as $row) {
         $check_group_id = $row['group_id'];
         if ($check_group_id == $group_id) {
             array_push($errors, "This student is already assigned to this group.");
+        } elseif (mysqli_num_rows($check) > 0) {
+            array_push($errors, "This student is already assigned to a group.");
         }
     }
 
