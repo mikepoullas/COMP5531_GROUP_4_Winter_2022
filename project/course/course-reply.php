@@ -1,3 +1,19 @@
+<script>
+    function validateReply() {
+
+        var reply;
+
+        reply = document.getElementById("reply").value;
+
+        if (reply == '') {
+            alert("Please enter a reply.");
+            document.getElementById("reply").focus();
+            return false;
+        } else
+            return true;
+    }
+</script>
+
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -144,11 +160,11 @@ if (isset($_GET['delete_id'])) {
         ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onSubmit="return validateReply()">
                     <div class="form-input">
                         <label>Reply</label>
                         <br>
-                        <textarea name="reply_content"><?= $content ?></textarea>
+                        <textarea name="reply_content" id="reply" ><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_reply" value="Update">
@@ -160,11 +176,11 @@ if (isset($_GET['delete_id'])) {
         <?php } else { ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST"onSubmit="return validateReply()">
                     <div class="form-input">
                         <label>Reply</label>
                         <br>
-                        <textarea name="reply_content"></textarea>
+                        <textarea name="reply_content" id="reply"></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_reply" value="reply">

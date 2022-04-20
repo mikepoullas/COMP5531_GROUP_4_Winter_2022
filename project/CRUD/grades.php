@@ -1,3 +1,19 @@
+<script>
+    function validateGrade() {
+
+        var grade;
+
+        grade = document.getElementById("grade").value;
+
+		if (grade == '') {
+            alert("Please enter a grade.");
+            document.getElementById("grade").focus();
+            return false;
+        } else
+            return true;
+
+    }
+</script>
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -132,7 +148,7 @@ if (isset($_GET['delete_id'])) {
 
         <hr>
         <div class="form-container">
-            <form class="form-body" action="" method="POST">
+            <form class="form-body" action="" method="POST" onsubmit="return validateGrade()">
 
                 <h3>Update Grade</h3>
 
@@ -158,7 +174,7 @@ if (isset($_GET['delete_id'])) {
 
                 <div class="form-input">
                     <label>Grade</label>
-                    <span><input type="number" name="grade" value='<?= $grade ?>'></span>
+                    <span><input type="number" name="grade" id="grade" value='<?= $grade ?>'></span>
                 </div>
 
                 <div class="form-submit">

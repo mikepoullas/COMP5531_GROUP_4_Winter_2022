@@ -1,3 +1,25 @@
+<script>
+    function validateDiscussion() {
+
+        var discussion_title, discussion_content;
+
+        discussion_title = document.getElementById("discussion_title").value;
+        discussion_content = document.getElementById("discussion_content").value;
+
+        if (discussion_title == '') {
+            alert("Please enter a discussion title.");
+            document.getElementById("discussion_title").focus();
+            return false;
+        } else if (discussion_content == '') {
+            alert("Please enter discussion content.");
+            document.getElementById("discussion_content").focus();
+            return false;
+        } else
+            return true;
+    }
+
+</script>
+
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -177,19 +199,19 @@ if (isset($_GET['delete_id'])) {
     <?php if (isset($_GET['add_view'])) { ?>
         <hr>
         <div class="form-container">
-            <form class="form-body" action="" method="POST">
+            <form class="form-body" action="" method="POST" onsubmit="return validateDiscussion()">
 
                 <h3>Post Discussion</h3>
 
                 <div class="form-input">
                     <label>Title</label>
-                    <span><input type="text" name="discussion_title"></span>
+                    <span><input type="text" name="discussion_title" id="discussion_title"></span>
                 </div>
 
                 <div class="form-input">
                     <label>Content </label>
                     <br>
-                    <textarea name="discussion_content"></textarea>
+                    <textarea name="discussion_content" id="discussion_content" ></textarea>
                 </div>
 
                 <div class="form-submit">
@@ -225,19 +247,19 @@ if (isset($_GET['delete_id'])) {
 
         <hr>
         <div class="form-container">
-            <form class="form-body" action="" method="POST">
+            <form class="form-body" action="" method="POST" onsubmit="return validateDiscussion()">
 
                 <h3>Update Discussion</h3>
 
                 <div class="form-input">
                     <label>Title</label>
-                    <span><input type="text" name="discussion_title" value='<?= $title ?>'></span>
+                    <span><input type="text" name="discussion_title" id="discussion_title" value='<?= $title ?>'></span>
                 </div>
 
                 <div class="form-input">
                     <label>Content</label>
                     <br>
-                    <textarea name="discussion_content"><?= $content ?></textarea>
+                    <textarea name="discussion_content" id="discussion_content"><?= $content ?></textarea>
                 </div>
 
                 <div class="form-submit">
