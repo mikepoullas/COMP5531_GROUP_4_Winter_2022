@@ -7,11 +7,7 @@
         course_id = document.getElementById("course_id").value;
         group_id = document.getElementById("group_id").value;
 
-        if (student_id == '') {
-            alert("Please select a student from the list.");
-            document.getElementById("user_id").focus();
-            return false;
-        } else if (course_id == '') {
+		if (course_id == '') {
             alert("Please select a course from the list.");
             document.getElementById("course_id").focus();
             return false;
@@ -19,9 +15,12 @@
             alert("Please select a group from the list. ");
             document.getElementById("group_id").focus();
             return false;
+		} else if (student_id == '') {
+            alert("Please select a student from the list.");
+            document.getElementById("user_id").focus();
+            return false;
         } else
             return true;
-
 
     }
 </script>

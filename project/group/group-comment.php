@@ -1,3 +1,19 @@
+<script>
+    function validateComment() {
+
+        var comment;
+
+        comment = document.getElementById("comment").value;
+
+        if (comment == '') {
+            alert("Please enter a comment.");
+            document.getElementById("comment").focus();
+            return false;
+        } else
+            return true;
+    }
+</script>
+
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -144,11 +160,11 @@ if (isset($_GET['delete_id'])) {
         ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onSubmit="return validateComment()">
                     <div class="form-input">
                         <label>Comment</label>
                         <br>
-                        <textarea name="comment_content"><?= $content ?></textarea>
+                        <textarea name="comment_content" id="comment" ><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_comment" value="Update">
@@ -160,11 +176,11 @@ if (isset($_GET['delete_id'])) {
         <?php } else { ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onSubmit="return validateComment()">
                     <div class="form-input">
                         <label>Comment</label>
                         <br>
-                        <textarea name="comment_content"></textarea>
+                        <textarea name="comment_content" id="comment" ></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_comment" value="Comment">

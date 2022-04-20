@@ -1,3 +1,30 @@
+<script>
+function validateAnnouncement() {
+
+	var title, content, course_id;
+
+	title = document.getElementById("title").value;
+	content = document.getElementById("content").value;
+	course_id = document.getElementById("course_id").value;
+
+	if (title == '') {
+		alert("Please enter a title.");
+		document.getElementById("title").focus();
+		return false;
+	} else if (content == '') {
+		alert("Please enter some content. ");
+		document.getElementById("content").focus();
+		return false;
+	} else if (course_id == '') {
+		alert("Please select a course.");
+		document.getElementById("course_id").focus();
+		return false;
+	} else
+		return true;
+
+}
+</script>
+
 <?php
 
 $session_user_id = $_SESSION['user_id'];
@@ -155,24 +182,24 @@ if (isset($_GET['delete_id'])) {
         <?php if (isset($_GET['add_view'])) { ?>
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onsubmit="return validateAnnouncement()">
 
                     <h3>Add Announcement</h3>
 
                     <div class="form-input">
                         <label>Title</label>
-                        <span><input type="text" name="title"></span>
+                        <span><input type="text" name="title" id="title"></span>
                     </div>
                     <div class="form-input">
                         <label>Content</label>
                         <br>
-                        <textarea name="content"></textarea>
+                        <textarea name="content" id="content"></textarea>
                     </div>
 
                     <div class="form-input">
                         <p>Course</p>
                         <div class="scroll-list">
-                            <select name="course_id">
+                            <select name="course_id" id="course_id">
                                 <option value="" selected hidden>Choose Course</option>
                                 <?php
                                 if (isProfessor()) {
@@ -225,24 +252,25 @@ if (isset($_GET['delete_id'])) {
 
             <hr>
             <div class="form-container">
-                <form class="form-body" action="" method="POST">
+                <form class="form-body" action="" method="POST" onsubmit="return validateAnnouncement()">
 
                     <h3>Update Announcement</h3>
 
                     <div class="form-input">
-                        <label>Course Name</label>
+                        <label id=>Course Name</label>
                         <span><b><?= $course_name ?></b></span>
+						<input type="hidden" id="course_id" value="<?= $course_name ?>">
                     </div>
 
                     <div class="form-input">
                         <label>Title</label>
-                        <span><input type="text" name="title" value='<?= $title ?>'></span>
+                        <span><input type="text" name="title" id="title" value='<?= $title ?>'></span>
                     </div>
 
                     <div class="form-input">
                         <label>Content</label>
                         <br>
-                        <textarea name="content"><?= $content ?></textarea>
+                        <textarea name="content" id="content"><?= $content ?></textarea>
                     </div>
 
                     <div class="form-submit">
