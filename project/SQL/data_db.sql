@@ -56,8 +56,6 @@ INSERT INTO TA (user_id) VALUES
 INSERT INTO Student (user_id) VALUES
 (10007), (10008), (10009), (10010), (10011), (10012);
 
----------------------------------------------------------------------------------
-
 -- Course Section Table
 INSERT INTO Section (section_name, course_id) VALUES
 ("AdbA", 50000),
@@ -66,6 +64,8 @@ INSERT INTO Section (section_name, course_id) VALUES
 ("BosB", 50001),
 ("CtoolsC", 50002),
 ("DtoolsD", 50002);
+
+---------------------------------------------------------------------------------
 
 INSERT INTO User_Course_Section (user_id, course_id) VALUES
 -- prof to course section
