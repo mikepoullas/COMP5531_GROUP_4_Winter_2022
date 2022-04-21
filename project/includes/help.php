@@ -41,7 +41,11 @@ $role_id = $_SESSION['role_id'];
             <h3>Professor Help</h3>
             <br>
             <ul>
-                <li>Professor HELP !!</li>
+                <li>-You can view and manage courses</li>
+                <li>-You can view/manage/update/delete groups.</li> 
+                <li>-You can add/delete/update announcements.</li>
+                <li>-You can view/delete grades.</li>
+                <li>-You can add/delete/update students, teaching assistants, and group members.</li>
             </ul>
         </div>
     <?php } ?>
@@ -51,7 +55,7 @@ $role_id = $_SESSION['role_id'];
             <h3>TA Help</h3>
             <br>
             <ul>
-                <li>TA HELP !!</li>
+                <li>-You can view and add to courses, groups, and discussions.</li>
             </ul>
         </div>
     <?php } ?>
@@ -61,7 +65,9 @@ $role_id = $_SESSION['role_id'];
             <h3>Student Help</h3>
             <br>
             <ul>
-                <li>Student HELP !!</li>
+                <li>-You can view courses you are enrolled in.</li>
+                <li>-You can view groups and join them.</li>
+                <li>-You can view/add/update discussions, comments, and assignment solutions.</li>
             </ul>
         </div>
     <?php } ?>
