@@ -29,7 +29,7 @@ $role_id = $_SESSION['role_id'];
             <h3>Basics</h3>
             <br>
             <ul>
-                <li>Basics HELP !!</li>
+                <li>This help page will guide you through the permissions your role has.</li>
             </ul>
         </div>
     <?php } ?>
