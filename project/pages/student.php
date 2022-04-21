@@ -37,6 +37,9 @@
                     if (file_exists("../group/" . $page . ".php")) {
                         include("../group/" . $page . ".php");
                     }
+                    if (file_exists("../assigns/" . $page . ".php")) {
+                        include("../assigns/" . $page . ".php");
+                    }
                 } else {
                     include("../includes/home.php");
                 }

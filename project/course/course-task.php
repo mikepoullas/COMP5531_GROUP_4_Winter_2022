@@ -37,7 +37,7 @@ if (isset($_GET['course_id'])) {
 }
 
 // ADD
-if (isset($_POST['upload_file'])) {
+if (isset($_POST['upload_task'])) {
 
     // receive all input values from the form
     $task_type = mysqli_real_escape_string($conn, $_POST['task_type']);
@@ -79,7 +79,7 @@ if (isset($_GET['download_file'])) {
 }
 
 //UPDATE
-if (isset($_POST['update_file'])) {
+if (isset($_POST['update_task'])) {
 
     $task_id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
@@ -124,8 +124,11 @@ if (isset($_POST['update_file'])) {
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM task WHERE task_id='$id'";
+
+    $file_id = $_GET['delete_file'];
+
     if (mysqli_query($conn, $delete)) {
-        delete_file($_GET['delete_file']);
+        delete_file($file_id);
         header("location: ?page=course-task&course_id=$session_course_id");
         array_push($success, "Delete successful");
     } else {
@@ -305,7 +308,7 @@ if (isset($_GET['delete_id'])) {
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="upload_file" value="Upload">
+                        <input type="submit" name="upload_task" value="Upload">
                     </div>
 
                 </form>
@@ -370,11 +373,11 @@ if (isset($_GET['delete_id'])) {
 
                     <div class=" form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file" id="file"> </span>
+                        <span><input type="file" name="file" id="file"></span>
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="update_file" value="Update">
+                        <input type="submit" name="update_task" value="Update">
                     </div>
 
                 </form>

@@ -118,7 +118,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $solution_content ?></td>
                     <td><?= $course_name ?></td>
                     <td><a href="?page=grades&update_view=true&update_id=<?= $id ?>">Update</a></td>
-                    <td><a href="?page=grades&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <td><a href="?page=grades&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
                 </tr>
             <?php } ?>
         </tbody>

@@ -22,7 +22,7 @@
 <?php
 
 $session_user_id = $_SESSION['user_id'];
-$course_id = $_GET['course_id'];
+$session_course_id = $_GET['course_id'];
 
 // ADD
 if (isset($_POST['add_forum'])) {
@@ -41,12 +41,19 @@ if (isset($_POST['add_forum'])) {
     }
 
     if (count($errors) == 0) {
+
         $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id)
-            VALUES('$title', '$content', '$session_user_id', NOW(),'$course_id')";
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$session_course_id')";
+
+        if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+            $file_id = upload_file('forum');
+            $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id, file_id)
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$session_course_id', $file_id)";
+        }
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
-            header('location: ?page=course-forum&course_id=' . $course_id);
+            header("location: ?page=course-forum&course_id=$session_course_id");
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -61,7 +68,6 @@ if (isset($_POST['update_forum'])) {
     // receive all input values from the form
     $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
     $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
-    // $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
     // form validation: ensure that the form is correctly filled ...
     // by adding (array_push()) corresponding error unto $errors array
@@ -71,30 +77,44 @@ if (isset($_POST['update_forum'])) {
     if (empty($content)) {
         array_push($errors, "Content is required");
     }
-    // if (empty($course_id)) {
-    //     array_push($errors, "course is required");
-    // }
 
     if (count($errors) == 0) {
 
+        $file_id = $_GET['update_file'];
         $update = "UPDATE forum SET forum_title = '$title', forum_content = '$content'
         WHERE forum_id ='$id'";
 
+        if ($file_id == '') {
+            $file_id = upload_file('forum');
+            $update = "UPDATE forum SET forum_title = '$title', forum_content = '$content', file_id = '$file_id'
+            WHERE forum_id ='$id'";
+        }
+
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            header('location: ?page=course-forum&course_id=' . $course_id);
+            if ($file_id != '') {
+                update_file('task', $file_id);
+            }
+            header("location: ?page=course-forum&course_id=$session_course_id");
         } else {
             array_push($errors, "Error updating " . mysqli_error($conn));
         }
     }
 }
 
+//DOWNLOAD
+if (isset($_GET['download_file'])) {
+    download_file($_GET['download_file']);
+}
+
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM forum WHERE forum_id='$id'";
+    $file_id = $_GET['delete_file'];
     if (mysqli_query($conn, $delete)) {
-        header('location: ?page=course-forum&course_id=' . $course_id);
+        delete_file($file_id);
+        header("location: ?page=course-forum&course_id=$session_course_id");
     } else {
         array_push($errors, "Error deleting " . mysqli_error($conn));
     }
@@ -108,10 +128,11 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "SELECT f.*, u.username, c.course_name FROM forum as f
+    $query = "SELECT f.*, fl.*, u.username, c.course_name FROM forum as f
     JOIN users as u ON  u.user_id = f.posted_by_uid
     JOIN course as c ON c.course_id = f.course_id
-    WHERE c.course_id = $course_id
+    LEFT JOIN files as fl ON fl.file_id = f.file_id
+    WHERE c.course_id = '$session_course_id'
     ORDER BY f.forum_id ASC";
     $forum = mysqli_query($conn, $query);
 
@@ -132,6 +153,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Content</th>
                 <th>Posted by</th>
                 <th>Posted on</th>
+                <th>File Name</th>
                 <th colspan="2">Action</th>
             </tr>
         </thead>
@@ -145,15 +167,18 @@ if (isset($_GET['delete_id'])) {
                 $posted_by = $row['username'];
                 $posted_by_uid = $row['posted_by_uid'];
                 $posted_on = date_convert($row['posted_on']);
+                $file_id = $row['file_id'];
+                $file_name = $row['file_name'];
             ?>
                 <tr>
                     <td><b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $title ?></a></b></td>
                     <td><?= $content ?></td>
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>
+                    <td><a href='?page=course-forum&course_id=<?= $session_course_id ?>&download_file=<?= $file_id ?>'><?= $file_name ?></a></td>
                     <?php if ($posted_by_uid == $session_user_id) { ?>
-                        <td><a href="?page=course-forum&update_view=true&course_id=<?= $course_id ?>&update_id=<?= $forum_id ?>">Update</a></td>
-                        <td><a href="?page=course-forum&delete_view=true&course_id=<?= $course_id ?>&delete_id=<?= $forum_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                        <td><a href="?page=course-forum&update_view=true&course_id=<?= $session_course_id ?>&update_id=<?= $forum_id ?>&update_file=<?= $file_id ?>">Update</a></td>
+                        <td><a href="?page=course-forum&course_id=<?= $session_course_id ?>&delete_id=<?= $forum_id ?>&delete_file=<?= $file_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
                     <?php } else { ?>
                         <td></td>
                     <?php } ?>
@@ -164,14 +189,14 @@ if (isset($_GET['delete_id'])) {
         </tbody>
     </table>
 
-    <a href="?page=course-forum&add_view=true&course_id=<?= $course_id ?>">
+    <a href="?page=course-forum&add_view=true&course_id=<?= $session_course_id ?>">
         <button>Post Forum</button>
     </a>
 
     <?php if (isset($_GET['add_view'])) { ?>
         <hr>
         <div class="form-container">
-            <form class="form-body" action="" method="POST" onSubmit="return validatePost()">
+            <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validatePost()">
 
                 <h3>Post Forum</h3>
 
@@ -184,6 +209,11 @@ if (isset($_GET['delete_id'])) {
                     <label>Content</label>
                     <br>
                     <textarea name="forum_content" id="forum_content"></textarea>
+                </div>
+
+                <div class="form-input">
+                    <label>Select file <i>(Optional)</i></label>
+                    <span><input type="file" name="file" id="file"></span>
                 </div>
 
                 <div class="form-submit">
@@ -216,7 +246,7 @@ if (isset($_GET['delete_id'])) {
 
         <hr>
         <div class="form-container">
-            <form class="form-body" action="" method="POST" onSubmit="return validatePost()">
+            <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validatePost()">
 
                 <h3>Update forum</h3>
 
@@ -229,6 +259,11 @@ if (isset($_GET['delete_id'])) {
                     <label>Content</label>
                     <br>
                     <textarea name="forum_content" id="forum_content"><?= $content ?></textarea>
+                </div>
+
+                <div class=" form-input">
+                    <label>Select file <i>(Optional)</i></label>
+                    <span><input type="file" name="file" id="file"></span>
                 </div>
 
                 <div class="form-submit">

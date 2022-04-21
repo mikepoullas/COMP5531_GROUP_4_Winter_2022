@@ -134,7 +134,7 @@ if (isset($_GET['delete_id'])) {
                         <li>
                             &emsp;<a href="?page=course-reply&update_view=true&forum_id=<?= $forum_id ?>&update_id=<?= $reply_id ?>">Update</a>
                             |
-                            <a href="?page=course-reply&delete_view=true&forum_id=<?= $forum_id ?>&delete_id=<?= $reply_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                            <a href="?page=course-reply&forum_id=<?= $forum_id ?>&delete_id=<?= $reply_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
                         </li>
                     <?php } ?>
                 </ul><br>

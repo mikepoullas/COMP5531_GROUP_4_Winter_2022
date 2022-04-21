@@ -51,8 +51,9 @@ $group = mysqli_query($conn, $query);
                     <?php } ?>
                     <th>Course</th>
                     <?php if (isStudent()) { ?>
+                        <th>Members</th>
                         <th colspan="2">Discussion</th>
-                        <th colspan="2">Solution</th>
+                        <th>Solution</th>
                     <?php } else { ?>
                         <th>Discussion</th>
                         <th>Solution</th>
@@ -90,6 +91,7 @@ $group = mysqli_query($conn, $query);
                         <?php } ?>
                         <td><?= $course_name ?></td>
                         <?php if (isStudent()) { ?>
+                            <td><a href="?page=assign-group&course_id=<?= $course_id ?>&group_id=<?= $group_id ?>">View</a></td>
                             <td><a href="?page=group-home&discussion_view=true&group_id=<?= $group_id ?>">View</a></td>
                             <td><a href="?page=group-discussion&group_id=<?= $group_id ?>">Manage</a></td>
                             <td><a href="?page=group-solution&course_id=<?= $course_id ?>&group_id=<?= $group_id ?>">Manage</a></td>

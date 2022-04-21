@@ -106,7 +106,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $role_description ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=roles&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=roles&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Role</a></td>";
+                        echo "<td><a href='?page=roles&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Role</a></td>";
                     } ?>
                 </tr>
                 <?php } ?>
