@@ -5,7 +5,7 @@
 
         grade = document.getElementById("grade").value;
 
-		if (grade == '') {
+        if (grade == '') {
             alert("Please enter a grade.");
             document.getElementById("grade").focus();
             return false;
@@ -70,7 +70,7 @@ if (isset($_GET['delete_id'])) {
         ORDER BY t.task_id ASC";
     } else {
         $query = "SELECT g.*, u.first_name, u.last_name, t.*, s.*, c.course_name FROM grades as g
-        JOIN student as st ON st.student_id = g.student_id
+        LEFT JOIN student as st ON st.student_id = g.student_id
         JOIN users as u ON u.user_id = st.user_id
         JOIN solution as s ON s.solution_id = g.solution_id
         JOIN task as t ON t.task_id = s.task_id
