@@ -183,7 +183,11 @@ if (isset($_GET['delete_id'])) {
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
                 <th>File Name</th>
-                <th>Solution</th>
+                <?php
+                if (isStudent()) {
+                    echo '<th>Solution</th>';
+                }
+                ?>
                 <?php
                 if (isProfessor()) {
                     echo '<th colspan="3">Action</th>';
@@ -218,6 +222,8 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $file_name ?></td>
                     <?php
 
+                    // MIGHT HAVE BUGS
+
                     if (isStudent()) {
                         $session_student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $session_user_id))['student_id'];
                         if (isGroupLeader($session_student_id, $group_id)) {
@@ -241,9 +247,10 @@ if (isset($_GET['delete_id'])) {
                                 echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
                             }
                         }
-                    } else {
-                        echo "<td><a href='?page=group-solution&course_id=$session_course_id'>View</a></td>";
                     }
+                    // else {
+                    //     echo "<td><a href='?page=group-solution&course_id=$session_course_id'>View</a></td>";
+                    // }
 
                     if (isProfessor()) {
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
@@ -252,7 +259,6 @@ if (isset($_GET['delete_id'])) {
                     } else {
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
                     }
-
                     ?>
                 </tr>
             <?php } ?>
