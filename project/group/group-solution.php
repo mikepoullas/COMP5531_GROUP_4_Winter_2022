@@ -258,9 +258,9 @@ if (isset($_POST['add_grade'])) {
 
                 $uploaded_by_uid = $row['uploaded_by_uid'];
                 $uploaded_by = $row['username'];
+                $uploaded_on = date_convert($row['uploaded_on']);
 
                 if (isStudent()) {
-                    $uploaded_on = date_convert($row['uploaded_on']);
                     $group_id = $row['group_id'];
                     $group_name = $row['group_name'];
                     $group_leader_sid = $row['group_leader_sid'];

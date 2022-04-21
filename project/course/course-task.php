@@ -244,7 +244,7 @@ if (isset($_GET['delete_id'])) {
                             if ($file_id == NULL) {
                                 echo "<td>No Solution</td>";
                             } else {
-                                echo "<td><a href='?page=group-solution&course_id=$course_id&download_file=$file_id'>Download</a></td>";
+                                echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>View</a></td>";
                             }
                         }
                     }
@@ -259,6 +259,7 @@ if (isset($_GET['delete_id'])) {
                     } else {
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
                     }
+
                     ?>
                 </tr>
             <?php } ?>
