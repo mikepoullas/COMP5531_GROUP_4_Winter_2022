@@ -212,7 +212,7 @@ if (isset($_GET['delete_id'])) {
                 </div>
 
                 <div class="form-input">
-                    <label>Select file <i>(Optional)</i></label>
+                    <label>Add file <i>(Optional)</i></label>
                     <span><input type="file" name="file" id="file"></span>
                 </div>
 
@@ -262,7 +262,7 @@ if (isset($_GET['delete_id'])) {
                 </div>
 
                 <div class=" form-input">
-                    <label>Select file <i>(Optional)</i></label>
+                    <label>Add file <i>(Optional)</i></label>
                     <span><input type="file" name="file" id="file"></span>
                 </div>
 

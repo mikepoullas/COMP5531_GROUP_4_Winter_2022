@@ -160,11 +160,11 @@ if (isset($_GET['delete_id'])) {
         ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST" onSubmit="return validateComment()">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateComment()">
                     <div class="form-input">
-                        <label>Comment</label>
+                        <p>Comment</p>
                         <br>
-                        <textarea name="comment_content" id="comment" ><?= $content ?></textarea>
+                        <textarea name="comment_content" id="comment"><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_comment" value="Update">
@@ -176,11 +176,15 @@ if (isset($_GET['delete_id'])) {
         <?php } else { ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST" onSubmit="return validateComment()">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateComment()">
                     <div class="form-input">
-                        <label>Comment</label>
+                        <p>Comment</p>
                         <br>
-                        <textarea name="comment_content" id="comment" ></textarea>
+                        <textarea name="comment_content" id="comment"></textarea>
+                    </div>
+                    <div class="form-input">
+                        <label>Add file <i>(Optional)</i></label>
+                        <span><input type="file" name="file" id="file"></span>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_comment" value="Comment">

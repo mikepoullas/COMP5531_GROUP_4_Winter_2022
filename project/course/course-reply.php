@@ -150,8 +150,8 @@ if (isset($_GET['delete_id'])) {
             $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
             $query = "SELECT * FROM reply as c
-    WHERE c.reply_id = '$id'
-    ORDER BY c.reply_id ASC";
+            WHERE c.reply_id = '$id'
+            ORDER BY c.reply_id ASC";
             $replys = mysqli_query($conn, $query);
 
             foreach ($replys as $row) {
@@ -160,11 +160,11 @@ if (isset($_GET['delete_id'])) {
         ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST" onSubmit="return validateReply()">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateReply()">
                     <div class="form-input">
-                        <label>Reply</label>
+                        <p>Reply</p>
                         <br>
-                        <textarea name="reply_content" id="reply" ><?= $content ?></textarea>
+                        <textarea name="reply_content" id="reply"><?= $content ?></textarea>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_reply" value="Update">
@@ -176,11 +176,15 @@ if (isset($_GET['delete_id'])) {
         <?php } else { ?>
 
             <div class="form-container">
-                <form class="form-body" action="" method="POST"onSubmit="return validateReply()">
+                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateReply()">
                     <div class="form-input">
-                        <label>Reply</label>
+                        <p>Reply</p>
                         <br>
                         <textarea name="reply_content" id="reply"></textarea>
+                    </div>
+                    <div class="form-input">
+                        <label>Add file <i>(Optional)</i></label>
+                        <span><input type="file" name="file" id="file"></span>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="add_reply" value="reply">
