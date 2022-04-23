@@ -72,30 +72,6 @@ if (!isAdmin()) {
             echo '<li>Messages: <b> ' . mysqli_num_rows(get_table_array('messages')) . '</b> </li>';
             echo "</ul>";
             ?>
-            <hr>
-            <h3>Key ID Legends</h3>
-            <br>
-            <p>
-                1 - roles<br>
-                10000 - user<br>
-                20000 - student<br>
-                30000 - ta<br>
-                40000 - professor<br>
-                50000 - course<br>
-                60000 - section<br>
-                70000 - groups<br>
-                80000 - task<br>
-                90000 - solution<br>
-                <br>
-                1100000 - announcement<br>
-                2200000 - forum<br>
-                3300000 - reply<br>
-                4400000 - discussion<br>
-                5500000 - comment<br>
-                6600000 - files<br>
-                7700000 - grades<br>
-                8800000 - messages<br>
-            </p>
         </div>
     <?php } ?>
 

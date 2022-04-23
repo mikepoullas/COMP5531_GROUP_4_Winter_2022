@@ -84,7 +84,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <?php isAdmin() ? print '<th>Role ID</th>' : ''; ?>
                 <th>Role Name</th>
                 <th>Role Description</th>
                 <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
@@ -99,9 +98,6 @@ if (isset($_GET['delete_id'])) {
                 $role_description = $row['role_description'];
             ?>
                 <tr>
-                    <?php if (isAdmin()) {
-                        echo '<td>' . $id . '</td>';
-                    } ?>
                     <td><?= $role_name ?></td>
                     <td><?= $role_description ?></td>
                     <?php if (isAdmin()) {

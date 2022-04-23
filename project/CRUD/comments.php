@@ -37,7 +37,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <th>Comment ID</th>
                 <th>Content</th>
                 <th>Posted by</th>
                 <th>Posted on</th>
@@ -61,9 +60,6 @@ if (isset($_GET['delete_id'])) {
                 $file_name = $row['file_name'];
             ?>
                 <tr>
-
-                    <td><?= $id ?></td>
-
                     <td><?= $content ?></td>
                     <td><?= $posted_by ?></td>
                     <td><?= $posted_on ?></td>

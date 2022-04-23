@@ -41,7 +41,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <th>Solution ID</th>
                 <th>Type</th>
                 <th>Content</th>
                 <th>Uploaded by</th>
@@ -63,7 +62,6 @@ if (isset($_GET['delete_id'])) {
                 $file_name = $row['file_name'];
             ?>
                 <tr>
-                    <td><?= $id ?></td>
                     <td><?= $type ?></td>
                     <td><?= $content ?></td>
                     <td><?= $uploaded_by ?></td>

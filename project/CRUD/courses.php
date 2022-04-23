@@ -84,7 +84,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <?php isAdmin() ? print '<th>Course ID</th>' : ''; ?>
                 <th>Course Name</th>
                 <th>Course Number</th>
                 <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
@@ -99,9 +98,6 @@ if (isset($_GET['delete_id'])) {
                 $course_number = $row['course_number'];
             ?>
                 <tr>
-                    <?php if (isAdmin()) {
-                        echo '<td>' . $id . '</td>';
-                    } ?>
                     <td><?= $course_name ?></td>
                     <td><?= $course_number ?></td>
                     <?php if (isAdmin()) {

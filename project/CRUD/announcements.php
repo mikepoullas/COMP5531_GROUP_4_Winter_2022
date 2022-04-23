@@ -144,7 +144,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <?php isAdmin() ? print '<th>Announcement ID</th>' : ''; ?>
                 <th>Title</th>
                 <th>Content</th>
                 <th>Posted by</th>
@@ -166,9 +165,6 @@ if (isset($_GET['delete_id'])) {
                 $course_name = $row['course_name'];
             ?>
                 <tr>
-                    <?php if (isAdmin()) {
-                        echo '<td>' . $id . '</td>';
-                    } ?>
                     <td><?= $title ?></td>
                     <td><?= $content ?></td>
                     <td><?= $posted_by ?></td>

@@ -44,7 +44,6 @@
     <table>
         <thead>
             <tr>
-                <?php isAdmin() ? print '<th>File ID</th>' : ''; ?>
                 <th>Name</th>
                 <th>Content</th>
                 <th>Type</th>
@@ -67,9 +66,6 @@
                 $uploaded_on = date_convert($row['uploaded_on']);
             ?>
                 <tr>
-                    <?php if (isAdmin()) {
-                        echo '<td>' . $file_id . '</td>';
-                    } ?>
                     <td><?= $file_name ?></td>
                     <td><?= $content ?></td>
                     <td><?= $type ?></td>

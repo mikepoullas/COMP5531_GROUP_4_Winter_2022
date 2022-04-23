@@ -150,7 +150,6 @@ if (isset($_POST["course_id"])) {
     <table>
         <thead>
             <tr>
-                <?php isAdmin() ? print '<th>Group ID</th>' : ''; ?>
                 <th>Group Name</th>
                 <th>Group Leader SID</th>
                 <th>Group Leader</th>
@@ -171,9 +170,6 @@ if (isset($_POST["course_id"])) {
                 $course_name = $groups['course_name'];
             ?>
                 <tr>
-                    <?php if (isAdmin()) {
-                        echo '<td>' . $group_id . '</td>';
-                    } ?>
                     <td><?= $group_name ?></td>
                     <td><?= $group_leader_sid ?></td>
                     <td><u><?= $group_leader_name ?></u></td>

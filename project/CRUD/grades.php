@@ -89,7 +89,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <th>Grade ID</th>
                 <th>Grade</th>
                 <th>Student Name</th>
                 <th>Solution Type</th>
@@ -110,7 +109,6 @@ if (isset($_GET['delete_id'])) {
                 $course_name = $row['course_name'];
             ?>
                 <tr>
-                    <td><?= $id ?></td>
                     <td><?= $grade ?></td>
                     <td><?= $student_name ?></td>
                     <td><?= $solution_type ?></td>

@@ -41,7 +41,6 @@ if (isset($_GET['delete_id'])) {
     <table>
         <thead>
             <tr>
-                <th>Message ID</th>
                 <th>Content</th>
                 <th>Sender</th>
                 <th>Receiver</th>
@@ -58,7 +57,6 @@ if (isset($_GET['delete_id'])) {
                 $sender_user_id = $row['sender_user_id'];
                 $sender_info = mysqli_fetch_assoc(get_records_where('users', 'user_id', $sender_user_id));
                 $sender_name = $sender_info['first_name'] . " " . $sender_info['last_name'];
-
                 $receiver_user_id = $row['receiver_user_id'];
                 $receiver_info = mysqli_fetch_assoc(get_records_where('users', 'user_id', $receiver_user_id));
                 $receiver_name = $receiver_info['first_name'] . " " . $receiver_info['last_name'];
@@ -68,7 +66,6 @@ if (isset($_GET['delete_id'])) {
                 $file_name = $row['file_name'];
             ?>
                 <tr>
-                    <td><?= $id ?></td>
                     <td><?= $content ?></td>
                     <td><?= $sender_name ?></td>
                     <td><?= $receiver_name ?></td>

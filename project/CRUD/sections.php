@@ -86,7 +86,6 @@ ORDER BY section_id ASC";
     <table>
         <thead>
             <tr>
-                <?php isAdmin() ? print '<th>Section ID</th>' : ''; ?>
                 <th>Section Name</th>
                 <th>Course Name</th>
                 <?php isAdmin() ? print '<th colspan="2">Action</th>' : ''; ?>
@@ -101,9 +100,6 @@ ORDER BY section_id ASC";
                 $course_name = $row['course_name'];
             ?>
                 <tr>
-                    <?php if (isAdmin()) {
-                        echo '<td>' . $id . '</td>';
-                    } ?>
                     <td><?= $section_name ?></td>
                     <td><?= $course_name ?></td>
                     <?php if (isAdmin()) {
