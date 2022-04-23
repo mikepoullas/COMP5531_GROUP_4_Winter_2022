@@ -110,30 +110,21 @@ if (isset($_GET['delete_id'])) {
     display_success();
     display_error();
 
-    $query = "(SELECT * FROM messages as m1
+    $query = "SELECT * FROM messages as m1
     JOIN users as u ON m1.sender_user_id = u.user_id
     LEFT JOIN files as f ON m1.file_id = f.file_id
-    WHERE u.user_id != $session_user_id
-    AND (m1.sender_user_id = $session_user_id OR m1.receiver_user_id = $session_user_id)
-    ORDER BY m1.message_id ASC)
-
-    UNION
-
-    (SELECT * FROM messages as m2
-    JOIN users as u ON m2.receiver_user_id = u.user_id
-    LEFT JOIN files as f ON m2.file_id = f.file_id
-    WHERE u.user_id != $session_user_id
-    AND (m2.sender_user_id = $session_user_id OR m2.receiver_user_id = $session_user_id)
-    ORDER BY m2.message_id ASC)";
+    WHERE u.user_id != '$session_user_id'
+    AND (m1.sender_user_id = '$session_user_id' OR m1.receiver_user_id = '$session_user_id')
+    ORDER BY m1.message_id ASC;";
 
     $messages = mysqli_query($conn, $query);
     ?>
 
-    <h2><?= $receiver_name ?></h2>
-    <hr>
+    <h2> Send message to <?= $receiver_name ?></h2>
     <div class="message-content">
         <?php
-        if (mysqli_num_rows($messages) > 0) {
+		
+        if ($messages || mysqli_num_rows($messages) > 0) {
             foreach ($messages as $row) {
                 $message_id = $row['message_id'];
                 $message_content = $row['message_content'];

@@ -32,7 +32,7 @@ if (isset($_GET['download_file'])) {
             JOIN users as u ON u.user_id = st.user_id
             JOIN group_of_course as gc ON gc.group_id = g.group_id
             JOIN course as c ON c.course_id = gc.course_id
-            WHERE g.group_id = $row[group_id]
+            WHERE g.group_id = '$row[group_id]'
             ORDER BY g.group_id ASC";
             $group_info = mysqli_query($conn, $query);
     ?>
