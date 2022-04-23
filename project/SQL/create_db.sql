@@ -233,7 +233,11 @@ CREATE TABLE Messages
   message_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   message_content VARCHAR(1024) NOT NULL,
   message_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  sender_user_id INT NOT NULL,
+  receiver_user_id INT NOT NULL,
   file_id INT,
+  FOREIGN KEY (sender_user_id) REFERENCES Users(user_id),
+  FOREIGN KEY (receiver_user_id) REFERENCES Users(user_id),
   FOREIGN KEY (file_id) REFERENCES Files(file_id)
 );
 ALTER TABLE Messages AUTO_INCREMENT = 8800000;
@@ -281,14 +285,4 @@ CREATE TABLE User_Course_Section
   FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (section_id) REFERENCES Section(section_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE (user_id, section_id)
-);
-
-CREATE TABLE Message_Inbox
-(
-  message_id INT NOT NULL,
-  sender_user_id INT NOT NULL,
-  receiver_user_id INT NOT NULL,
-  FOREIGN KEY (message_id) REFERENCES Messages(message_id),
-  FOREIGN KEY (sender_user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (receiver_user_id) REFERENCES Users(user_id)
 );
