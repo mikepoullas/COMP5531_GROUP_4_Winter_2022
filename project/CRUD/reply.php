@@ -2,6 +2,11 @@
 
 $session_user_id = $_SESSION['user_id'];
 
+//DOWNLOAD
+if (isset($_GET['download_file'])) {
+    download_file($_GET['download_file']);
+}
+
 // DELETE
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
@@ -43,7 +48,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Posted on</th>
                 <th>Forum Title</th>
                 <th>Course Name</th>
-                <th>File Name</th>
+                <th>Files</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -65,7 +70,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $posted_on ?></td>
                     <td><?= $forum_title ?></td>
                     <td><?= $course_name ?></td>
-                    <td><?= $file_name ?></td>
+                    <td><a href='?page=reply&download_file=<?= $file_id ?>'><?= $file_name ?></a></td>
                     <td><a href="?page=reply&delete_id=<?= $id ?>&file_id=<?= $file_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Reply</a></td>
                 </tr>
             <?php } ?>

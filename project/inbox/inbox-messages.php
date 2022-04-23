@@ -120,12 +120,14 @@ if (isset($_GET['delete_id'])) {
     $messages = mysqli_query($conn, $query);
     ?>
 
-    <h2><?= $receiver_name ?></h2>
+    <h2>Inbox: <u><?= $receiver_name ?></u></h2>
     <hr>
     <div class="list-content">
         <?php
 
         if (mysqli_num_rows($messages) > 0) {
+            $message_count = mysqli_num_rows($messages);
+            $count = 0;
             foreach ($messages as $row) {
                 $message_id = $row['message_id'];
                 $message_content = $row['message_content'];
@@ -133,6 +135,7 @@ if (isset($_GET['delete_id'])) {
                 $message_on = date_convert($row['message_date']);
                 $message_file_id = $row['file_id'];
                 $message_file_name = $row['file_name'];
+                $count++;
         ?>
                 <br>
                 <ul>
@@ -141,7 +144,7 @@ if (isset($_GET['delete_id'])) {
                         <a href="?page=inbox-messages&download_file=<?= $message_file_id ?>">[ <b><?= $message_file_name ?></b> ]</a>
                     <?php } ?>
                     <li>&emsp;<b><?= $message_by ?></b> | <?= $message_on ?></li>
-                    <?php if ($session_user_id == $row['sender_user_id']) { ?>
+                    <?php if (($session_user_id == $row['sender_user_id']) && ($message_count == $count)) { ?>
                         <li>
                             &emsp;<a href="?page=inbox-messages&update_view=true&receiver_id=<?= $session_receiver_id ?>&update_id=<?= $message_id ?>&update_file=<?= $message_file_id ?>">Update</a>
                             |
