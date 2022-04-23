@@ -69,6 +69,7 @@ if (!isAdmin()) {
             echo '<li>Comments: <b> ' . mysqli_num_rows(get_table_array('comment')) . '</b> </li>';
             echo '<li>Files: <b> ' . mysqli_num_rows(get_table_array('files')) . '</b> </li>';
             echo '<li>Grades: <b> ' . mysqli_num_rows(get_table_array('grades')) . '</b> </li>';
+            echo '<li>Messages: <b> ' . mysqli_num_rows(get_table_array('messages')) . '</b> </li>';
             echo "</ul>";
             ?>
             <hr>
@@ -93,6 +94,7 @@ if (!isAdmin()) {
                 5500000 - comment<br>
                 6600000 - files<br>
                 7700000 - grades<br>
+                8800000 - messages<br>
             </p>
         </div>
     <?php } ?>
