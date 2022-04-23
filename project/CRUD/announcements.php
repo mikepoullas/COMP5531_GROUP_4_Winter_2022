@@ -1,28 +1,28 @@
 <script>
-function validateAnnouncement() {
+    function validateAnnouncement() {
 
-	var title, content, course_id;
+        var title, content, course_id;
 
-	title = document.getElementById("title").value;
-	content = document.getElementById("content").value;
-	course_id = document.getElementById("course_id").value;
+        title = document.getElementById("title").value;
+        content = document.getElementById("content").value;
+        course_id = document.getElementById("course_id").value;
 
-	if (title == '') {
-		alert("Please enter a title.");
-		document.getElementById("title").focus();
-		return false;
-	} else if (content == '') {
-		alert("Please enter some content. ");
-		document.getElementById("content").focus();
-		return false;
-	} else if (course_id == '') {
-		alert("Please select a course.");
-		document.getElementById("course_id").focus();
-		return false;
-	} else
-		return true;
+        if (title == '') {
+            alert("Please enter a title.");
+            document.getElementById("title").focus();
+            return false;
+        } else if (content == '') {
+            alert("Please enter some content. ");
+            document.getElementById("content").focus();
+            return false;
+        } else if (course_id == '') {
+            alert("Please select a course.");
+            document.getElementById("course_id").focus();
+            return false;
+        } else
+            return true;
 
-}
+    }
 </script>
 
 <?php
@@ -32,13 +32,13 @@ $session_user_id = $_SESSION['user_id'];
 // ADD
 if (isset($_POST['add_announcement'])) {
 
-    // receive all input values from the form
+
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $content = mysqli_real_escape_string($conn, $_POST['content']);
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($title)) {
         array_push($errors, "Title is required");
     }
@@ -66,12 +66,12 @@ if (isset($_POST['update_announcement'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $content = mysqli_real_escape_string($conn, $_POST['content']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($title)) {
         array_push($errors, "Title is required");
     }
@@ -165,7 +165,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=announcements&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=announcements&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete Announcement</a></td>";
+                        echo "<td><a href='?page=announcements&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete Announcement</a></td>";
                     } ?>
                 </tr>
             <?php
@@ -259,7 +259,7 @@ if (isset($_GET['delete_id'])) {
                     <div class="form-input">
                         <label id=>Course Name</label>
                         <span><b><?= $course_name ?></b></span>
-						<input type="hidden" id="course_id" value="<?= $course_name ?>">
+                        <input type="hidden" id="course_id" value="<?= $course_name ?>">
                     </div>
 
                     <div class="form-input">

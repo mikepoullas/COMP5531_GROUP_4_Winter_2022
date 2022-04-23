@@ -24,8 +24,8 @@ if (isset($_POST['update_grade'])) {
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
     $grade = mysqli_real_escape_string($conn, $_POST['grade']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($grade)) {
         array_push($errors, "Grade is required");
     }
@@ -118,7 +118,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $solution_content ?></td>
                     <td><?= $course_name ?></td>
                     <td><a href="?page=grades&update_view=true&update_id=<?= $id ?>">Update</a></td>
-                    <td><a href="?page=grades&delete_view=true&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                    <td><a href="?page=grades&delete_id=<?= $id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
                 </tr>
             <?php } ?>
         </tbody>

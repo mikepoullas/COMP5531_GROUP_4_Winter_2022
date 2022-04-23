@@ -12,6 +12,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 $username = $_SESSION['username'];
+$name = $_SESSION['name'];
 $role_name = $_SESSION['role_name'];
 $session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
@@ -34,7 +35,7 @@ $role_id = $_SESSION['role_id'];
     <header>
         <h1>Welcome to CGA</h1>
         <nav>
-            <p>Logged in as <b><?= $username ?></b></p>
+            <p>Logged in as <b><?= $name ?></b></p>
             <ul>
                 <li><a href="./auth/reset-email.php">Reset Email</a></li>
                 <li><a href="./auth/reset-password.php">Reset Password</a></li>

@@ -3,12 +3,12 @@
 // ADD
 if (isset($_POST['add_role'])) {
 
-    // receive all input values from the form
+
     $role_name = mysqli_real_escape_string($conn, $_POST['role_name']);
     $role_description = mysqli_real_escape_string($conn, $_POST['role_description']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($role_name)) {
         array_push($errors, "Role Name is required");
     }
@@ -32,12 +32,12 @@ if (isset($_POST['update_role'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $role_name = mysqli_real_escape_string($conn, $_POST['role_name']);
     $role_description = mysqli_real_escape_string($conn, $_POST['role_description']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($role_name)) {
         array_push($errors, "Role Name is required");
     }
@@ -106,10 +106,10 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $role_description ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=roles&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=roles&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Role</a></td>";
+                        echo "<td><a href='?page=roles&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Role</a></td>";
                     } ?>
                 </tr>
-                <?php } ?>
+            <?php } ?>
         </tbody>
     </table>
 

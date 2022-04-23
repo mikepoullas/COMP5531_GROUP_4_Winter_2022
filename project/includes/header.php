@@ -13,6 +13,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 $username = $_SESSION['username'];
+$name = $_SESSION['name'];
 $role_name = $_SESSION['role_name'];
 $session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
@@ -36,8 +37,9 @@ $role_id = $_SESSION['role_id'];
         <div class="title-bar">
             <h1><?= $role_name ?></h1>
             <nav>
-                <p>Welcome <b><?= $username ?></b></p>
+                <p>Welcome <b><?= $name ?></b></p>
                 <ul>
+                    <li><a href="javascript:history.go(-1)">&larr;</a></li>
                     <li><a href="?page=home">Home</a></li>
                     <li><a href="../auth/reset-email.php">Reset Email</a></li>
                     <li><a href="../auth/reset-password.php">Reset Password</a></li>

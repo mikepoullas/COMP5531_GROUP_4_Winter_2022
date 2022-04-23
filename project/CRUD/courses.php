@@ -3,12 +3,12 @@
 // ADD
 if (isset($_POST['add_course'])) {
 
-    // receive all input values from the form
+
     $course_name = mysqli_real_escape_string($conn, $_POST['course_name']);
     $course_number = mysqli_real_escape_string($conn, $_POST['course_number']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($course_name)) {
         array_push($errors, "Course Name is required");
     }
@@ -32,12 +32,12 @@ if (isset($_POST['update_course'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $course_name = mysqli_real_escape_string($conn, $_POST['course_name']);
     $course_number = mysqli_real_escape_string($conn, $_POST['course_number']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($course_name)) {
         array_push($errors, "Course Name is required");
     }
@@ -106,7 +106,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $course_number ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=courses&update_view=true&update_id=' . $id . '">Update</a></td>';
-                        echo "<td><a href='?page=courses&delete_view=true&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Course</a></td>";
+                        echo "<td><a href='?page=courses&delete_id=" . $id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete Course</a></td>";
                     } ?>
                 </tr>
             <?php

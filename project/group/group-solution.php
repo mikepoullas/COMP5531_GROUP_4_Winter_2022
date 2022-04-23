@@ -46,17 +46,17 @@ if (isset($_GET['task_id'])) {
     $session_task_id = $_GET['task_id'];
 }
 // ADD
-if (isset($_POST['upload_file'])) {
+if (isset($_POST['upload_solution'])) {
 
     $task_id = $_GET['task_id'];
     $group_id = $_GET['group_id'];
 
-    // receive all input values from the form
+
     $solution_type = mysqli_real_escape_string($conn, $_POST['solution_type']);
     $solution_content = mysqli_real_escape_string($conn, $_POST['solution_content']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($solution_type)) {
         array_push($errors, "Type is required");
     }
@@ -86,17 +86,17 @@ if (isset($_GET['download_file'])) {
 }
 
 //UPDATE
-if (isset($_POST['update_file'])) {
+if (isset($_POST['update_solution'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $solution_type = mysqli_real_escape_string($conn, $_POST['solution_type']);
     $solution_content = mysqli_real_escape_string($conn, $_POST['solution_content']);
     $today = date('Y-m-d', time());
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($solution_type)) {
         array_push($errors, "Type is required");
     }
@@ -124,8 +124,11 @@ if (isset($_POST['update_file'])) {
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM solution WHERE solution_id='$id'";
+
+    $file_id = $_GET['delete_file'];
+
     if (mysqli_query($conn, $delete)) {
-        delete_file($_GET['delete_file']);
+        delete_file($file_id);
         array_push($success, "Delete successful");
         header("location: ?page=group-solution&course_id=$session_course_id&group_id=$session_group_id");
     } else {
@@ -139,11 +142,11 @@ if (isset($_POST['add_grade'])) {
     $group_id = $_GET['group_id'];
     $solution_id = $_GET['solution_id'];
 
-    // receive all input values from the form
+
     $grade = mysqli_real_escape_string($conn, $_POST['grade']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($grade)) {
         array_push($errors, "Grade is required");
     } elseif ($grade > 100 || $grade < 0) {
@@ -365,7 +368,7 @@ if (isset($_POST['add_grade'])) {
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="upload_file" value="Upload">
+                        <input type="submit" name="upload_solution" value="Upload">
                     </div>
 
                 </form>
@@ -415,7 +418,7 @@ if (isset($_POST['add_grade'])) {
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="update_file" value="Update">
+                        <input type="submit" name="update_solution" value="Update">
                     </div>
 
                 </form>

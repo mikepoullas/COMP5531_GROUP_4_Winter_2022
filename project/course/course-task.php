@@ -37,16 +37,16 @@ if (isset($_GET['course_id'])) {
 }
 
 // ADD
-if (isset($_POST['upload_file'])) {
+if (isset($_POST['upload_task'])) {
 
-    // receive all input values from the form
+
     $task_type = mysqli_real_escape_string($conn, $_POST['task_type']);
     $task_content = mysqli_real_escape_string($conn, $_POST['task_content']);
     $task_deadline = mysqli_real_escape_string($conn, $_POST['task_deadline']);
     $today = date('Y-m-d', time());
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($task_type)) {
         array_push($errors, "Type is required");
     }
@@ -79,18 +79,18 @@ if (isset($_GET['download_file'])) {
 }
 
 //UPDATE
-if (isset($_POST['update_file'])) {
+if (isset($_POST['update_task'])) {
 
     $task_id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $task_type = mysqli_real_escape_string($conn, $_POST['task_type']);
     $task_content = mysqli_real_escape_string($conn, $_POST['task_content']);
     $task_deadline = mysqli_real_escape_string($conn, $_POST['task_deadline']);
     $today = date('Y-m-d', time());
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($task_type)) {
         array_push($errors, "Type is required");
     }
@@ -124,8 +124,11 @@ if (isset($_POST['update_file'])) {
 if (isset($_GET['delete_id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['delete_id']);
     $delete = "DELETE FROM task WHERE task_id='$id'";
+
+    $file_id = $_GET['delete_file'];
+
     if (mysqli_query($conn, $delete)) {
-        delete_file($_GET['delete_file']);
+        delete_file($file_id);
         header("location: ?page=course-task&course_id=$session_course_id");
         array_push($success, "Delete successful");
     } else {
@@ -190,9 +193,9 @@ if (isset($_GET['delete_id'])) {
                 ?>
                 <?php
                 if (isProfessor()) {
-                    echo '<th colspan="3">Action</th>';
+                    echo '<th colspan="4">Action</th>';
                 } else {
-                    echo '<th>Action</th>';
+                    echo '<th colspan="2">Action</th>';
                 }
                 ?>
             </tr>
@@ -221,14 +224,11 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $uploaded_on ?></td>
                     <td><?= $file_name ?></td>
                     <?php
-
                     // MIGHT HAVE BUGS
-
                     if (isStudent()) {
                         $session_student_id = mysqli_fetch_assoc(get_records_where('student', 'user_id', $session_user_id))['student_id'];
                         if (isGroupLeader($session_student_id, $group_id)) {
                             if ($task_deadline >= $today) {
-
                                 $query = "SELECT * FROM solution WHERE task_id='$task_id' AND group_id='$group_id'";
                                 $check_solution = mysqli_query($conn, $query);
 
@@ -247,11 +247,9 @@ if (isset($_GET['delete_id'])) {
                                 echo "<td><a href='?page=group-solution&course_id=$session_course_id&group_id=$group_id'>View</a></td>";
                             }
                         }
-                    }
-                    // else {
-                    //     echo "<td><a href='?page=group-solution&course_id=$session_course_id'>View</a></td>";
-                    // }
-
+                    } ?>
+                    <td><a href='?page=group-discussion&task_id=<?= $task_id ?>'>View Discussion</a></td>
+                    <?php
                     if (isProfessor()) {
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&update_view=true&update_id=$task_id&update_file=$file_id'>Update</a></td>";
@@ -305,7 +303,7 @@ if (isset($_GET['delete_id'])) {
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="upload_file" value="Upload">
+                        <input type="submit" name="upload_task" value="Upload">
                     </div>
 
                 </form>
@@ -370,11 +368,11 @@ if (isset($_GET['delete_id'])) {
 
                     <div class=" form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file" id="file"> </span>
+                        <span><input type="file" name="file" id="file"></span>
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" name="update_file" value="Update">
+                        <input type="submit" name="update_task" value="Update">
                     </div>
 
                 </form>

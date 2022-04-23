@@ -82,7 +82,7 @@
 // ADD
 if (isset($_POST['add_user'])) {
 
-    // receive all input values from the form
+
     $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
@@ -151,7 +151,7 @@ if (isset($_POST['add_user'])) {
 
 // UPDATE
 if (isset($_POST['update_user'])) {
-    // receive all input values from the form
+
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
     $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
@@ -263,7 +263,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $role_name ?></td>
                     <?php if (isAdmin()) {
                         echo '<td><a href="?page=users&update_view=true&update_id=' . $user_id . '">Update</a></td>';
-                        echo "<td><a href='?page=users&delete_view=true&delete_id=" . $user_id . "&role_id=" . $role_id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete User</a></td>";
+                        echo "<td><a href='?page=users&delete_id=" . $user_id . "&role_id=" . $role_id . "' onclick='return confirm(&quot;Are you sure you want to delete? &quot;)'>Delete User</a></td>";
                     } ?>
                 </tr>
             <?php

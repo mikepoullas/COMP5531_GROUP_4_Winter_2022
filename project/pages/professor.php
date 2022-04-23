@@ -6,18 +6,15 @@
         <section class="col-left">
             <div class="user-info">
                 <p>Role: <?= $_SESSION['role_name'] ?></p>
-                <p>Professor ID: <?= mysqli_fetch_assoc(get_records_where('professor', 'user_id', $_SESSION['user_id']))['professor_id'] ?></p>
             </div>
             <hr>
             <div class="main-menu">
-                <h2>Course</h2>
-                <ul class="menu-list">
-                    <li><a href="?page=course-home">View</a></li>
-                </ul>
-                <h2>Groups</h2>
-                <ul class="menu-list">
-                    <li><a href="?page=group-home">View</a></li>
-                </ul>
+                <div class="menu-list">
+                    <h2><a href="?page=course-home">Courses</a></h2>
+                </div>
+                <div class="menu-list">
+                    <h2><a href="?page=group-home">Groups</a></h2>
+                </div>
                 <br>
                 <h2>Manage</h2>
                 <ul class="menu-list">

@@ -136,7 +136,7 @@
                     </div>
                     <div class="form-input">
                         <label>Select file</label>
-                        <span><input type="file" name="file"> </span>
+                        <span><input type="file" name="file"></span>
                     </div>
                     <div class="form-submit">
                         <input type="submit" name="update_file" value="Update">

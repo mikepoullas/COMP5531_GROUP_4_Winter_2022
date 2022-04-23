@@ -5,13 +5,13 @@ $session_user_id = $_SESSION['user_id'];
 // ADD
 if (isset($_POST['add_group'])) {
 
-    // receive all input values from the form
+
     $group_name = mysqli_real_escape_string($conn, $_POST['group_name']);
     $group_leader_sid = mysqli_real_escape_string($conn, $_POST['group_leader_sid']);
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($group_name)) {
         array_push($errors, "Group Name is required");
     }
@@ -66,13 +66,13 @@ if (isset($_POST['update_group'])) {
 
     $group_id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $group_name = mysqli_real_escape_string($conn, $_POST['group_name']);
     $group_leader_sid = mysqli_real_escape_string($conn, $_POST['group_leader_sid']);
     $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($group_name)) {
         array_push($errors, "Group Name is required");
     }
@@ -110,7 +110,12 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
+if (isset($_POST["course_id"])) {
+    $course_id_selected = $_POST["course_id"];
+}
+
 ?>
+
 
 <div class="content-body">
     <?php
@@ -133,7 +138,7 @@ if (isset($_GET['delete_id'])) {
         JOIN course as c ON c.course_id = gc.course_id
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
         JOIN users as us ON us.user_id = ucs.user_id
-        WHERE us.user_id = $session_user_id
+        WHERE us.user_id = '$session_user_id'
         ORDER BY g.group_id ASC";
     }
 
@@ -148,7 +153,7 @@ if (isset($_GET['delete_id'])) {
                 <?php isAdmin() ? print '<th>Group ID</th>' : ''; ?>
                 <th>Group Name</th>
                 <th>Group Leader SID</th>
-                <th>Group Leader Name</th>
+                <th>Group Leader</th>
                 <th>Course Name</th>
                 <?php !isStudent() ? print '<th colspan="3">Action</th>' : ''; ?>
 
@@ -171,12 +176,12 @@ if (isset($_GET['delete_id'])) {
                     } ?>
                     <td><?= $group_name ?></td>
                     <td><?= $group_leader_sid ?></td>
-                    <td><?= $group_leader_name ?></td>
+                    <td><u><?= $group_leader_name ?></u></td>
                     <td><?= $course_name ?></td>
                     <?php if (!isStudent()) {
                         echo '<td><a href="?page=groups&update_view=true&update_id=' . $group_id . '&course_id=' . $course_id . '">Update</a></td>';
                         echo '<td><a href="?page=assign-group&group_id=' . $group_id . '&course_id=' . $course_id . '">Manage</a></td>';
-                        echo "<td><a href='?page=groups&delete_view=true&delete_id=" . $group_id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
+                        echo "<td><a href='?page=groups&delete_id=" . $group_id . "' onclick='return confirm(&quot;Are you sure you want to delete?&quot;)'>Delete</a></td>";
                     } ?>
                 </tr>
             <?php } ?>
@@ -196,14 +201,9 @@ if (isset($_GET['delete_id'])) {
                     <h3>Add Group</h3>
 
                     <div class="form-input">
-                        <label>Group Name</label>
-                        <span><input type="text" name="group_name"></span>
-                    </div>
-
-                    <div class="form-input">
                         <p>Course</p>
                         <div class="scroll-list">
-                            <select name="course_id">
+                            <select name="course_id" onchange="this.form.submit()">
                                 <option value="" selected hidden>Choose Course</option>
                                 <?php
                                 if (isProfessor()) {
@@ -220,7 +220,12 @@ if (isset($_GET['delete_id'])) {
                                 foreach ($courses as $row) {
                                     $course_id = $row['course_id'];
                                     $course_name = $row['course_name'];
-                                    echo "<option name=course_id value='$course_id'>$course_name</option>";
+
+                                    if ($course_id_selected == $course_id) {
+                                        echo "<option value='$course_id' selected>$course_name</option>";
+                                    } else {
+                                        echo "<option value='$course_id'>$course_name</option>";
+                                    }
                                 }
                                 ?>
                             </select>
@@ -237,7 +242,7 @@ if (isset($_GET['delete_id'])) {
                                 JOIN users as u ON st.user_id = u.user_id
                                 JOIN user_course_section as ucs ON ucs.user_id = u.user_id
                                 JOIN course as c ON c.course_id = ucs.course_id
-                                WHERE c.course_id = '$course_id'
+                                WHERE c.course_id = '$course_id_selected'
                                 ORDER BY st.student_id ASC";
                                 $groups = mysqli_query($conn, $query);
                                 foreach ($groups as $row) {
@@ -248,6 +253,11 @@ if (isset($_GET['delete_id'])) {
                                 ?>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="form-input">
+                        <label>Group Name</label>
+                        <span><input type="text" name="group_name"></span>
                     </div>
 
                     <div class="form-submit">
@@ -286,11 +296,6 @@ if (isset($_GET['delete_id'])) {
                     <h3>Update Group</h3>
 
                     <div class="form-input">
-                        <label>Group Name</label>
-                        <span><input type="text" name="group_name" value='<?= $group_name ?>'></span>
-                    </div>
-
-                    <div class="form-input">
                         <p>Course</p>
                         <div class="scroll-list">
                             <select name="course_id" id="course_id" disabled>
@@ -326,6 +331,11 @@ if (isset($_GET['delete_id'])) {
                                 ?>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="form-input">
+                        <label>Group Name</label>
+                        <span><input type="text" name="group_name" value='<?= $group_name ?>'></span>
                     </div>
 
                     <div class="form-submit">
