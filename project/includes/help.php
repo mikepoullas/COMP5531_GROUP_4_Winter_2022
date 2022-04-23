@@ -75,6 +75,7 @@ $role_id = $_SESSION['role_id'];
                 <li>- If you are group leader, you can view / upload / download / update / delete group solutions.</li><br>
                 <li>- You can add / reply to course forums.</li><br>
                 <li>- You can view / comment to group, task, solution - discussions.</li>
+                <li>- You can send / update/ delete (last message only!) private messages and files to group members.</li>
             </ul>
         </div>
     <?php } ?>
