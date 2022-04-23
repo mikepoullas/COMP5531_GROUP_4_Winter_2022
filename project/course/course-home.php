@@ -142,43 +142,39 @@ $course_info = mysqli_query($conn, $query);
 
         ?>
 
-        <div class="task-content">
-            <h3>Top 10 Recent Forums</h3>
-            <div class="forum-content">
-                <br>
-                <?php
-                if (mysqli_num_rows($forum_all) > 0) {
-                    foreach ($forum_all as $row) {
-                        $forum_id = $row['forum_id'];
-                        $forum_title = $row['forum_title'];
-                        $forum_content = $row['forum_content'];
-                        $posted_by = $row['first_name'] . " " . $row['last_name'];
-                        $posted_on = date_convert($row['posted_on']);
-                        $course_name = $row['course_name'];
-                        $section_name = $row['section_name'];
-                        $file_id = $row['file_id'];
-                        $file_name = $row['file_name'];
-                ?>
-                        <ul>
+        <h3>Top 10 Recent Forums</h3>
+        <div class="list-content">
+            <br>
+            <?php
+            if (mysqli_num_rows($forum_all) > 0) {
+                foreach ($forum_all as $row) {
+                    $forum_id = $row['forum_id'];
+                    $forum_title = $row['forum_title'];
+                    $forum_content = $row['forum_content'];
+                    $posted_by = $row['first_name'] . " " . $row['last_name'];
+                    $posted_on = date_convert($row['posted_on']);
+                    $course_name = $row['course_name'];
+                    $section_name = $row['section_name'];
+                    $file_id = $row['file_id'];
+                    $file_name = $row['file_name'];
+            ?>
+                    <ul>
+                        <li>
+                            <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
+                        </li>
+                        <li><?= $forum_content ?></li>
+                        <?php if ($file_id != '') { ?>
                             <li>
-                                <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
+                                <a href="?page=course-home&download_file=<?= $file_id ?>">[ <b><?= $file_name ?></b> ]</a>
                             </li>
-                            <li><?= $forum_content ?></li>
-                            <?php if ($file_id != '') { ?>
-                                <li>
-                                    <a href="?page=course-home&download_file=<?= $file_id ?>">[ <b><?= $file_name ?></b> ]</a>
-                                </li>
-                            <?php } ?>
-                            <li>&emsp;<?= $posted_on ?></li>
-                            <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?>
-                                <?php if (isStudent()) echo " | " . $section_name; ?>
-                            </li>
-                        </ul><br>
-                    <?php } ?>
-                <?php } else { ?>
-                    <p>No forums</p>
+                        <?php } ?>
+                        <li>&emsp;<?= $posted_on ?></li>
+                        <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?>
+                            <?php if (isStudent()) echo " | " . $section_name; ?>
+                        </li>
+                    </ul><br>
                 <?php } ?>
-            </div>
+            <?php } else { ?>
+                <p>No forums</p>
+            <?php } ?>
         <?php } ?>
-
-        </div>

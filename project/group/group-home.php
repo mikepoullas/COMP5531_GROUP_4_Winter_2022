@@ -132,7 +132,7 @@ $group = mysqli_query($conn, $query);
         }
 
         ?>
-        <div class="discussion-content">
+        <div class="list-content">
             <h3><?= $group_name ?> Discussions</h3>
             <br>
             <?php
@@ -181,9 +181,9 @@ $group = mysqli_query($conn, $query);
 
         ?>
 
-        <div class="discussion-content">
-            <h3>Top 10 Recent Discussions</h3>
-            <br>
+        <h3>Top 10 Recent Discussions</h3>
+        <br>
+        <div class="list-content">
             <?php
 
             if (mysqli_num_rows($discussion_all) > 0) {

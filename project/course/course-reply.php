@@ -142,8 +142,7 @@ if (isset($_GET['delete_id'])) {
     <p>&emsp;by <b><?= $forum_posted_by ?></b> | <?= $forum_posted_on ?></p>
 
     <hr>
-    <div class="reply-content">
-
+    <div class="list-content">
         <?php
         if (mysqli_num_rows($replys) > 0) {
             foreach ($replys as $row) {
@@ -174,62 +173,61 @@ if (isset($_GET['delete_id'])) {
         <?php } else { ?>
             <p>No Replys</p>
         <?php } ?>
+    </div>
 
-        <hr>
+    <hr>
 
-        <?php if (isset($_GET['update_view'])) {
+    <?php if (isset($_GET['update_view'])) {
 
-            $id = mysqli_real_escape_string($conn, $_GET['update_id']);
+        $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-            $query = "SELECT * FROM reply as c
+        $query = "SELECT * FROM reply as c
             WHERE c.reply_id = '$id'
             ORDER BY c.reply_id ASC";
-            $replys = mysqli_query($conn, $query);
+        $replys = mysqli_query($conn, $query);
 
-            foreach ($replys as $row) {
-                $content = $row['reply_content'];
-            }
+        foreach ($replys as $row) {
+            $content = $row['reply_content'];
+        }
 
-            var_dump($_GET['update_file']);
-        ?>
+        var_dump($_GET['update_file']);
+    ?>
 
-            <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateReply()">
-                    <div class="form-input">
-                        <p>Reply</p>
-                        <br>
-                        <textarea name="reply_content" id="reply"><?= $content ?></textarea>
-                    </div>
-                    <div class="form-input">
-                        <label>Add file <i>(Optional)</i></label>
-                        <span><input type="file" name="file" id="file"></span>
-                    </div>
-                    <div class="form-submit">
-                        <input type="submit" name="update_reply" value="Update">
-                    </div>
-                </form>
-            </div>
+        <div class="form-container">
+            <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateReply()">
+                <div class="form-input">
+                    <p>Reply</p>
+                    <br>
+                    <textarea name="reply_content" id="reply"><?= $content ?></textarea>
+                </div>
+                <div class="form-input">
+                    <label>Add file <i>(Optional)</i></label>
+                    <span><input type="file" name="file" id="file"></span>
+                </div>
+                <div class="form-submit">
+                    <input type="submit" name="update_reply" value="Update">
+                </div>
+            </form>
+        </div>
 
 
-        <?php } else { ?>
+    <?php } else { ?>
 
-            <div class="form-container">
-                <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateReply()">
-                    <div class="form-input">
-                        <p>Reply</p>
-                        <br>
-                        <textarea name="reply_content" id="reply"></textarea>
-                    </div>
-                    <div class="form-input">
-                        <label>Add file <i>(Optional)</i></label>
-                        <span><input type="file" name="file" id="file"></span>
-                    </div>
-                    <div class="form-submit">
-                        <input type="submit" name="add_reply" value="Reply">
-                    </div>
-                </form>
-            </div>
+        <div class="form-container">
+            <form class="form-body" action="" enctype="multipart/form-data" method="POST" onSubmit="return validateReply()">
+                <div class="form-input">
+                    <p>Reply</p>
+                    <br>
+                    <textarea name="reply_content" id="reply"></textarea>
+                </div>
+                <div class="form-input">
+                    <label>Add file <i>(Optional)</i></label>
+                    <span><input type="file" name="file" id="file"></span>
+                </div>
+                <div class="form-submit">
+                    <input type="submit" name="add_reply" value="Reply">
+                </div>
+            </form>
+        </div>
 
-        <?php } ?>
-
-    </div>
+    <?php } ?>
