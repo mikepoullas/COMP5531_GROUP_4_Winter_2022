@@ -17,6 +17,7 @@
 5500000 - comment
 6600000 - files
 7700000 - grades
+8800000 - messages
 
 */
 

@@ -37,8 +37,6 @@ if (isset($_POST['add_announcement'])) {
     $content = mysqli_real_escape_string($conn, $_POST['content']);
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
-
-
     if (empty($title)) {
         array_push($errors, "Title is required");
     }
@@ -49,14 +47,27 @@ if (isset($_POST['add_announcement'])) {
         array_push($errors, "Course is required");
     }
 
-    if (count($errors) == 0) {
-        $add = "INSERT INTO announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id)
+    if ($course_id == 'all') {
+        $courses = get_table_array('course');
+        foreach ($courses as $row) {
+            $course_id = $row['course_id'];
+            $add_all = "INSERT INTO announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id)
             VALUES('$title', '$content', '$session_user_id', NOW(),'$course_id')";
+            if (mysqli_query($conn, $add_all)) {
+            } else {
+                array_push($errors, "Error adding: ", mysqli_error($conn));
+            }
+        }
+    } else {
+        if (count($errors) == 0) {
+            $add = "INSERT INTO announcement (announcement_title, announcement_content, posted_by_uid, posted_on, course_id)
+                VALUES('$title', '$content', '$session_user_id', NOW(),'$course_id')";
 
-        if (mysqli_query($conn, $add)) {
-            array_push($success, "Added successfully");
-        } else {
-            array_push($errors, "Error adding: ", mysqli_error($conn));
+            if (mysqli_query($conn, $add)) {
+                array_push($success, "Added successfully");
+            } else {
+                array_push($errors, "Error adding: ", mysqli_error($conn));
+            }
         }
     }
 }
@@ -211,6 +222,7 @@ if (isset($_GET['delete_id'])) {
                                 }
                                 if (isAdmin()) {
                                     $courses = get_table_array('course');
+                                    echo "<option name=course_id value='all'>All Courses</option>";
                                 }
 
                                 foreach ($courses as $row) {
