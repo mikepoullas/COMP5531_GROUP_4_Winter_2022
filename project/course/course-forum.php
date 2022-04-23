@@ -48,7 +48,7 @@ if (isset($_POST['add_forum'])) {
         if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
             $file_id = upload_file('forum');
             $add = "INSERT INTO forum (forum_title, forum_content, posted_by_uid, posted_on, course_id, file_id)
-            VALUES('$title', '$content', '$session_user_id', NOW(),'$session_course_id', $file_id)";
+            VALUES('$title', '$content', '$session_user_id', NOW(),'$session_course_id', '$file_id')";
         }
 
         if (mysqli_query($conn, $add)) {
@@ -84,7 +84,8 @@ if (isset($_POST['update_forum'])) {
         $update = "UPDATE forum SET forum_title = '$title', forum_content = '$content'
         WHERE forum_id ='$id'";
 
-        if ($file_id == '') {
+        //if ($file_id == '') {
+		if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {			
             $file_id = upload_file('forum');
             $update = "UPDATE forum SET forum_title = '$title', forum_content = '$content', file_id = '$file_id'
             WHERE forum_id ='$id'";
