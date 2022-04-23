@@ -124,6 +124,7 @@ if (isset($_GET['delete_id'])) {
     <hr>
     <div class="list-content">
         <?php
+
         if (mysqli_num_rows($messages) > 0) {
             foreach ($messages as $row) {
                 $message_id = $row['message_id'];
