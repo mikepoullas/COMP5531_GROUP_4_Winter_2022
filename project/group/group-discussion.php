@@ -38,12 +38,12 @@ if (isset($_GET['task_id'])) {
 // ADD
 if (isset($_POST['add_discussion'])) {
 
-    // receive all input values from the form
+
     $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
     $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($title)) {
         array_push($errors, "Title is required");
     }
@@ -57,7 +57,7 @@ if (isset($_POST['add_discussion'])) {
             VALUES('$title', '$content', '$session_user_id', NOW(),'$session_group_id')";
 
             if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
-                $file_id = upload_file('discussion');
+                $file_id = upload_file('discussion_group');
                 $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, group_id, file_id)
                 VALUES('$title', '$content', '$session_user_id', NOW(),'$session_group_id', '$file_id')";
             }
@@ -65,17 +65,23 @@ if (isset($_POST['add_discussion'])) {
         if ($session_task_id != null) {
             $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, task_id)
             VALUES('$title', '$content', '$session_user_id', NOW(),'$session_task_id')";
+
+            if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+                $file_id = upload_file('discussion_task');
+                $add = "INSERT INTO discussion (discussion_title, discussion_content, posted_by_uid, posted_on, task_id, file_id)
+                VALUES('$title', '$content', '$session_user_id', NOW(),'$session_task_id', '$file_id')";
+            }
         }
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
-			if ($session_task_id != '') {
-				header("location: ?page=group-discussion&task_id=$session_task_id");
-			} else if ($session_group_id != '') {
-				header("location: ?page=group-discussion&group_id=$session_group_id");
-			} else {
-				array_push($errors, "Seesion variable error!");
-			}
+            if ($session_group_id != '') {
+                header("location: ?page=group-discussion&group_id=$session_group_id");
+            } elseif ($session_task_id != '') {
+                header("location: ?page=group-discussion&task_id=$session_task_id");
+            } else {
+                array_push($errors, "Seesion variable error!");
+            }
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -87,12 +93,12 @@ if (isset($_POST['update_discussion'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $title = mysqli_real_escape_string($conn, $_POST['discussion_title']);
     $content = mysqli_real_escape_string($conn, $_POST['discussion_content']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($title)) {
         array_push($errors, "Title is required");
     }
@@ -102,22 +108,35 @@ if (isset($_POST['update_discussion'])) {
 
     if (count($errors) == 0) {
 
-        $file_id = $_POST['update_file'];
         $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content'
         WHERE discussion_id ='$id'";
 
-        //if ($file_id == '') {
-		if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {					
-            $file_id = upload_file('discussion');
-            $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content', file_id = '$file_id'
-            WHERE discussion_id ='$id'";
+        if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+            $file_id = $_GET['update_file'];
+            if ($session_group_id != null) {
+                if ($file_id != '') {
+                    update_file('discussion_group', $file_id);
+                } else {
+                    $new_file_id = upload_file('discussion_group');
+                    $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content', file_id = '$new_file_id'
+                    WHERE discussion_id ='$id'";
+                }
+            }
+            if ($session_task_id != null) {
+                if ($file_id != '') {
+                    update_file('discussion_task', $file_id);
+                } else {
+                    $new_file_id = upload_file('discussion_task');
+                    $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content', file_id = '$new_file_id'
+                    WHERE discussion_id ='$id'";
+                    echo "check";
+                }
+            }
         }
+
 
         if (mysqli_query($conn, $update)) {
             array_push($success, "Update Successful");
-            if ($file_id != '') {
-                update_file('discussion', $file_id);
-            }
             header("location: ?page=group-discussion&group_id=$session_group_id&task_id=$session_task_id");
         } else {
             array_push($errors, "Error updating " . mysqli_error($conn));
@@ -137,7 +156,6 @@ if (isset($_GET['delete_id'])) {
     $file_id = $_GET['delete_file'];
     if (mysqli_query($conn, $delete)) {
         delete_file($file_id);
-        header("location: ?page=group-discussion&group_id=$session_group_id&task_id=$session_task_id");
     } else {
         array_push($errors, "Error deleting " . mysqli_error($conn));
     }
@@ -186,7 +204,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Posted on</th>
                 <th>Course Name</th>
                 <th>File Name</th>
-                <th colspan="2">Action</th>
+                <th colspan="3">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -210,12 +228,12 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $posted_on ?></td>
                     <td><?= $course_name ?></td>
                     <td><a href='?page=group-discussion&group_id=<?= $session_group_id ?>&download_file=<?= $file_id ?>'><?= $file_name ?></a></td>
+                    <td><a href='?page=group-comment&discussion_id=<?= $discussion_id ?>'>Comment</a></td>
                     <?php if ($posted_by_uid == $session_user_id) { ?>
                         <td><a href="?page=group-discussion&update_view=true&group_id=<?= $session_group_id ?>&task_id=<?= $session_task_id ?>&update_id=<?= $discussion_id ?>&update_file=<?= $file_id ?>">Update</a></td>
                         <td><a href="?page=group-discussion&group_id=<?= $session_group_id ?>&task_id=<?= $session_task_id ?>&delete_id=<?= $discussion_id ?>&delete_file=<?= $file_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
-                    <?php } else { ?>
-                        <td></td>
                     <?php } ?>
+
                 </tr>
             <?php
             }

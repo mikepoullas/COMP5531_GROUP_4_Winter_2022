@@ -82,7 +82,7 @@
 // ADD
 if (isset($_POST['add_user'])) {
 
-    // receive all input values from the form
+
     $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $dob = mysqli_real_escape_string($conn, $_POST['dob']);
@@ -151,7 +151,7 @@ if (isset($_POST['add_user'])) {
 
 // UPDATE
 if (isset($_POST['update_user'])) {
-    // receive all input values from the form
+
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
     $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);

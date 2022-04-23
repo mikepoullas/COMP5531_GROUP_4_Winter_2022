@@ -24,8 +24,8 @@ if (isset($_POST['update_grade'])) {
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
     $grade = mysqli_real_escape_string($conn, $_POST['grade']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($grade)) {
         array_push($errors, "Grade is required");
     }

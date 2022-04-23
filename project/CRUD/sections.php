@@ -3,12 +3,12 @@
 // ADD
 if (isset($_POST['add_section'])) {
 
-    // receive all input values from the form
+
     $section_name = mysqli_real_escape_string($conn, $_POST['section_name']);
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($section_name)) {
         array_push($errors, "Section is required");
     }
@@ -32,12 +32,12 @@ if (isset($_POST['update_section'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $section_name = mysqli_real_escape_string($conn, $_POST['section_name']);
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($section_name)) {
         array_push($errors, "Section is required");
     }

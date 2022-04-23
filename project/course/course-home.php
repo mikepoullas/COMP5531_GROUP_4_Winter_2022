@@ -3,6 +3,11 @@
 $session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
+//DOWNLOAD
+if (isset($_GET['download_file'])) {
+    download_file($_GET['download_file']);
+}
+
 if (!isProfessor()) {
     $query = "SELECT c.*, u.*, s.section_name FROM course as c
     JOIN user_course_section as ucs ON ucs.course_id = c.course_id
@@ -124,10 +129,11 @@ $course_info = mysqli_query($conn, $query);
         <hr>
 
         <?php
-        $query = "SELECT f.*, c.*, s.*, u.* FROM forum as f
+        $query = "SELECT f.*, c.*, s.*, u.*, fl.* FROM forum as f
         JOIN course as c ON c.course_id = f.course_id
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
         LEFT JOIN section as s ON s.section_id = ucs.section_id
+        LEFT JOIN files as fl ON fl.file_id = f.file_id
         JOIN users as u ON u.user_id = f.posted_by_uid
         JOIN users as us ON us.user_id = ucs.user_id
         WHERE us.user_id = '$session_user_id'
@@ -150,12 +156,19 @@ $course_info = mysqli_query($conn, $query);
                         $posted_on = date_convert($row['posted_on']);
                         $course_name = $row['course_name'];
                         $section_name = $row['section_name'];
+                        $file_id = $row['file_id'];
+                        $file_name = $row['file_name'];
                 ?>
                         <ul>
                             <li>
                                 <b><a href='?page=course-reply&forum_id=<?= $forum_id ?>'><?= $forum_title ?></a></b>
                             </li>
                             <li><?= $forum_content ?></li>
+                            <?php if ($file_id != '') { ?>
+                                <li>
+                                    <a href="?page=course-home&download_file=<?= $file_id ?>">[ <b><?= $file_name ?></b> ]</a>
+                                </li>
+                            <?php } ?>
                             <li>&emsp;<?= $posted_on ?></li>
                             <li>&emsp;by <b><?= $posted_by ?></b> | <?= $course_name ?>
                                 <?php if (isStudent()) echo " | " . $section_name; ?>

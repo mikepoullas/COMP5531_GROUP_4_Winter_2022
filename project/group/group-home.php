@@ -3,6 +3,11 @@
 $session_user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id'];
 
+//DOWNLOAD
+if (isset($_GET['download_file'])) {
+    download_file($_GET['download_file']);
+}
+
 if (isStudent()) {
     $query = "SELECT g.*, st.*, u.*, s.section_name, c.* FROM student_groups as g
     JOIN member_of_group as mg ON mg.group_id = g.group_id
@@ -158,12 +163,13 @@ $group = mysqli_query($conn, $query);
         <hr>
 
         <?php
-        $query = "SELECT d.*, u.*, c.course_name, g.group_name FROM discussion as d
+        $query = "SELECT d.*, u.*, c.course_name, g.group_name, fl.* FROM discussion as d
         JOIN student_groups as g ON g.group_id = d.group_id
         JOIN users as u ON u.user_id = d.posted_by_uid
         JOIN group_of_course as gc ON gc.group_id = g.group_id
         JOIN course as c ON c.course_id = gc.course_id
         JOIN user_course_section as ucs ON ucs.course_id = c.course_id
+        LEFT JOIN files as fl ON fl.file_id = d.file_id
         JOIN users as us ON us.user_id = ucs.user_id
         WHERE us.user_id = '$session_user_id'
         ORDER BY d.discussion_id ASC LIMIT 10";
@@ -191,14 +197,21 @@ $group = mysqli_query($conn, $query);
                     $posted_on = date_convert($row['posted_on']);
                     $group_name = $row['group_name'];
                     $course_name = $row['course_name'];
+                    $file_id = $row['file_id'];
+                    $file_name = $row['file_name'];
             ?>
                     <ul>
                         <li>
                             <b><a href='?page=group-comment&discussion_id=<?= $discussion_id ?>'><?= $title ?></a></b>
                         </li>
                         <li><?= $content ?></li>
-                        <li>&emsp;<?= $posted_on ?></li>
+                        <?php if ($file_id != '') { ?>
+                            <li>
+                                <a href="?page=group-home&download_file=<?= $file_id ?>">[ <b><?= $file_name ?></b> ]</a>
+                            </li>
+                        <?php } ?>
                         <li>&emsp;by <b><?= $posted_by ?></b> | <?= $group_name ?> | <?= $course_name ?></li>
+                        <li>&emsp;<?= $posted_on ?></li>
                     </ul><br>
                 <?php } ?>
 

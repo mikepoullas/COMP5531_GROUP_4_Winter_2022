@@ -122,6 +122,10 @@ hr {
     background-color: #37e6e6;
 }
 
+.menu-list h2:hover {
+    background-color: #37e6e6;
+}
+
 .menu-list a {
     text-decoration: none;
     color: black;
@@ -163,7 +167,7 @@ td {
 button {
     padding: 0.5em 1em;
     border-radius: 5px;
-    margin: 1em 0;
+    margin: 1em 0 auto;
 }
 
 /**********************************************/

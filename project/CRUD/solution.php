@@ -42,6 +42,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
                 <th>Course Name</th>
+                <th>File Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -54,6 +55,7 @@ if (isset($_GET['delete_id'])) {
                 $uploaded_on = date_convert($row['uploaded_on']);
                 $course_name = $row['course_name'];
                 $file_id = $row['file_id'];
+                $file_name = $row['file_name'];
             ?>
                 <tr>
                     <td><?= $id ?></td>
@@ -62,6 +64,7 @@ if (isset($_GET['delete_id'])) {
                     <td><?= $uploaded_by ?></td>
                     <td><?= $uploaded_on ?></td>
                     <td><?= $course_name ?></td>
+                    <td><?= $file_name ?></td>
                     <td><a href="?page=solution&delete_id=<?= $id ?>&file_id=<?= $file_id ?>" onclick="return confirm('Are you sure you want to delete?')">Delete Solution</a></td>
                 </tr>
             <?php } ?>

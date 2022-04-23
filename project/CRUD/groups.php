@@ -5,13 +5,13 @@ $session_user_id = $_SESSION['user_id'];
 // ADD
 if (isset($_POST['add_group'])) {
 
-    // receive all input values from the form
+
     $group_name = mysqli_real_escape_string($conn, $_POST['group_name']);
     $group_leader_sid = mysqli_real_escape_string($conn, $_POST['group_leader_sid']);
     $course_id = mysqli_real_escape_string($conn, $_POST['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($group_name)) {
         array_push($errors, "Group Name is required");
     }
@@ -66,13 +66,13 @@ if (isset($_POST['update_group'])) {
 
     $group_id = mysqli_real_escape_string($conn, $_GET['update_id']);
 
-    // receive all input values from the form
+
     $group_name = mysqli_real_escape_string($conn, $_POST['group_name']);
     $group_leader_sid = mysqli_real_escape_string($conn, $_POST['group_leader_sid']);
     $course_id = mysqli_real_escape_string($conn, $_GET['course_id']);
 
-    // form validation: ensure that the form is correctly filled ...
-    // by adding (array_push()) corresponding error unto $errors array
+
+
     if (empty($group_name)) {
         array_push($errors, "Group Name is required");
     }
