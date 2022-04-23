@@ -153,7 +153,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Content</th>
                 <th>Posted by</th>
                 <th>Posted on</th>
-                <th>File Name</th>
+                <th>Files</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>

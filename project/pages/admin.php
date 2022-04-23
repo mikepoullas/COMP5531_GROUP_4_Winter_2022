@@ -5,10 +5,6 @@
     <div class="main-body">
         <section>
             <div class="col-left">
-                <div class="user-info">
-                    <p>Role: <?= $_SESSION['role_name'] ?></p>
-                </div>
-                <hr>
                 <div class="main-menu">
                     <h2>Manage</h2>
                     <ul class="menu-list">
@@ -26,6 +22,7 @@
                         <li><a href="?page=task">Tasks</a></li>
                         <li><a href="?page=solution">Solutions</a></li>
                         <li><a href="?page=grades">Grades</a></li>
+                        <li><a href="?page=messages">Messages</a></li>
                     </ul>
 
                     <h2>Assign</h2>

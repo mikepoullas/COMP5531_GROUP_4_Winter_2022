@@ -185,7 +185,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Deadline</th>
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
-                <th>File Name</th>
+                <th>Files</th>
                 <?php
                 if (isStudent()) {
                     echo '<th>Solution</th>';

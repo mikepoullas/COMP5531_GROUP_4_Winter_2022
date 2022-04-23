@@ -15,6 +15,9 @@
                 <div class="menu-list">
                     <h2><a href="?page=group-home">Groups</a></h2>
                 </div>
+                <div class="menu-list">
+                    <h2><a href="?page=inbox-home">Inbox</a></h2>
+                </div>
             </div>
         </section>
 
@@ -34,6 +37,9 @@
                     }
                     if (file_exists("../assigns/" . $page . ".php")) {
                         include("../assigns/" . $page . ".php");
+                    }
+                    if (file_exists("../inbox/" . $page . ".php")) {
+                        include("../inbox/" . $page . ".php");
                     }
                 } else {
                     include("../includes/home.php");

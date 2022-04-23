@@ -48,7 +48,7 @@ if (isset($_GET['delete_id'])) {
                 <th>Posted on</th>
                 <th>Group Name</th>
                 <th>Course Name</th>
-                <th>File Name</th>
+                <th>Files</th>
                 <th>Action</th>
             </tr>
         </thead>

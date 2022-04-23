@@ -234,7 +234,7 @@ if (isset($_POST['add_grade'])) {
                 <th>Content</th>
                 <th>Uploaded by</th>
                 <th>Uploaded on</th>
-                <th>File Name</th>
+                <th>Files</th>
                 <?php
                 if (isStudent()) {
                     echo '<th colspan="4">Action</th>';

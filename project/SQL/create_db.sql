@@ -20,6 +20,7 @@ use cga;
 5500000 - comment
 6600000 - files
 7700000 - grades
+8800000 - messages
 
 */
 
@@ -226,6 +227,20 @@ CREATE TABLE Comment
   FOREIGN KEY (file_id) REFERENCES Files(file_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE Comment AUTO_INCREMENT = 5500000;
+
+CREATE TABLE Messages
+(
+  message_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  message_content VARCHAR(1024) NOT NULL,
+  message_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  sender_user_id INT NOT NULL,
+  receiver_user_id INT NOT NULL,
+  file_id INT,
+  FOREIGN KEY (sender_user_id) REFERENCES Users(user_id),
+  FOREIGN KEY (receiver_user_id) REFERENCES Users(user_id),
+  FOREIGN KEY (file_id) REFERENCES Files(file_id)
+);
+ALTER TABLE Messages AUTO_INCREMENT = 8800000;
 
 -- ------------------------------------------------------------------
 

@@ -233,11 +233,10 @@ Always visible and shows delete error if delete_view is set true -->
     <table>
         <thead>
             <tr>
-                <?php !isStudent() ? print '<th>Group ID</th>' : ''; ?>
                 <th>Group Name</th>
                 <th>Student Name</th>
                 <th>Course Name</th>
-                <?php !isStudent() ? print '<th colspan="2">Action</th>' : ''; ?>
+                <th colspan="2">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -252,9 +251,6 @@ Always visible and shows delete error if delete_view is set true -->
                 $student_id = $row['student_id'];
             ?>
                 <tr>
-                    <?php if (!isStudent()) { ?>
-                        <td><?= $group_id ?></td>
-                    <?php } ?>
                     <td><?= $group_name ?></td>
                     <?php if (isGroupLeader($student_id, $group_id)) { ?>
                         <td><u><?= $student_name ?></u></td>
