@@ -69,7 +69,13 @@ if (isset($_POST['add_discussion'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
-            header("location: ?page=group-discussion&group_id=$session_group_id&task_id=$task_id");
+			if ($session_task_id != '') {
+				header("location: ?page=group-discussion&task_id=$session_task_id");
+			} else if ($session_group_id != '') {
+				header("location: ?page=group-discussion&group_id=$session_group_id");
+			} else {
+				array_push($errors, "Seesion variable error!");
+			}
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -96,11 +102,12 @@ if (isset($_POST['update_discussion'])) {
 
     if (count($errors) == 0) {
 
-        $file_id = $_GET['update_file'];
+        $file_id = $_POST['update_file'];
         $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content'
         WHERE discussion_id ='$id'";
 
-        if ($file_id == '') {
+        //if ($file_id == '') {
+		if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {					
             $file_id = upload_file('discussion');
             $update = "UPDATE discussion SET discussion_title = '$title', discussion_content = '$content', file_id = '$file_id'
             WHERE discussion_id ='$id'";
