@@ -276,7 +276,7 @@ Always visible and shows delete error if delete_view is set true -->
     </table>
 
     <?php if (isAdmin()) { ?>
-        <a href="?page=assign-group&add_view=true&group_id=<?= $group_id ?>">
+        <a href="?page=assign-group&add_view=true">
             <button>Add New</button>
         </a>
     <?php } ?>
