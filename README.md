@@ -9,8 +9,8 @@ Student_ID  First_Name  Last_Name   Email
 Contribution:
 - Shafiq Imtiaz (Web Programmer using HTML, CSS, JS, PHP and DB Designer using MySQL)
 - Mike Poullas (TL) (Web Programmer using HTML, CSS, JS, PHP and DB Designer using MySQL)
-- Christopher Savov (Tester and Documenter)
 - Adriana Danko (Tester and Documenter)
+- Christopher Savov (Tester and Documenter)
 
 Installation:
 - Copy the 'project' to the PHP server httpd source folder
