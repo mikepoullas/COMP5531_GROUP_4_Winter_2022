@@ -10,6 +10,10 @@ body {
     font-size: large;
 }
 
+img {
+    max-width: 100%;
+}
+
 /**********************************************/
 
 li {
@@ -114,7 +118,7 @@ hr {
 
 /**********************************************/
 .col-right {
-    overflow: hidden;
+    overflow-y: scroll;
     text-align: left;
     padding: 1em;
     height: 84vh;
@@ -381,9 +385,4 @@ footer p {
     .col-left {
         overflow-y: scroll;
     }
-
-    .col-right {
-        overflow-y: scroll;
-    }
-
 }

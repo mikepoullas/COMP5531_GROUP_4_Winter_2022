@@ -13,29 +13,38 @@ $role_id = $_SESSION['role_id'];
     <h2>Help Page</h2>
     <hr>
 
+    <?php if (isAdmin() || isProfessor()) { ?>
+        <div class="basics-help">
+            <h3>Flow of Action</h3>
+            <br>
+            <ul>
+                <?php if (isAdmin()) { ?>
+                    <li>- Users &rarr; Course &rarr; Section &rarr; Groups</li>
+                    <li>- Professors &rarr; Course</li>
+                <?php } ?>
+                <li>- Teaching Assistant &rarr; Course &rarr; Section (if not speified, then All sections)</li>
+                <li>- Students &rarr; Course &rarr; Section &rarr; Groups</li>
+            </ul>
+        </div>
+        <hr>
+    <?php } ?>
+
     <?php if (isAdmin()) { ?>
-        <div class="admin-content">
+        <div class="admin-help">
             <h3>Admin Help</h3>
             <br>
             <ul>
                 <li>You have all access!</li>
+                <br>
+                <li>Relational Schema<img src="../files/CGA Schema.png" alt="schema"></li>
+                <br>
+                <li>ER Diagram<img src="../files/CGA ER Diagram.png" alt="diagram"></li>
             </ul>
         </div>
-    <?php } ?>
-
-    <?php if (!isAdmin()) { ?>
-        <div class="basics-content">
-            <h3>Basics</h3>
-            <br>
-            <ul>
-                <li>This help page will guide you through the permissions your role has.</li>
-            </ul>
-        </div>
-        <br>
     <?php } ?>
 
     <?php if (isProfessor()) { ?>
-        <div class="professor-content">
+        <div class="professor-help">
             <h3>Professor Help</h3>
             <br>
             <ul>
@@ -52,7 +61,7 @@ $role_id = $_SESSION['role_id'];
     <?php } ?>
 
     <?php if (isTA()) { ?>
-        <div class="ta-content">
+        <div class="ta-help">
             <h3>TA Help</h3>
             <br>
             <ul>
@@ -65,7 +74,7 @@ $role_id = $_SESSION['role_id'];
     <?php } ?>
 
     <?php if (isStudent()) { ?>
-        <div class="student-content">
+        <div class="student-help">
             <h3>Student Help</h3>
             <br>
             <ul>
@@ -74,7 +83,7 @@ $role_id = $_SESSION['role_id'];
                 <li>- You can view / download course tasks.</li><br>
                 <li>- If you are group leader, you can view / upload / download / update / delete group solutions.</li><br>
                 <li>- You can add / reply to course forums.</li><br>
-                <li>- You can view / comment to group, task, solution - discussions.</li>
+                <li>- You can view / comment to group, task, solution - discussions.</li><br>
                 <li>- You can send / update/ delete (last message only!) private messages and files to group members.</li>
             </ul>
         </div>

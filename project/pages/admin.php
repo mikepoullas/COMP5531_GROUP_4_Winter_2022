@@ -8,21 +8,21 @@
                 <div class="main-menu">
                     <h2>Manage</h2>
                     <ul class="menu-list">
-                        <li><a href="?page=users">Users</a></li>
                         <li><a href="?page=roles">Roles</a></li>
+                        <li><a href="?page=users">Users</a></li>
                         <li><a href="?page=courses">Courses</a></li>
                         <li><a href="?page=sections">Sections</a></li>
                         <li><a href="?page=groups">Groups</a></li>
-                        <li><a href="?page=files">Files</a></li>
                         <li><a href="?page=announcements">Announcements</a></li>
                         <li><a href="?page=forums">Forum</a></li>
                         <li><a href="?page=reply">Reply</a></li>
                         <li><a href="?page=discussions">Discussions</a></li>
                         <li><a href="?page=comments">Comments</a></li>
+                        <li><a href="?page=messages">Messages</a></li>
                         <li><a href="?page=task">Tasks</a></li>
                         <li><a href="?page=solution">Solutions</a></li>
                         <li><a href="?page=grades">Grades</a></li>
-                        <li><a href="?page=messages">Messages</a></li>
+                        <li><a href="?page=files">Files</a></li>
                     </ul>
 
                     <h2>Assign</h2>

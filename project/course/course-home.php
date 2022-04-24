@@ -69,9 +69,9 @@ $course_info = mysqli_query($conn, $query);
                         <?php if (!isProfessor()) { ?>
                             <td><?= $section_name ?></td>
                         <?php } ?>
-                        <td><a href="?page=course-home&forum_view=true&course_id=<?= $course_id ?> ">View</a></td>
-                        <td><a href="?page=course-forum&course_id=<?= $course_id ?> ">Manage</a></td>
-                        <td><a href="?page=course-task&course_id=<?= $course_id ?> ">Manage</a></td>
+                        <td><a href="?page=course-home&forum_view=true&course_id=<?= $course_id ?>">View</a></td>
+                        <td><a href="?page=course-forum&course_id=<?= $course_id ?>">Manage</a></td>
+                        <td><a href="?page=course-task&course_id=<?= $course_id ?>">Manage</a></td>
                     </tr>
                 <?php
                 }

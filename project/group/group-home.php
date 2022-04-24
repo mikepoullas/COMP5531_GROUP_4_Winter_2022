@@ -89,7 +89,7 @@ $group = mysqli_query($conn, $query);
                     <tr>
                         <td><?= $group_name ?></td>
                         <td><?= $group_leader_sid ?></td>
-                        <td><?= $group_leader_name ?></td>
+                        <td><u><?= $group_leader_name ?></u></td>
                         <?php if (!isProfessor()) { ?>
                             <td><?= $section_name ?></td>
                         <?php } ?>

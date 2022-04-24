@@ -248,7 +248,7 @@ if (isset($_GET['delete_id'])) {
                             }
                         }
                     } ?>
-                    <td><a href='?page=group-discussion&task_id=<?= $task_id ?>'>View Discussion</a></td>
+                    <td><a href='?page=group-discussion&task_id=<?= $task_id ?>'>Discussion</a></td>
                     <?php
                     if (isProfessor()) {
                         echo "<td><a href='?page=course-task&course_id=$session_course_id&download_file=$file_id'>Download</a></td>";

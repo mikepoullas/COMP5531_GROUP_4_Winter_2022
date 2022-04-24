@@ -27,11 +27,8 @@ $session_course_id = $_GET['course_id'];
 // ADD
 if (isset($_POST['add_forum'])) {
 
-
     $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
     $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
-
-
 
     if (empty($title)) {
         array_push($errors, "Title is required");
@@ -53,7 +50,7 @@ if (isset($_POST['add_forum'])) {
 
         if (mysqli_query($conn, $add)) {
             array_push($success, "Added successfully");
-            header('location: ?page=course-forum&course_id=' . $session_course_id);
+            header("location: ?page=course-forum&course_id=$session_course_id");
         } else {
             array_push($errors, "Error adding: ", mysqli_error($conn));
         }
@@ -64,12 +61,8 @@ if (isset($_POST['add_forum'])) {
 if (isset($_POST['update_forum'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['update_id']);
-
-
     $title = mysqli_real_escape_string($conn, $_POST['forum_title']);
     $content = mysqli_real_escape_string($conn, $_POST['forum_content']);
-
-
 
     if (empty($title)) {
         array_push($errors, "Title is required");
@@ -93,7 +86,6 @@ if (isset($_POST['update_forum'])) {
                 WHERE forum_id ='$id'";
             }
         }
-
 
         if (mysqli_query($conn, $update)) {
             header("location: ?page=course-forum&course_id=$session_course_id");

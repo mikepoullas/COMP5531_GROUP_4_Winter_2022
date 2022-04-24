@@ -51,23 +51,23 @@ if (!isAdmin()) {
             <ul>
                 <li><a href="?page=roles">Roles<br><br><b><?= mysqli_num_rows(get_table_array('roles')) ?></b></a></li>
                 <li><a href="?page=users">Users<br><br><b><?= mysqli_num_rows(get_table_array('users')) ?></b></a></li>
-                <li><a href="?page=assign-students">Students<br><br><b><?= mysqli_num_rows(get_table_array('student')) ?></b></a></li>
-                <li><a href="?page=assign-tas">Teaching Assistants<br><br><b><?= mysqli_num_rows(get_table_array('ta')) ?></b></a></li>
-                <li><a href="?page=assign-professors">Professors<br><br><b><?= mysqli_num_rows(get_table_array('professor')) ?></b></a></li>
-                <li><a href="?page=assign-group">Group Members<br><br><b><?= mysqli_num_rows(get_table_array('member_of_group')) ?></b></a></li>
                 <li><a href="?page=courses">Courses<br><br><b><?= mysqli_num_rows(get_table_array('course')) ?></b></a></li>
                 <li><a href="?page=sections">Sections<br><br><b><?= mysqli_num_rows(get_table_array('section')) ?></b></a></li>
                 <li><a href="?page=groups">Groups<br><br><b><?= mysqli_num_rows(get_table_array('student_groups')) ?></b></a></li>
-                <li><a href="?page=task">Tasks<br><br><b><?= mysqli_num_rows(get_table_array('task')) ?></b></a></li>
-                <li><a href="?page=solution">Solutions<br><br><b><?= mysqli_num_rows(get_table_array('solution')) ?></b></a></li>
                 <li><a href="?page=announcements">Announcements<br><br><b><?= mysqli_num_rows(get_table_array('announcement')) ?></b></a></li>
                 <li><a href="?page=forums">Forums<br><br><b><?= mysqli_num_rows(get_table_array('forum')) ?></b></a></li>
                 <li><a href="?page=reply">Reply<br><br><b><?= mysqli_num_rows(get_table_array('reply')) ?></b></a></li>
                 <li><a href="?page=discussions">Discussions<br><br><b><?= mysqli_num_rows(get_table_array('discussion')) ?></b></a></li>
                 <li><a href="?page=comments">Comments<br><br><b><?= mysqli_num_rows(get_table_array('comment')) ?></b></a></li>
-                <li><a href="?page=files">Files<br><br><b><?= mysqli_num_rows(get_table_array('files')) ?></b></a></li>
-                <li><a href="?page=grades">Grades<br><br><b><?= mysqli_num_rows(get_table_array('grades')) ?></b></a></li>
                 <li><a href="?page=messages">Messages<br><br><b><?= mysqli_num_rows(get_table_array('messages')) ?></b></a></li>
+                <li><a href="?page=task">Tasks<br><br><b><?= mysqli_num_rows(get_table_array('task')) ?></b></a></li>
+                <li><a href="?page=solution">Solutions<br><br><b><?= mysqli_num_rows(get_table_array('solution')) ?></b></a></li>
+                <li><a href="?page=grades">Grades<br><br><b><?= mysqli_num_rows(get_table_array('grades')) ?></b></a></li>
+                <li><a href="?page=files">Files<br><br><b><?= mysqli_num_rows(get_table_array('files')) ?></b></a></li>
+                <li><a href="?page=assign-students">Students<br><br><b><?= mysqli_num_rows(get_table_array('student')) ?></b></a></li>
+                <li><a href="?page=assign-tas">Teaching Assistants<br><br><b><?= mysqli_num_rows(get_table_array('ta')) ?></b></a></li>
+                <li><a href="?page=assign-professors">Professors<br><br><b><?= mysqli_num_rows(get_table_array('professor')) ?></b></a></li>
+                <li><a href="?page=assign-group">Group Members<br><br><b><?= mysqli_num_rows(get_table_array('member_of_group')) ?></b></a></li>
             </ul>
         </div>
     <?php } ?>
