@@ -276,13 +276,13 @@ Always visible and shows delete error if delete_view is set true -->
     </table>
 
     <?php if (isAdmin()) { ?>
-        <a href="?page=assign-group&add_view=true">
+        <a href="?page=assign-group&add_view=true&group_id=<?= $session_group_id ?>">
             <button>Add New</button>
         </a>
     <?php } ?>
 
     <?php if (isProfessor()) { ?>
-        <a href="?page=assign-group&add_view=true&group_id=<?= $group_id ?>">
+        <a href="?page=assign-group&add_view=true&group_id=<?= $session_group_id ?>">
             <button>Add New</button>
         </a>
     <?php } ?>
