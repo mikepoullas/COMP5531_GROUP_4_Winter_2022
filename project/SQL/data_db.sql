@@ -42,7 +42,7 @@ INSERT INTO Users (first_name, last_name, dob, email, username, password, create
 ("Stuart", "Thiel","1900-01-01", "stuart@thiel.com", "s_thiel_2", "12345", CURRENT_TIMESTAMP, 1, 2),
 ("Yogesh", "Yadav","1980-01-01", "yogesh@yadav.com", "y_yadav_3", "12345", CURRENT_TIMESTAMP, 1, 3),
 ("Fan", "Zou","1980-01-01", "fan@zou.com", "f_zou_3", "12345", CURRENT_TIMESTAMP, 1, 3),
-("Charmi", "Shah","1980-01-01", "charmi@shah.com", "s_shah_3", "12345", CURRENT_TIMESTAMP, 1, 3),
+("Charmi", "Shah","1980-01-01", "charmi@shah.com", "c_shah_3", "12345", CURRENT_TIMESTAMP, 1, 3),
 ("John", "Doe","1990-01-01", "john@doe.com", "j_doe_4", "12345", CURRENT_TIMESTAMP,1, 4),
 ("Mary", "Jane","1990-01-01", "mary@jane.com", "m_jane_4", "12345", CURRENT_TIMESTAMP,1, 4),
 ("Tony", "Stark","1980-01-01", "tony@stark.com", "t_stark_4", "12345", CURRENT_TIMESTAMP,1, 4),

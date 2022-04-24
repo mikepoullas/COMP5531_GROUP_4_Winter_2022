@@ -190,7 +190,6 @@ Always visible and shows delete error if delete_view is set true -->
     display_error();
 
     if (isset($_GET['group_id'])) {
-
         if (isAdmin()) {
             $query = "SELECT g.*, c.*, st.*, u.* FROM student_groups as g
             JOIN member_of_group as mg ON mg.group_id = g.group_id
@@ -277,7 +276,7 @@ Always visible and shows delete error if delete_view is set true -->
     </table>
 
     <?php if (isAdmin()) { ?>
-        <a href="?page=assign-group&add_view=true">
+        <a href="?page=assign-group&add_view=true&group_id=<?= $group_id ?>">
             <button>Add New</button>
         </a>
     <?php } ?>
@@ -331,7 +330,7 @@ Always visible and shows delete error if delete_view is set true -->
                     <p>Groups</p>
                     <div class="scroll-list">
 
-                        <select name="group_id" id="group_id">
+                        <select name="add_group_id" id="group_id">
                             <option value="" selected hidden>Choose a group</option>
                             <?php
 

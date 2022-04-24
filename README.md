@@ -12,6 +12,13 @@ Contribution:
 - Christopher Savov (Tester and Documenter)
 - Adriana Danko (Tester and Documenter)
 
+Installation:
+- Copy the 'project' to the PHP server httpd source folder
+- Create Database from 'SQL' folder using create_db.sql
+- Run the data_db.sql for intial data and roles
+- Change the database configuration (host, username, password, database) in config.php in 'config' folder
+- Launch project
+
 ## Code base is PHP 7.4 and MySql 8.0.22
 
 Concordia University, Winter 2022
